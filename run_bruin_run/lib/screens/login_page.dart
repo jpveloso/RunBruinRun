@@ -13,13 +13,13 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         backgroundColor: lightBruinBlue,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               const Text(
                 'Login Page',
                 style: TextStyle(
@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
                   fontFamily: 'PressStart2P',
                 ),
               ),
-              SizedBox(height: 120),
+              const SizedBox(height: 120),
               SizedBox(
                 width: 350,
                 height: 175,
@@ -36,13 +36,13 @@ class _LoginPageState extends State<LoginPage> {
                   TextField(
                     maxLength: 25,
                     cursorColor: Colors.white,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                     ),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: darkBruinBlue,
-                      hintStyle: TextStyle(color: Colors.white70),
+                      hintStyle: const TextStyle(color: Colors.white70),
                       hintText: "Enter your username",
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
@@ -50,19 +50,19 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   TextField(
                     obscureText: true,
                     obscuringCharacter: "*",
                     maxLength: 25,
                     cursorColor: Colors.white,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       // labelText: "Password",
                       // labelStyle: TextStyle(fontSize: 30, color: Colors.white),
                       filled: true,
                       fillColor: darkBruinBlue,
-                      hintStyle: TextStyle(color: Colors.white70),
+                      hintStyle: const TextStyle(color: Colors.white70),
                       hintText: "Enter your password",
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ]),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Wrap(
                 direction: Axis.vertical,
                 spacing: 20,

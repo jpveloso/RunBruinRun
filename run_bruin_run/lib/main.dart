@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:run_bruin_run/screens/home_page.dart';
-import 'package:run_bruin_run/styles.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: const MyHomePage(title: "Run Bruin Run",),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }

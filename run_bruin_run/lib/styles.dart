@@ -6,17 +6,17 @@ const lightBruinBlue = Color.fromRGBO(123, 192, 234, 1);
 ButtonStyle defaultButtonStyle = ElevatedButton.styleFrom(
   foregroundColor: Colors.white,
   backgroundColor: darkBruinBlue,
-  fixedSize: Size(300, 50),
+  fixedSize: const Size(300, 50),
 );
 
 ButtonStyle getButtonStyle() {
   return ElevatedButton.styleFrom(
     foregroundColor: Colors.white,
     backgroundColor: darkBruinBlue,
-    fixedSize: Size(200, 60),
+    fixedSize: const Size(200, 60),
     elevation: 15,
     shadowColor: darkBruinBlue,
-    side: BorderSide(color: lightBruinBlue, width: 2),
-    shape: StadiumBorder(),
+    side: const BorderSide(color: lightBruinBlue, width: 2),
+    shape: const StadiumBorder(),
   );
 }

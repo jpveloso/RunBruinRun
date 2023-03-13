@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:run_bruin_run/screens/signup_page.dart';
 import 'package:run_bruin_run/styles.dart';
 import 'login_page.dart';
+
+//dart fix --apply
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,7 +28,7 @@ class _HomePageState extends State<HomePage> {
             Image.asset(
               'lib/images/Sheridan_Bruins_Logo.png',
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             const Text(
               'Run Bruin Run',
               style: TextStyle(
@@ -34,7 +37,7 @@ class _HomePageState extends State<HomePage> {
                 fontFamily: 'PressStart2P',
               ),
             ),
-            SizedBox(height: 120),
+            const SizedBox(height: 120),
             Wrap(
               direction: Axis.vertical,
               // crossAxisAlignment: WrapCrossAlignment.center,
@@ -58,7 +61,11 @@ class _HomePageState extends State<HomePage> {
                     child: const Text('Guest')),
                 ElevatedButton(
                     style: getButtonStyle(),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => const SignUpPage())
+                      );
+                    },
                     child: const Text('Sign Up')),
               ],
             ),
