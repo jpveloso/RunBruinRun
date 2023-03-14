@@ -75,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 20),
               Wrap(
                 direction: Axis.vertical,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 spacing: 20,
                 children: [
                   ElevatedButton(

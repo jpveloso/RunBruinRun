@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:run_bruin_run/screens/home_page.dart';
 import 'package:run_bruin_run/screens/login_page.dart';
 import 'package:run_bruin_run/styles.dart';
 
@@ -14,7 +13,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         backgroundColor: lightBruinBlue,
         body: Center(
           child: Column(
@@ -43,11 +42,16 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     decoration: InputDecoration(
                       labelText: "Email",
-                      labelStyle: const TextStyle(fontSize: 30, color: Colors.white),
+                      labelStyle:
+                          const TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              // height: 20,
+                          ),
                       filled: true,
                       fillColor: darkBruinBlue,
-                      hintStyle: const TextStyle(color: Colors.white70),
-                      hintText: "email",
+                      // hintStyle: const TextStyle(color: Colors.white70),
+                      // hintText: "email",
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(50),
@@ -63,11 +67,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     decoration: InputDecoration(
                       labelText: "Username",
-                      labelStyle: const TextStyle(fontSize: 30, color: Colors.white),
+                      labelStyle:
+                          const TextStyle(fontSize: 20, color: Colors.white),
                       filled: true,
                       fillColor: darkBruinBlue,
-                      hintStyle: const TextStyle(color: Colors.white70),
-                      hintText: "username",
+                      // hintStyle: const TextStyle(color: Colors.white70),
+                      // hintText: "username",
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(50),
@@ -83,11 +88,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       labelText: "Password",
-                      labelStyle: const TextStyle(fontSize: 30, color: Colors.white),
+                      labelStyle:
+                          const TextStyle(fontSize: 20, color: Colors.white),
                       filled: true,
                       fillColor: darkBruinBlue,
-                      hintStyle: const TextStyle(color: Colors.white70),
-                      hintText: "Enter your password",
+                      // hintStyle: const TextStyle(color: Colors.white70),
+                      // hintText: "Enter your password",
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(50),
@@ -103,11 +109,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
                       labelText: "Retype Password",
-                      labelStyle: const TextStyle(fontSize: 30, color: Colors.white),
+                      labelStyle:
+                          const TextStyle(fontSize: 20, color: Colors.white),
                       filled: true,
                       fillColor: darkBruinBlue,
-                      hintStyle: const TextStyle(color: Colors.white70),
-                      hintText: "retype password",
+                      // hintStyle: const TextStyle(color: Colors.white70),
+                      // hintText: "retype password",
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(50),
@@ -116,9 +123,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ]),
               ),
-              const SizedBox(height: 20),
+              // const SizedBox(height: 20),
               Wrap(
                 direction: Axis.vertical,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 spacing: 20,
                 children: [
                   ElevatedButton(
