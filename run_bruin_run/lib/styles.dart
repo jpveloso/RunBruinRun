@@ -21,6 +21,18 @@ ButtonStyle getButtonStyle() {
   );
 }
 
+ButtonStyle getSmallButtonStyle() {
+  return ElevatedButton.styleFrom(
+    foregroundColor: Colors.white,
+    backgroundColor: darkBruinBlue,
+    fixedSize: const Size(140, 60),
+    elevation: 15,
+    shadowColor: darkBruinBlue,
+    side: const BorderSide(color: lightBruinBlue, width: 2),
+    shape: const StadiumBorder(),
+  );
+}
+
 TextFormField inputTextFormFieldStyle(
     String labelText, String hintText, TextEditingController? controller) {
   return TextFormField(

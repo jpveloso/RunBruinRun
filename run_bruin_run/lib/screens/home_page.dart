@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: 50),
             const Text(
-              'Run Bruin Run',
+              'RUN BRUIN RUN',
               style: TextStyle(
                 fontSize: 28,
                 color: darkBruinBlue,

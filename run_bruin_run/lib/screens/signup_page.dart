@@ -36,7 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
             children: [
               const SizedBox(height: 50),
               const Text(
-                'Sign Up Page',
+                'SIGN UP PAGE',
                 style: TextStyle(
                   fontSize: 32,
                   color: darkBruinBlue,

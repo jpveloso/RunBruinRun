@@ -3,16 +3,14 @@ import 'package:run_bruin_run/screens/home_page.dart';
 import 'package:run_bruin_run/screens/main_menu_page.dart';
 import 'package:run_bruin_run/styles.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
-
-  // final ValueChanged<String> onSubmit;
+class CreateSessionPage extends StatefulWidget {
+  const CreateSessionPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<CreateSessionPage> createState() => _CreateSessionPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _CreateSessionPageState extends State<CreateSessionPage> {
   // final emailFieldController = TextEditingController();
   final _usernameFieldController = TextEditingController();
   final _passwordFieldController = TextEditingController();
@@ -40,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const SizedBox(height: 50),
                   const Text(
-                    'LOGIN PAGE',
+                    'CREATE SESSION',
                     style: TextStyle(
                       fontSize: 35,
                       color: darkBruinBlue,
@@ -80,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const MainMenuPage()));
+                                      const MainMenuPage()));
                             }
                           },
                           child: const Text(
