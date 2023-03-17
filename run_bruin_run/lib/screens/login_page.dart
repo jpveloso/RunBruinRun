@@ -5,100 +5,91 @@ import 'package:run_bruin_run/styles.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
+  // final ValueChanged<String> onSubmit;
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // final emailFieldController = TextEditingController();
+  final _usernameFieldController = TextEditingController();
+  final _passwordFieldController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    //Release memory allocated to the fields after the page is removed
+    // emailFieldController.dispose();
+    _usernameFieldController.dispose();
+    _passwordFieldController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        // resizeToAvoidBottomInset: false,
-        backgroundColor: lightBruinBlue,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(height: 50),
-              const Text(
-                'Login Page',
-                style: TextStyle(
-                  fontSize: 35,
-                  color: darkBruinBlue,
-                  fontFamily: 'PressStart2P',
-                ),
-              ),
-              const SizedBox(height: 120),
-              SizedBox(
-                width: 350,
-                height: 175,
-                child: Column(children: [
-                  TextField(
-                    maxLength: 25,
-                    cursorColor: Colors.white,
-                    autofocus: true,
-                    style: const TextStyle(
-                      color: Colors.white,
+    return Form(
+        key: _formKey,
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            backgroundColor: lightBruinBlue,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 50),
+                  const Text(
+                    'Login Page',
+                    style: TextStyle(
+                      fontSize: 35,
+                      color: darkBruinBlue,
+                      fontFamily: 'PressStart2P',
                     ),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: darkBruinBlue,
-                      hintStyle: const TextStyle(color: Colors.white70),
-                      hintText: "Enter your username",
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
+                  ),
+                  const SizedBox(height: 100),
+                  SizedBox(
+                    width: 350,
+                    height: 200,
+                    child: Column(children: [
+                      inputTextFormFieldStyle("Username", "Enter your username",
+                          _usernameFieldController),
+                      const SizedBox(height: 30),
+                      passwordTextFormFieldStyle("Password",
+                          "Enter your password", _passwordFieldController),
+                    ]),
                   ),
                   const SizedBox(height: 10),
-                  TextField(
-                    obscureText: true,
-                    obscuringCharacter: "*",
-                    maxLength: 25,
-                    cursorColor: Colors.white,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      // labelText: "Password",
-                      // labelStyle: TextStyle(fontSize: 30, color: Colors.white),
-                      filled: true,
-                      fillColor: darkBruinBlue,
-                      hintStyle: const TextStyle(color: Colors.white70),
-                      hintText: "Enter your password",
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
+                  Wrap(
+                    direction: Axis.vertical,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 20,
+                    children: [
+                      ElevatedButton(
+                          style: getButtonStyle(),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Signing in')),
+                              );
+                            }
+                          },
+                          child: const Text(
+                            'Sign in',
+                            style: TextStyle(),
+                          )),
+                      ElevatedButton(
+                          style: getButtonStyle(),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const HomePage()));
+                          },
+                          child: const Text('Back'))
+                    ],
                   ),
-                ]),
-              ),
-              const SizedBox(height: 20),
-              Wrap(
-                direction: Axis.vertical,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                spacing: 20,
-                children: [
-                  ElevatedButton(
-                      style: getButtonStyle(),
-                      onPressed: () {},
-                      child: const Text(
-                        'Sign in',
-                        style: TextStyle(),
-                      )),
-                  ElevatedButton(
-                      style: getButtonStyle(),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomePage()));
-                      },
-                      child: const Text('Back'))
                 ],
               ),
-            ],
-          ),
-        ));
+            )));
   }
 }

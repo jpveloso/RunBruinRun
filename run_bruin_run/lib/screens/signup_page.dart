@@ -10,18 +10,18 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final emailFieldController = TextEditingController();
-  final usernameFieldController = TextEditingController();
-  final passwordFieldController = TextEditingController();
-  final retypePasswordFieldController = TextEditingController();
+  final _emailFieldController = TextEditingController();
+  final _usernameFieldController = TextEditingController();
+  final _passwordFieldController = TextEditingController();
+  final _retypePasswordFieldController = TextEditingController();
 
   @override
   void dispose() {
     //Release memory allocated to the fields after the page is removed
-    emailFieldController.dispose();
-    usernameFieldController.dispose();
-    passwordFieldController.dispose();
-    retypePasswordFieldController.dispose();
+    _emailFieldController.dispose();
+    _usernameFieldController.dispose();
+    _passwordFieldController.dispose();
+    _retypePasswordFieldController.dispose();
     super.dispose();
   }
 
@@ -43,18 +43,22 @@ class _SignUpPageState extends State<SignUpPage> {
                   fontFamily: 'PressStart2P',
                 ),
               ),
-              const SizedBox(height: 120),
+              const SizedBox(height: 100),
               SizedBox(
                 width: 350,
                 height: 380,
                 child: Column(children: [
-                  inputTextFieldStyle("Email", "enter email", emailFieldController),
+                  inputTextFormFieldStyle(
+                      "Email", "enter email", _emailFieldController),
                   const SizedBox(height: 10),
-                  inputTextFieldStyle("Username", "enter username", usernameFieldController),
+                  inputTextFormFieldStyle(
+                      "Username", "enter username", _usernameFieldController),
                   const SizedBox(height: 10),
-                  passwordTextFieldStyle("Password", "enter password", passwordFieldController),
+                  passwordTextFormFieldStyle(
+                      "Password", "enter password", _passwordFieldController),
                   const SizedBox(height: 10),
-                  passwordTextFieldStyle("Retype Password", "retype password", retypePasswordFieldController),
+                  passwordTextFormFieldStyle("Retype Password", "retype password",
+                      _retypePasswordFieldController),
                 ]),
               ),
               Wrap(
@@ -86,7 +90,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             MaterialPageRoute(
                                 builder: (context) => const LoginPage()));
                       },
-                      child: const Text('Login'))
+                      child: const Text('Login Page'))
                 ],
               ),
             ],
