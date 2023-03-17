@@ -10,10 +10,25 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final emailFieldController = TextEditingController();
+  final usernameFieldController = TextEditingController();
+  final passwordFieldController = TextEditingController();
+  final retypePasswordFieldController = TextEditingController();
+
+  @override
+  void dispose() {
+    //Release memory allocated to the fields after the page is removed
+    emailFieldController.dispose();
+    usernameFieldController.dispose();
+    passwordFieldController.dispose();
+    retypePasswordFieldController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         backgroundColor: lightBruinBlue,
         body: Center(
           child: Column(
@@ -33,97 +48,15 @@ class _SignUpPageState extends State<SignUpPage> {
                 width: 350,
                 height: 380,
                 child: Column(children: [
-                  TextField(
-                    maxLength: 25,
-                    cursorColor: Colors.white,
-                    autofocus: true,
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
-                    decoration: InputDecoration(
-                      labelText: "Email",
-                      labelStyle:
-                          const TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              // height: 20,
-                          ),
-                      filled: true,
-                      fillColor: darkBruinBlue,
-                      // hintStyle: const TextStyle(color: Colors.white70),
-                      // hintText: "email",
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                  ),
+                  inputTextFieldStyle("Email", "enter email", emailFieldController),
                   const SizedBox(height: 10),
-                  TextField(
-                    maxLength: 25,
-                    cursorColor: Colors.white,
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
-                    decoration: InputDecoration(
-                      labelText: "Username",
-                      labelStyle:
-                          const TextStyle(fontSize: 20, color: Colors.white),
-                      filled: true,
-                      fillColor: darkBruinBlue,
-                      // hintStyle: const TextStyle(color: Colors.white70),
-                      // hintText: "username",
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                  ),
+                  inputTextFieldStyle("Username", "enter username", usernameFieldController),
                   const SizedBox(height: 10),
-                  TextField(
-                    obscureText: true,
-                    obscuringCharacter: "*",
-                    maxLength: 25,
-                    cursorColor: Colors.white,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      labelText: "Password",
-                      labelStyle:
-                          const TextStyle(fontSize: 20, color: Colors.white),
-                      filled: true,
-                      fillColor: darkBruinBlue,
-                      // hintStyle: const TextStyle(color: Colors.white70),
-                      // hintText: "Enter your password",
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                  ),
+                  passwordTextFieldStyle("Password", "enter password", passwordFieldController),
                   const SizedBox(height: 10),
-                  TextField(
-                    obscureText: true,
-                    obscuringCharacter: "*",
-                    maxLength: 25,
-                    cursorColor: Colors.white,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      labelText: "Retype Password",
-                      labelStyle:
-                          const TextStyle(fontSize: 20, color: Colors.white),
-                      filled: true,
-                      fillColor: darkBruinBlue,
-                      // hintStyle: const TextStyle(color: Colors.white70),
-                      // hintText: "retype password",
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                    ),
-                  ),
+                  passwordTextFieldStyle("Retype Password", "retype password", retypePasswordFieldController),
                 ]),
               ),
-              // const SizedBox(height: 20),
               Wrap(
                 direction: Axis.vertical,
                 crossAxisAlignment: WrapCrossAlignment.center,

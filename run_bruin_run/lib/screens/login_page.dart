@@ -36,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
                   TextField(
                     maxLength: 25,
                     cursorColor: Colors.white,
+                    autofocus: true,
                     style: const TextStyle(
                       color: Colors.white,
                     ),

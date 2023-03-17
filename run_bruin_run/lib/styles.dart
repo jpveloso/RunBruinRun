@@ -20,3 +20,62 @@ ButtonStyle getButtonStyle() {
     shape: const StadiumBorder(),
   );
 }
+
+TextField inputTextFieldStyle(String labelText, String hintText, TextEditingController? controller){
+  return TextField (
+      controller: controller,
+      maxLength: 25,
+      cursorColor: Colors.white,
+      autofocus: true,
+      style: const TextStyle(
+        color: Colors.white,
+      ),
+      decoration: InputDecoration(
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        label: SizedBox(
+            height: 50,
+            width: 200,
+            child: Text(labelText,
+                style: const TextStyle(
+                    fontSize: 25, color: Colors.white))),
+        filled: true,
+        fillColor: darkBruinBlue,
+        hintStyle: const TextStyle(color: Colors.white70),
+        hintText: hintText,
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(50),
+        ),
+      ),
+  );
+}
+
+TextField passwordTextFieldStyle(String labelText, String hintText, TextEditingController? controller){
+  return TextField(
+    controller: controller,
+    enableSuggestions: false,
+    autocorrect: false,
+    obscureText: true,
+    obscuringCharacter: "*",
+    maxLength: 25,
+    cursorColor: Colors.white,
+    style: const TextStyle(color: Colors.white),
+    decoration: InputDecoration(
+      floatingLabelBehavior: FloatingLabelBehavior.always,
+      label: SizedBox(
+          height: 50,
+          width: 200,
+          child: Text(labelText,
+              style: const TextStyle(
+                  fontSize: 25, color: Colors.white))),
+      filled: true,
+      fillColor: darkBruinBlue,
+      hintStyle: const TextStyle(color: Colors.white70),
+      hintText: hintText,
+      border: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(50),
+      ),
+    ),
+  );
+}
