@@ -1,6 +1,6 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:run_bruin_run/screens/home_page.dart';
-import 'package:run_bruin_run/screens/main_menu_page.dart';
 import 'package:run_bruin_run/styles.dart';
 
 class CreateSessionPage extends StatefulWidget {
@@ -11,23 +11,32 @@ class CreateSessionPage extends StatefulWidget {
 }
 
 class _CreateSessionPageState extends State<CreateSessionPage> {
-  // final emailFieldController = TextEditingController();
-  final _usernameFieldController = TextEditingController();
-  final _passwordFieldController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  String yourPlayerName = "You";
+  String playerName2 = "Player 2";
+  String playerName3 = "Player 3";
+  String playerName4 = "Player 4";
+
+  late int joinCode;
+  TextEditingController _joinCodeFieldController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    joinCode = Random().nextInt(900000) + 100000;
+    _joinCodeFieldController = TextEditingController(text: "$joinCode");
+  }
 
   @override
   void dispose() {
     //Release memory allocated to the fields after the page is removed
-    // emailFieldController.dispose();
-    _usernameFieldController.dispose();
-    _passwordFieldController.dispose();
+    _joinCodeFieldController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form (
+    return Form(
         key: _formKey,
         child: Scaffold(
             resizeToAvoidBottomInset: false,
@@ -40,60 +49,65 @@ class _CreateSessionPageState extends State<CreateSessionPage> {
                   const Text(
                     'CREATE SESSION',
                     style: TextStyle(
-                      fontSize: 35,
+                      fontSize: 27,
                       color: darkBruinBlue,
                       fontFamily: 'PressStart2P',
                     ),
                   ),
-                  const SizedBox(height: 100),
-                  SizedBox(
-                    width: 350,
-                    height: 200,
-                    child: Column(children: [
-                      inputTextFormFieldStyle("Username", "Enter your username",
-                          _usernameFieldController),
-                      const SizedBox(height: 30),
-                      passwordTextFormFieldStyle("Password",
-                          "Enter your password", _passwordFieldController),
-                    ]),
-                  ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 50),
                   Wrap(
                     direction: Axis.vertical,
                     crossAxisAlignment: WrapCrossAlignment.center,
-                    spacing: 20,
+                    spacing: 30,
                     children: [
+                      const Text(
+                        'Join Code',
+                        style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.white,
+                          fontFamily: 'PressStart2P',
+                        ),
+                      ),
+                      SizedBox(
+                        width: 300,
+                        height: 100,
+                        child: Column(children: [
+                          generatedCodeTextFieldStyle(_joinCodeFieldController),
+                        ]),
+                      ),
                       ElevatedButton(
                           style: getButtonStyle(),
-                          // onPressed: () {
-                          //   if (_formKey.currentState!.validate()) {
-                          //     ScaffoldMessenger.of(context).showSnackBar(
-                          //       const SnackBar(content: Text('Signing in')),
-                          //     );
-                          //   }
-                          // },
                           onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                      const MainMenuPage()));
-                            }
+                            setState(() {
+                              joinCode = Random().nextInt(900000) + 100000;
+                              _joinCodeFieldController =
+                                  TextEditingController(text: "$joinCode");
+                            });
                           },
                           child: const Text(
-                            'Sign in',
-                            style: TextStyle(),
+                            'New Code',
+                            style: TextStyle(fontSize: 20),
                           )),
-                      ElevatedButton(
-                          style: getButtonStyle(),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomePage()));
-                          },
-                          child: const Text('Back'))
+                      //CREATE STYLE
+                      Container(
+                        width: 200,
+                        height: 80,
+                        color: Colors.white,
+                        child: Wrap(
+                          direction: Axis.horizontal,
+                          runAlignment: WrapAlignment.center,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            SizedBox(width: 10),
+                            CircleAvatar(
+                              backgroundColor: darkBruinBlue,
+                              radius: 30,
+                            ),
+                            SizedBox(width: 20),
+                            Text(style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold), "$yourPlayerName"),
+                          ],
+                        )
+                      ),
                     ],
                   ),
                 ],

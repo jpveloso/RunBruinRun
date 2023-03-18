@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:run_bruin_run/screens/create_session_page.dart';
+import 'package:run_bruin_run/screens/home_page.dart';
+import 'package:run_bruin_run/screens/join_session_page.dart';
 import 'package:run_bruin_run/styles.dart';
 
 class MainMenuPage extends StatefulWidget {
@@ -18,39 +21,26 @@ class _MainMenuPageState extends State<MainMenuPage> {
         resizeToAvoidBottomInset: false,
         body: Center(
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 20),
-                  const Text(
-                    'RUN BRUIN RUN',
-                    style: TextStyle(
-                      fontSize: 28,
-                      color: darkBruinBlue,
-                      fontFamily: 'PressStart2P',
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Welcome',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25,
-                      color: Colors.white,
-                      fontFamily: 'PressStart2P',
-                    ),
-                  ),
-              const SizedBox(height: 10),
+              const Text(
+                'RUN BRUIN RUN',
+                style: TextStyle(
+                  fontSize: 28,
+                  color: darkBruinBlue,
+                  fontFamily: 'PressStart2P',
+                ),
+              ),
               Text(
-                username,
+                'Welcome \n$username',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 25,
                   color: Colors.white,
                   fontFamily: 'PressStart2P',
                 ),
               ),
-              const SizedBox(height: 50),
               Wrap(
                 direction: Axis.horizontal,
                 runAlignment: WrapAlignment.center,
@@ -84,11 +74,21 @@ class _MainMenuPageState extends State<MainMenuPage> {
                   ),
                   ElevatedButton(
                       style: getSmallButtonStyle(),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CreateSessionPage()));
+                      },
                       child: const Text('Create Session')),
                   ElevatedButton(
                       style: getSmallButtonStyle(),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const JoinSessionPage()));
+                      },
                       child: const Text('Join Session')),
                   const Text(
                     'SCOREBOARD',
@@ -106,6 +106,19 @@ class _MainMenuPageState extends State<MainMenuPage> {
                       style: getSmallButtonStyle(),
                       onPressed: () {},
                       child: const Text('Basketball')),
+                  SizedBox(
+                    height: 80,
+                    width: 250,
+                    child: ElevatedButton(
+                        style: getButtonStyle(),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomePage()));
+                        },
+                        child: const Text('Logout', style: TextStyle(fontSize: 20),)),
+                  )
                 ],
               ),
             ],
