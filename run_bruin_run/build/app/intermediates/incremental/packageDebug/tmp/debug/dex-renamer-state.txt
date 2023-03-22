@@ -1,0 +1,4 @@
+#Mon Mar 20 04:49:39 EDT 2023
+base.0=/Users/jpveloso/Documents/Android/Prog20261_Final/run_bruin_run/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

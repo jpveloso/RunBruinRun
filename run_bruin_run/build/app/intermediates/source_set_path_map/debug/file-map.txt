@@ -1,0 +1,12 @@
+sheridan.ASP.run_bruin_run.app-jetified-window-java-1.0.0-beta04-0 /Users/jpveloso/.gradle/caches/transforms-3/006d93cd422dbc43e89591147c2de572/transformed/jetified-window-java-1.0.0-beta04/res
+sheridan.ASP.run_bruin_run.app-core-1.6.0-1 /Users/jpveloso/.gradle/caches/transforms-3/4ca28c4a71705f8a687c69dda140a277/transformed/core-1.6.0/res
+sheridan.ASP.run_bruin_run.app-jetified-annotation-experimental-1.1.0-2 /Users/jpveloso/.gradle/caches/transforms-3/8965c941cf4bee4d72541b965c7c9d39/transformed/jetified-annotation-experimental-1.1.0/res
+sheridan.ASP.run_bruin_run.app-jetified-window-1.0.0-beta04-3 /Users/jpveloso/.gradle/caches/transforms-3/dee59bb480020f42d53c2ea15e4501f7/transformed/jetified-window-1.0.0-beta04/res
+sheridan.ASP.run_bruin_run.app-debug-4 /Users/jpveloso/Documents/Android/Prog20261_Final/run_bruin_run/android/app/src/debug/res
+sheridan.ASP.run_bruin_run.app-main-5 /Users/jpveloso/Documents/Android/Prog20261_Final/run_bruin_run/android/app/src/main/res
+sheridan.ASP.run_bruin_run.app-pngs-6 /Users/jpveloso/Documents/Android/Prog20261_Final/run_bruin_run/build/app/generated/res/pngs/debug
+sheridan.ASP.run_bruin_run.app-resValues-7 /Users/jpveloso/Documents/Android/Prog20261_Final/run_bruin_run/build/app/generated/res/resValues/debug
+sheridan.ASP.run_bruin_run.app-rs-8 /Users/jpveloso/Documents/Android/Prog20261_Final/run_bruin_run/build/app/generated/res/rs/debug
+sheridan.ASP.run_bruin_run.app-mergeDebugResources-9 /Users/jpveloso/Documents/Android/Prog20261_Final/run_bruin_run/build/app/intermediates/incremental/debug/mergeDebugResources/merged.dir
+sheridan.ASP.run_bruin_run.app-mergeDebugResources-10 /Users/jpveloso/Documents/Android/Prog20261_Final/run_bruin_run/build/app/intermediates/incremental/debug/mergeDebugResources/stripped.dir
+sheridan.ASP.run_bruin_run.app-merged_res-11 /Users/jpveloso/Documents/Android/Prog20261_Final/run_bruin_run/build/app/intermediates/merged_res/debug
