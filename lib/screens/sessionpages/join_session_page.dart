@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:run_bruin_run/screens/main_menu_page.dart';
+import 'package:run_bruin_run/screens/mainmenu/main_menu_page.dart';
+import 'package:run_bruin_run/screens/sessionpages/session_joined_page.dart';
 import 'package:run_bruin_run/styles.dart';
+
+final joinCodeFieldController = TextEditingController();
 
 class JoinSessionPage extends StatefulWidget {
   const JoinSessionPage({Key? key}) : super(key: key);
@@ -10,13 +13,12 @@ class JoinSessionPage extends StatefulWidget {
 }
 
 class _JoinSessionPageState extends State<JoinSessionPage> {
-  final _joinCodeFieldController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     //Release memory allocated to the fields after the page is removed
-    _joinCodeFieldController.dispose();
+    joinCodeFieldController.dispose();
     super.dispose();
   }
 
@@ -58,7 +60,7 @@ class _JoinSessionPageState extends State<JoinSessionPage> {
                         width: 350,
                         height: 155,
                         child: Column(children: [
-                          joinCodeTextFieldStyle(_joinCodeFieldController),
+                          joinCodeTextFieldStyle(joinCodeFieldController),
                           const SizedBox(height: 30),
                         ]),
                       ),
@@ -70,7 +72,7 @@ class _JoinSessionPageState extends State<JoinSessionPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const MainMenuPage()));
+                                          const SessionJoinedPage()));
                             }
                           },
                           child: const Text(

@@ -3,13 +3,12 @@ import 'package:flutter/services.dart';
 
 const darkBruinBlue = Color.fromRGBO(8, 42, 86, 1);
 const lightBruinBlue = Color.fromRGBO(123, 192, 234, 1);
+const bluePlayerColor = Color.fromRGBO(0, 0, 255, 1);
+const redPlayerColor = Color.fromRGBO(255, 0, 0, 1);
+const greenPlayerColor = Color.fromRGBO(0, 255, 0, 1);
+const yellowPlayerColor = Color.fromRGBO(255, 255, 0, 1);
 
-// ButtonStyle defaultButtonStyle = ElevatedButton.styleFrom(
-//   foregroundColor: Colors.white,
-//   backgroundColor: darkBruinBlue,
-//   fixedSize: const Size(300, 50),
-// );
-
+//Button Styles
 ButtonStyle getButtonStyle() {
   return ElevatedButton.styleFrom(
     foregroundColor: Colors.white,
@@ -22,6 +21,7 @@ ButtonStyle getButtonStyle() {
   );
 }
 
+//Same as above just smaller footprint
 ButtonStyle getSmallButtonStyle() {
   return ElevatedButton.styleFrom(
     foregroundColor: Colors.white,
@@ -31,6 +31,18 @@ ButtonStyle getSmallButtonStyle() {
     shadowColor: darkBruinBlue,
     side: const BorderSide(color: lightBruinBlue, width: 2),
     shape: const StadiumBorder(),
+  );
+}
+
+//Small button style with square border
+ButtonStyle getSmallSquaredButtonStyle() {
+  return ElevatedButton.styleFrom(
+    foregroundColor: Colors.white,
+    backgroundColor: darkBruinBlue,
+    fixedSize: const Size(140, 60),
+    elevation: 15,
+    shadowColor: darkBruinBlue,
+    side: const BorderSide(color: lightBruinBlue, width: 2),
   );
 }
 
@@ -74,6 +86,7 @@ TextFormField inputTextFormFieldStyle(
   );
 }
 
+//Same as Input Page ^^^ just with hidden characters for password
 TextFormField passwordTextFormFieldStyle(
     String? labelText, String? hintText, TextEditingController? controller) {
   return TextFormField(
@@ -165,7 +178,7 @@ TextFormField generatedCodeTextFieldStyle(TextEditingController? controller) {
       color: Colors.white,
       fontSize: 50,
     ),
-    decoration: InputDecoration(
+    decoration: const InputDecoration(
       filled: true,
       fillColor: darkBruinBlue,
       border: OutlineInputBorder(
@@ -183,4 +196,79 @@ TextStyle counterTextStyle() {
     color: darkBruinBlue,
     fontWeight: FontWeight.bold,
   );
+}
+
+//Create Session Player Card and Button
+Wrap playerCardAndBtn(Color color, String playerName, String buttonText) {
+  return Wrap(
+      direction: Axis.horizontal,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: 10,
+      children: [
+        Container(
+          width: 200,
+          height: 80,
+          color: Colors.white,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Wrap(
+              runAlignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                const SizedBox(width: 10),
+                CircleAvatar(
+                  backgroundColor: color,
+                  radius: 30,
+                ),
+                const SizedBox(width: 20),
+                Text(
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    playerName)
+              ],
+            ),
+          ),
+        ),
+        ElevatedButton(
+            style: getSmallSquaredButtonStyle(),
+            onPressed: () {},
+            child: Text(
+              buttonText,
+              style: const TextStyle(fontSize: 20),
+            )),
+      ]);
+}
+
+//Session Joined Player Card
+Wrap playerCard(Color color, String playerName) {
+  return Wrap(
+      direction: Axis.horizontal,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: 10,
+      children: [
+        Container(
+          width: 200,
+          height: 80,
+          color: Colors.white,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Wrap(
+              runAlignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                const SizedBox(width: 10),
+                CircleAvatar(
+                  backgroundColor: color,
+                  radius: 30,
+                ),
+                const SizedBox(width: 20),
+                Text(
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    playerName)
+              ],
+            ),
+          ),
+        ),
+      ]);
 }

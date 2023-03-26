@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:run_bruin_run/screens/login_page.dart';
+import 'package:run_bruin_run/screens/usercredentialpages/login_page.dart';
 import 'package:run_bruin_run/styles.dart';
 
 class SignUpPage extends StatefulWidget {

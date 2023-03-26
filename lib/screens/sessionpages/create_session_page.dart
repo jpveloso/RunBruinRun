@@ -89,25 +89,20 @@ class _CreateSessionPageState extends State<CreateSessionPage> {
                             style: TextStyle(fontSize: 20),
                           )),
                       //CREATE STYLE
-                      Container(
-                        width: 200,
-                        height: 80,
-                        color: Colors.white,
-                        child: Wrap(
-                          direction: Axis.horizontal,
-                          runAlignment: WrapAlignment.center,
+                      Wrap(
+                          direction: Axis.vertical,
+                          spacing: 15,
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
-                            SizedBox(width: 10),
-                            CircleAvatar(
-                              backgroundColor: darkBruinBlue,
-                              radius: 30,
-                            ),
-                            SizedBox(width: 20),
-                            Text(style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold), "$yourPlayerName"),
-                          ],
-                        )
-                      ),
+                            playerCardAndBtn(
+                                bluePlayerColor, yourPlayerName, "Play"),
+                            playerCardAndBtn(
+                                redPlayerColor, playerName2, "Kick"),
+                            playerCardAndBtn(
+                                greenPlayerColor, playerName3, "Kick"),
+                            playerCardAndBtn(
+                                yellowPlayerColor, playerName4, "Kick"),
+                          ]),
                     ],
                   ),
                 ],

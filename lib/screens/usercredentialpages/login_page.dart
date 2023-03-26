@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:run_bruin_run/screens/home_page.dart';
-import 'package:run_bruin_run/screens/main_menu_page.dart';
+import 'package:run_bruin_run/screens/homepage/home_page.dart';
+import 'package:run_bruin_run/screens/mainmenu/main_menu_page.dart';
 import 'package:run_bruin_run/styles.dart';
 
 class LoginPage extends StatefulWidget {
