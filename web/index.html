@@ -40,6 +40,23 @@
   <script src="flutter.js" defer></script>
 </head>
 <body>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-analytics.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyAilWBSIzCeNcha9E_4o7khuvulIlU0m6o",
+    authDomain: "bruins-dce34.firebaseapp.com",
+    projectId: "bruins-dce34",
+    storageBucket: "bruins-dce34.appspot.com",
+    messagingSenderId: "199930556306",
+    appId: "1:199930556306:web:51762bfd9edc7880f69b4b",
+    measurementId: "G-3LP6X15FW1"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js

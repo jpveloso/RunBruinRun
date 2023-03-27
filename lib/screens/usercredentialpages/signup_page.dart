@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:run_bruin_run/screens/usercredentialpages/login_page.dart';
 import 'package:run_bruin_run/styles.dart';
@@ -14,6 +15,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final _usernameFieldController = TextEditingController();
   final _passwordFieldController = TextEditingController();
   final _retypePasswordFieldController = TextEditingController();
+  //final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -31,6 +34,8 @@ class _SignUpPageState extends State<SignUpPage> {
         resizeToAvoidBottomInset: false,
         backgroundColor: lightBruinBlue,
         body: Center(
+        child: Form(
+        key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -68,7 +73,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: [
                   ElevatedButton(
                       style: getButtonStyle(),
-                      onPressed: () {},
+                      onPressed: () {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          _signUp();
+                        }
+                      },
                       child: const Text(
                         'Sign up',
                         style: TextStyle(),
@@ -95,6 +104,28 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ],
           ),
-        ));
+        )));
+  }
+  void _signUp() async {
+    try {
+      UserCredential userCredential =
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailFieldController.text,
+        password: _passwordFieldController.text,
+      );
+      // User is signed up, navigate to home page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }
