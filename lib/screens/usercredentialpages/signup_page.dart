@@ -107,6 +107,7 @@ class _SignUpPageState extends State<SignUpPage> {
         )));
   }
   void _signUp() async {
+
     try {
       UserCredential userCredential =
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
