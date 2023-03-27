@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "199930556306",
+    "project_id": "bruins-dce34",
+    "storage_bucket": "bruins-dce34.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199930556306:android:dba7fba1feba9188f69b4b",
+        "android_client_info": {
+          "package_name": "sheridan.ASP.run_bruin_run"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "199930556306-ad4uoa2ms40dff2u09qhc3v1o67j62av.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALvjKSTNntCsI644H8dhDereKWA5Xe28E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "199930556306-ad4uoa2ms40dff2u09qhc3v1o67j62av.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
