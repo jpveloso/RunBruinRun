@@ -15,6 +15,10 @@ class _SignUpPageState extends State<SignUpPage> {
   final _usernameFieldController = TextEditingController();
   final _passwordFieldController = TextEditingController();
   final _retypePasswordFieldController = TextEditingController();
+
+  bool weakPassword = false;
+  bool emailExists = false;
+
   //final _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -34,8 +38,8 @@ class _SignUpPageState extends State<SignUpPage> {
         resizeToAvoidBottomInset: false,
         backgroundColor: lightBruinBlue,
         body: Center(
-        child: Form(
-        key: _formKey,
+            child: Form(
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -54,16 +58,26 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 380,
                 child: Column(children: [
                   inputTextFormFieldStyle(
-                      "Email", "enter email", _emailFieldController),
+                      "Email",
+                      "enter email",
+                      _emailFieldController,
+                      emailExists
+                          ? 'The account already exists for that email.'
+                          : null),
                   const SizedBox(height: 10),
                   inputTextFormFieldStyle(
                       "Username", "enter username", _usernameFieldController),
                   const SizedBox(height: 10),
                   passwordTextFormFieldStyle(
-                      "Password", "enter password", _passwordFieldController),
+                      "Password",
+                      "enter password",
+                      _passwordFieldController,
+                      weakPassword
+                          ? 'The password provided is too weak.'
+                          : null),
                   const SizedBox(height: 10),
-                  passwordTextFormFieldStyle("Retype Password", "retype password",
-                      _retypePasswordFieldController),
+                  passwordTextFormFieldStyle("Retype Password",
+                      "retype password", _retypePasswordFieldController),
                 ]),
               ),
               Wrap(
@@ -106,19 +120,26 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         )));
   }
-  void _signUp() async {
 
+  void _signUp() async {
+    //New Navigator to get rid of Linter warninglines
+    final navigator = Navigator.of(context);
     try {
       UserCredential userCredential =
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailFieldController.text,
         password: _passwordFieldController.text,
       );
       // User is signed up, navigate to home page
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
-      );
+      //New Navigator to get rid of Linter warninglines
+      navigator.pushReplacement(
+          MaterialPageRoute(builder: (context) => const LoginPage()));
+
+      //Old implementation of ^^^
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => const LoginPage()),
+      // );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');

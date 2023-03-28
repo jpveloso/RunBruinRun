@@ -47,8 +47,8 @@ ButtonStyle getSmallSquaredButtonStyle() {
 }
 
 //Input Pages Login/Signup
-TextFormField inputTextFormFieldStyle(
-    String? labelText, String? hintText, TextEditingController? controller) {
+TextFormField inputTextFormFieldStyle(String? labelText, String? hintText,
+    TextEditingController? controller, String? errorText) {
   return TextFormField(
     autovalidateMode: AutovalidateMode.onUserInteraction,
     validator: (value) {
@@ -67,6 +67,7 @@ TextFormField inputTextFormFieldStyle(
     decoration: InputDecoration(
       floatingLabelBehavior: FloatingLabelBehavior.always,
       counterStyle: counterTextStyle(),
+      errorText: errorText,
       errorStyle: const TextStyle(
           fontSize: 14.0, color: darkBruinBlue, fontWeight: FontWeight.bold),
       label: SizedBox(
@@ -87,8 +88,8 @@ TextFormField inputTextFormFieldStyle(
 }
 
 //Same as Input Page ^^^ just with hidden characters for password
-TextFormField passwordTextFormFieldStyle(
-    String? labelText, String? hintText, TextEditingController? controller) {
+TextFormField passwordTextFormFieldStyle(String? labelText, String? hintText,
+    TextEditingController? controller, String? errorText) {
   return TextFormField(
     autovalidateMode: AutovalidateMode.onUserInteraction,
     validator: (value) {
@@ -108,6 +109,7 @@ TextFormField passwordTextFormFieldStyle(
     decoration: InputDecoration(
       floatingLabelBehavior: FloatingLabelBehavior.always,
       counterStyle: counterTextStyle(),
+      errorText: errorText,
       errorStyle: const TextStyle(
           fontSize: 14.0, color: darkBruinBlue, fontWeight: FontWeight.bold),
       label: SizedBox(

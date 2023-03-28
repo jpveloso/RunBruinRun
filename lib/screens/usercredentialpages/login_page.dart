@@ -6,37 +6,48 @@ import 'package:run_bruin_run/styles.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-   final _emailFieldController = TextEditingController();
-  final _usernameFieldController = TextEditingController();
+  final _emailFieldController = TextEditingController();
+
+  // final _usernameFieldController = TextEditingController();
   final _passwordFieldController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool userNotFound = false;
+  bool wrongPassword = false;
+
   String _errorMessage = '';
 
   @override
   void dispose() {
     //Release memory allocated to the fields after the page is removed
-     _emailFieldController.dispose();
-    _usernameFieldController.dispose();
+    _emailFieldController.dispose();
+    // _usernameFieldController.dispose();
     _passwordFieldController.dispose();
     super.dispose();
   }
+
   // Sign in the user with the email and password provided
   Future<void> _signInWithEmailAndPassword() async {
+    final navigator = Navigator.of(context);
     try {
-      final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailFieldController.text.trim(),
         password: _passwordFieldController.text.trim(),
       );
       // Navigate to home screen or another authenticated screen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => MainMenuPage()),
-      );
+      navigator.pushReplacement(
+          MaterialPageRoute(builder: (context) => const MainMenuPage()));
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => const MainMenuPage()),
+      // );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         _errorMessage = 'No user found with that email address.';
@@ -45,12 +56,12 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         _errorMessage = 'An error occurred. Please try again later.';
       }
-      setState(() {});
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    return Form (
+    return Form(
         key: _formKey,
         child: Scaffold(
             resizeToAvoidBottomInset: false,
@@ -73,11 +84,19 @@ class _LoginPageState extends State<LoginPage> {
                     width: 350,
                     height: 200,
                     child: Column(children: [
-                      inputTextFormFieldStyle("Username", "Enter your username",
-                          _emailFieldController),
+                      inputTextFormFieldStyle(
+                          "Email",
+                          "Enter your email",
+                          _emailFieldController,
+                          userNotFound
+                              ? 'No user found with that email address.'
+                              : null),
                       const SizedBox(height: 30),
-                      passwordTextFormFieldStyle("Password",
-                          "Enter your password", _passwordFieldController),
+                      passwordTextFormFieldStyle(
+                          "Password",
+                          "Enter your password",
+                          _passwordFieldController,
+                          wrongPassword ? 'Incorrect password.' : null),
                     ]),
                   ),
                   const SizedBox(height: 10),
@@ -97,14 +116,15 @@ class _LoginPageState extends State<LoginPage> {
                           // },
                           onPressed: () {
                             if (_formKey.currentState?.validate() ?? false) {
-                                _signInWithEmailAndPassword();//.then((value){
-                     //         Navigator.push(
-                       //           context,
-                         //         MaterialPageRoute(
-                           //           builder: (context) =>
-                             //             const MainMenuPage()));
+                              _signInWithEmailAndPassword(); //.then((value){
+                              //         Navigator.push(
+                              //           context,
+                              //         MaterialPageRoute(
+                              //           builder: (context) =>
+                              //             const MainMenuPage()));
                               //  });
-                            }},
+                            }
+                          },
                           child: const Text(
                             'Sign in',
                             style: TextStyle(),
