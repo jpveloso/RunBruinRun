@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:run_bruin_run/screens/sessionpages/create_session_page.dart';
 import 'package:run_bruin_run/screens/homepage/home_page.dart';
+import 'package:run_bruin_run/screens/sessionpages/create_session_page.dart';
 import 'package:run_bruin_run/screens/sessionpages/join_session_page.dart';
-import 'package:run_bruin_run/styles.dart';
+import 'package:run_bruin_run/screens/usercredentialpages/login_page.dart';
+
+import '../../styles/button_styles.dart';
+import '../../styles/colours.dart';
 
 class MainMenuPage extends StatefulWidget {
   const MainMenuPage({Key? key}) : super(key: key);
@@ -12,7 +17,47 @@ class MainMenuPage extends StatefulWidget {
 }
 
 class _MainMenuPageState extends State<MainMenuPage> {
+  final User? authenticatedUser = FirebaseAuth.instance.currentUser;
   String username = "Guest";
+  String? _email;
+  String? _userName;
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
+  // final TextEditingController _userEmail =
+  //     emailFieldController;
+
+  // User? user = FirebaseAuth.instance.currentUser;
+
+  // getCurrentUserData() async {
+  //   final User? user = FirebaseAuth.instance.currentUser;
+  //   _email = user?.email;
+  // }
+
+
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    _email = authenticatedUser?.email;
+    final docRef = db.collection("users").where('email', isEqualTo: _email);
+  }
+
+
+
+
+  // Future<void> getUser() async {
+  //   FirebaseFirestore.instance.collection('users')
+  //       .where('email', isEqualTo: _userEmail)
+  //       .get()
+  //       .then((value) {
+  //         setState(() {
+  //           _userEmail =
+  //         });
+  //   });
+  // }
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +123,8 @@ class _MainMenuPageState extends State<MainMenuPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const CreateSessionPage()));
+                                builder: (
+                                    context) => const CreateSessionPage()));
                       },
                       child: const Text('Create Session')),
                   ElevatedButton(
@@ -117,7 +163,8 @@ class _MainMenuPageState extends State<MainMenuPage> {
                               MaterialPageRoute(
                                   builder: (context) => const HomePage()));
                         },
-                        child: const Text('Logout', style: TextStyle(fontSize: 20),)),
+                        child: const Text(
+                          'Logout', style: TextStyle(fontSize: 20),)),
                   )
                 ],
               ),

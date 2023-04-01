@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:run_bruin_run/screens/mainmenu/main_menu_page.dart';
 import 'package:run_bruin_run/screens/usercredentialpages/signup_page.dart';
-import 'package:run_bruin_run/styles.dart';
+import 'package:run_bruin_run/styles/input_field_styles.dart';
 
+import '../../styles/button_styles.dart';
+import '../../styles/colours.dart';
 import '../usercredentialpages/login_page.dart';
 
 //dart fix --apply

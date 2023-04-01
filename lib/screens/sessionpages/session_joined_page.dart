@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:run_bruin_run/screens/sessionpages/join_session_page.dart';
-import 'package:run_bruin_run/styles.dart';
+import 'package:run_bruin_run/styles/input_field_styles.dart';
+
+import '../../styles/colours.dart';
+import '../../styles/session_pages_styles.dart';
 
 class SessionJoinedPage extends StatefulWidget {
   const SessionJoinedPage({Key? key}) : super(key: key);
