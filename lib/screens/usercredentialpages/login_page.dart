@@ -7,7 +7,7 @@ import 'package:run_bruin_run/styles/input_field_styles.dart';
 import '../../styles/button_styles.dart';
 import '../../styles/colours.dart';
 
-final emailFieldController = TextEditingController();
+// final emailFieldController = TextEditingController();
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,6 +18,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _emailFieldController = TextEditingController();
   final _passwordFieldController = TextEditingController();
   bool emailNotFound = false;
   bool wrongPassword = false;
@@ -27,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     //Release memory allocated to the fields after the page is removed
-    emailFieldController.dispose();
+    _emailFieldController.dispose();
     _passwordFieldController.dispose();
     super.dispose();
   }
@@ -38,12 +39,12 @@ class _LoginPageState extends State<LoginPage> {
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailFieldController.text.trim(),
+        email: _emailFieldController.text.trim(),
         password: _passwordFieldController.text.trim(),
       );
       // Navigate to home screen or another authenticated screen
       navigator.pushReplacement(
-          MaterialPageRoute(builder: (context) => MainMenuPage()));
+          MaterialPageRoute(builder: (context) => const MainMenuPage()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         _errorMessage = 'No user found with that email address.';
@@ -83,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                       inputTextFormFieldStyle(
                           "Email",
                           "Enter your email",
-                          emailFieldController,
+                          _emailFieldController,
                           emailNotFound
                               ? 'No user found with that email address.'
                               : null),

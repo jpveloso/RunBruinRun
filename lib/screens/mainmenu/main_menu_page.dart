@@ -33,30 +33,24 @@ class _MainMenuPageState extends State<MainMenuPage> {
   //   _email = user?.email;
   // }
 
-
-
-
-
+  Future<void> getUserNameByEmail(String email) async {
+    final QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: _email)
+        .get();
+    if(snapshot.docs.isNotEmpty) {
+      final DocumentSnapshot userDoc = snapshot.docs.first;
+      final Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+      _userName = userData['userName'];
+    }
+  }
+//NEED TO FIX USERNAME NOT SHOWING UP TILL RELOAD
   @override
   void initState() {
     super.initState();
     _email = authenticatedUser?.email;
-    final docRef = db.collection("users").where('email', isEqualTo: _email);
+    getUserNameByEmail(_email.toString());
   }
-
-
-
-
-  // Future<void> getUser() async {
-  //   FirebaseFirestore.instance.collection('users')
-  //       .where('email', isEqualTo: _userEmail)
-  //       .get()
-  //       .then((value) {
-  //         setState(() {
-  //           _userEmail =
-  //         });
-  //   });
-  // }
 
 
   @override
@@ -78,7 +72,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
                 ),
               ),
               Text(
-                'Welcome \n$username',
+                'Welcome \n$_userName',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 25,
