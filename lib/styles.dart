@@ -87,6 +87,46 @@ TextFormField inputTextFormFieldStyle(String? labelText, String? hintText,
   );
 }
 
+//For Username Field
+TextFormField userNameTextFormFieldStyle(String? labelText, String? hintText,
+    TextEditingController? controller) {
+  return TextFormField(
+    autovalidateMode: AutovalidateMode.onUserInteraction,
+    validator: (value) {
+      if (value == null || value.isEmpty) {
+        return '$labelText is required';
+      }
+      return null;
+    },
+    controller: controller,
+    maxLength: 25,
+    cursorColor: Colors.white,
+    autofocus: true,
+    style: const TextStyle(
+      color: Colors.white,
+    ),
+    decoration: InputDecoration(
+      floatingLabelBehavior: FloatingLabelBehavior.always,
+      counterStyle: counterTextStyle(),
+      errorStyle: const TextStyle(
+          fontSize: 14.0, color: darkBruinBlue, fontWeight: FontWeight.bold),
+      label: SizedBox(
+          height: 50,
+          width: 200,
+          child: Text(labelText!,
+              style: const TextStyle(fontSize: 25, color: Colors.white))),
+      filled: true,
+      fillColor: darkBruinBlue,
+      hintStyle: const TextStyle(color: Colors.white70),
+      hintText: hintText,
+      border: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(50),
+      ),
+    ),
+  );
+}
+
 //Same as Input Page ^^^ just with hidden characters for password
 TextFormField passwordTextFormFieldStyle(String? labelText, String? hintText,
     TextEditingController? controller, String? errorText) {
@@ -110,6 +150,50 @@ TextFormField passwordTextFormFieldStyle(String? labelText, String? hintText,
       floatingLabelBehavior: FloatingLabelBehavior.always,
       counterStyle: counterTextStyle(),
       errorText: errorText,
+      errorStyle: const TextStyle(
+          fontSize: 14.0, color: darkBruinBlue, fontWeight: FontWeight.bold),
+      label: SizedBox(
+          height: 50,
+          width: 200,
+          child: Text(labelText!,
+              style: const TextStyle(fontSize: 25, color: Colors.white))),
+      filled: true,
+      fillColor: darkBruinBlue,
+      hintStyle: const TextStyle(color: Colors.white70),
+      hintText: hintText,
+      border: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.circular(50),
+      ),
+    ),
+  );
+}
+
+//Retype password input field with validator
+TextFormField retypePasswordTextFormFieldStyle(String? labelText, String? hintText,
+    TextEditingController? controller, TextEditingController? passwordController) {
+  return TextFormField(
+    autovalidateMode: AutovalidateMode.onUserInteraction,
+    validator: (value) {
+      if ( value != passwordController?.text) {
+        return 'Password does not match';
+      } else if (value == null || value.isEmpty) {
+        return '$labelText is required';
+      }
+      return null;
+    },
+    controller: controller,
+    enableSuggestions: false,
+    autocorrect: false,
+    obscureText: true,
+    obscuringCharacter: "*",
+    maxLength: 25,
+    cursorColor: Colors.white,
+    style: const TextStyle(color: Colors.white),
+    decoration: InputDecoration(
+      floatingLabelBehavior: FloatingLabelBehavior.always,
+      counterStyle: counterTextStyle(),
+      // errorText: errorText,
       errorStyle: const TextStyle(
           fontSize: 14.0, color: darkBruinBlue, fontWeight: FontWeight.bold),
       label: SizedBox(
