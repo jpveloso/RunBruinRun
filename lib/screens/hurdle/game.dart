@@ -245,7 +245,7 @@ class _GameState extends State<MyGame>
               Container(
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/background/background.png'),
+                    image: AssetImage('lib/images/background.png'),
                     fit: BoxFit.cover,
                   ),
                 ),
