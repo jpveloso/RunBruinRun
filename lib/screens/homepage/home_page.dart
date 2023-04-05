@@ -63,10 +63,10 @@ class _HomePageState extends State<HomePage> {
                       )),
                   ElevatedButton(
                       style: getButtonStyle(),
-                      onPressed: () {
+                      onPressed: () async {
                         try {
                           final userCredential =
-                              FirebaseAuth.instance.signInAnonymously();
+                              await FirebaseAuth.instance.signInAnonymously();
                           print("Signed in with temporary account.");
                         } on FirebaseAuthException catch (e) {
                           switch (e.code) {
