@@ -9,8 +9,8 @@ import 'sprite.dart';
 List<Sprite> cacti = [
   Sprite()
     ..imagePath = "lib/images/hurdle.png"
-    ..imageWidth = 80
-    ..imageHeight = 90,
+    ..imageWidth = 40
+    ..imageHeight = 60,
 ];
 
 class Hurdle extends GameObject {
