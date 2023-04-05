@@ -8,7 +8,7 @@ import 'game_object.dart';
 import 'ground.dart';
 import 'constants.dart';
 
-/*class Game extends StatelessWidget {
+class Game extends StatelessWidget {
   const Game({Key? key}) : super(key: key);
 
   @override
@@ -19,18 +19,18 @@ import 'constants.dart';
     return const MaterialApp(
       title: 'Flutter Bruin',
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      home: Game(),
     );
   }
-} */
-
-class Game extends StatefulWidget {
-  const Game({Key? key}) : super(key: key);
-  @override
-  State<Game> createState() => _GameState();
 }
 
-class _GameState extends State<Game>
+class MyGame extends StatefulWidget {
+  const MyGame({Key? key}) : super(key: key);
+  @override
+  State<MyGame> createState() => _GameState();
+}
+
+class _GameState extends State<MyGame>
     with SingleTickerProviderStateMixin {
   Bruin bruin = Bruin();
   double runVelocity = initialVelocity;
