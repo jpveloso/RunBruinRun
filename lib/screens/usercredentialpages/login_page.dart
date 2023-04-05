@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:run_bruin_run/screens/homepage/home_page.dart';
 import 'package:run_bruin_run/screens/mainmenu/main_menu_page.dart';
 import 'package:run_bruin_run/styles/input_field_styles.dart';
@@ -47,6 +48,8 @@ class _LoginPageState extends State<LoginPage> {
           MaterialPageRoute(builder: (context) => const MainMenuPage()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
+        Fluttertoast.showToast(
+            msg: "User with email does not exist!", toastLength: Toast.LENGTH_LONG);
         _errorMessage = 'No user found with that email address.';
       } else if (e.code == 'wrong-password') {
         _errorMessage = 'Incorrect password.';
