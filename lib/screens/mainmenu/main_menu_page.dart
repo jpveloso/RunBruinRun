@@ -5,6 +5,7 @@ import 'package:run_bruin_run/screens/homepage/home_page.dart';
 import 'package:run_bruin_run/screens/hurdle/game.dart';
 import 'package:run_bruin_run/screens/sessionpages/create_session_page.dart';
 import 'package:run_bruin_run/screens/sessionpages/join_session_page.dart';
+import 'package:run_bruin_run/screens/hurdle/game.dart';
 
 import '../../styles/button_styles.dart';
 import '../../styles/colours.dart';
@@ -168,7 +169,12 @@ Scaffold mainMenuScaffold(BuildContext context, String? userName) {
                 ),
                 ElevatedButton(
                     style: getSmallButtonStyle(),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Game()));
+                    },
                     child: const Text('Hurdles')),
                 ElevatedButton(
                     style: getSmallButtonStyle(),

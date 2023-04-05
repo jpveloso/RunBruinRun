@@ -139,7 +139,7 @@ class _GameState extends State<MyGame>
 
         if (obstacleRect.right < 0) {
           setState(() {
-            hurdle.remove(Hurdle);
+            hurdle.remove(hurdles);
             hurdle.add(Hurdle(
                 worldLocation: Offset(
                     runDistance +
