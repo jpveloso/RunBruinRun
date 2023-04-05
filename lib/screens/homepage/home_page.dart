@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:run_bruin_run/screens/mainmenu/main_menu_page.dart';
 import 'package:run_bruin_run/screens/usercredentialpages/signup_page.dart';
-import 'package:run_bruin_run/styles/input_field_styles.dart';
 
 import '../../styles/button_styles.dart';
 import '../../styles/colours.dart';
@@ -64,6 +64,20 @@ class _HomePageState extends State<HomePage> {
                   ElevatedButton(
                       style: getButtonStyle(),
                       onPressed: () {
+                        try {
+                          final userCredential =
+                              FirebaseAuth.instance.signInAnonymously();
+                          print("Signed in with temporary account.");
+                        } on FirebaseAuthException catch (e) {
+                          switch (e.code) {
+                            case "operation-not-allowed":
+                              print(
+                                  "Anonymous auth hasn't been enabled for this project.");
+                              break;
+                            default:
+                              print("Unknown error.");
+                          }
+                        }
                         Navigator.push(
                             context,
                             MaterialPageRoute(

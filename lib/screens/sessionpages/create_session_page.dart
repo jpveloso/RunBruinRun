@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:run_bruin_run/styles/input_field_styles.dart';
 
 import '../../styles/button_styles.dart';
 import '../../styles/colours.dart';
