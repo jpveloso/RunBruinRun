@@ -6,27 +6,27 @@ import 'sprite.dart';
 
 List<Sprite> bruin = [
   Sprite()
-    ..imagePath = "images/bear/player_bear.png"
+    ..imagePath = "lib/images/player_bear.png"
     ..imageWidth = 88
     ..imageHeight = 94,
   Sprite()
-    ..imagePath = "images/bear/player_bear.png"
+    ..imagePath = "lib/images/player_bear.png"
     ..imageWidth = 88
     ..imageHeight = 94,
   Sprite()
-    ..imagePath = "images/bear/player_bear.png"
+    ..imagePath = "lib/images/player_bear.png"
     ..imageWidth = 88
     ..imageHeight = 94,
   Sprite()
-    ..imagePath = "images/bear/player_bear.png"
+    ..imagePath = "lib/images/player_bear.png"
     ..imageWidth = 88
     ..imageHeight = 94,
   Sprite()
-    ..imagePath = "images/bear/player_bear.png"
+    ..imagePath = "lib/images/player_bear.png"
     ..imageWidth = 88
     ..imageHeight = 94,
   Sprite()
-    ..imagePath = "images/bear/player_bear.png"
+    ..imagePath = "lib/images/player_bear.png"
     ..imageWidth = 88
     ..imageHeight = 94,
 ];
