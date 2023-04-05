@@ -18,7 +18,7 @@ class MainMenuPage extends StatefulWidget {
 
 class _MainMenuPageState extends State<MainMenuPage> {
   User? authenticatedUser = FirebaseAuth.instance.currentUser;
-  bool? signedInAnon = FirebaseAuth.instance.currentUser?.isAnonymous;
+  final bool? _signedInAnon = FirebaseAuth.instance.currentUser?.isAnonymous;
   String? _userName;
   String? _email;
 
@@ -30,7 +30,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
   @override
   Widget build(BuildContext context) {
     //Make this display the scaffold first then the other if not a guest
-    if (signedInAnon == true) {
+    if (_signedInAnon == true) {
       _userName = "Guest";
       return mainMenuScaffold(context, _userName);
     } else {
@@ -40,13 +40,19 @@ class _MainMenuPageState extends State<MainMenuPage> {
           if (snapshot.hasError) {
             return const Text("Something went wrong");
           } else if (snapshot.connectionState == ConnectionState.done) {
+            print("Connection state DONEEEEEEE " + snapshot.hasData.toString());
             if (snapshot.hasData) {
-              signedInAnon = false;
+              print("SNAPSHOT HAS DATA " + snapshot.hasData.toString());
+              // signedInAnon = false;
               Map<String, dynamic> data =
                   snapshot.data.data() as Map<String, dynamic>;
               _userName = data['userName'];
-              mainMenuScaffold(context, _userName);
+              return mainMenuScaffold(context, _userName);
             }
+            // else {
+            //   _userName = "Guest";
+            //   return mainMenuScaffold(context, _userName);
+            // }
           }
           return loadingScreen();
         },
@@ -65,6 +71,8 @@ class _MainMenuPageState extends State<MainMenuPage> {
 }
 
 Future<void> _signOut() async {
+  User? user = FirebaseAuth.instance.currentUser;
+  user?.delete();
   await FirebaseAuth.instance.signOut();
 }
 
