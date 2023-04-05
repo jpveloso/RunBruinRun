@@ -70,9 +70,11 @@ class _MainMenuPageState extends State<MainMenuPage> {
   }
 }
 
-Future<void> _signOut() async {
+Future<void> _signOutUser() async {
   User? user = FirebaseAuth.instance.currentUser;
-  user?.delete();
+  if (user?.isAnonymous == true) {
+    user?.delete();
+  }
   await FirebaseAuth.instance.signOut();
 }
 
@@ -172,7 +174,7 @@ Scaffold mainMenuScaffold(BuildContext context, String? userName) {
                   child: ElevatedButton(
                       style: getButtonStyle(),
                       onPressed: () {
-                        _signOut();
+                        _signOutUser();
                         Navigator.push(
                             context,
                             MaterialPageRoute(
