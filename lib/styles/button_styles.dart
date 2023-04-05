@@ -39,3 +39,13 @@ ButtonStyle getSmallSquaredButtonStyle() {
     side: const BorderSide(color: lightBruinBlue, width: 2),
   );
 }
+
+//Quit button style for game
+ButtonStyle getQuitButtonStyle() {
+  return ElevatedButton.styleFrom(
+    foregroundColor: Colors.white,
+    backgroundColor: darkBruinBlue,
+    // fixedSize: const Size(140, 60),
+    // elevation: 15,
+  );
+}
