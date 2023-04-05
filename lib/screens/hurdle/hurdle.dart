@@ -9,35 +9,15 @@ import 'sprite.dart';
 List<Sprite> cacti = [
   Sprite()
     ..imagePath = "lib/images/hurdle.png"
-    ..imageWidth = 104
-    ..imageHeight = 100,
-  Sprite()
-    ..imagePath = "lib/images/hurdle.png"
-    ..imageWidth = 50
-    ..imageHeight = 100,
-  Sprite()
-    ..imagePath = "lib/images/hurdle.png"
-    ..imageWidth = 98
-    ..imageHeight = 100,
-  Sprite()
-    ..imagePath = "lib/images/hurdle.png"
-    ..imageWidth = 34
-    ..imageHeight = 70,
-  Sprite()
-    ..imagePath = "lib/images/hurdle.png"
-    ..imageWidth = 68
-    ..imageHeight = 70,
-  Sprite()
-    ..imagePath = "lib/images/hurdle.png"
-    ..imageWidth = 107
-    ..imageHeight = 70,
+    ..imageWidth = 80
+    ..imageHeight = 90,
 ];
 
 class Hurdle extends GameObject {
   final Sprite sprite;
   final Offset worldLocation;
 
-  Hurdle({required this.worldLocation}) : sprite = cacti[Random().nextInt(cacti.length)];
+  Hurdle({required this.worldLocation}) : sprite = cacti[0]; // Select the only sprite available.
 
   @override
   Rect getRect(Size screenSize, double runDistance) {

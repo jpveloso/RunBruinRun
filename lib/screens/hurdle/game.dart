@@ -126,6 +126,10 @@ class _GameState extends State<MyGame>
 
       runDistance += runVelocity * elapsedTimeSeconds;
       if (runDistance < 0) runDistance = 0;
+
+      final numHurdlesCleared = hurdle.length - 1; // ignore first hurdle
+      acceleration = baseAcceleration + numHurdlesCleared * accelerationIncrement;
+
       runVelocity += acceleration * elapsedTimeSeconds;
 
       Size screenSize = MediaQuery.of(context).size;
@@ -139,12 +143,20 @@ class _GameState extends State<MyGame>
 
         if (obstacleRect.right < 0) {
           setState(() {
+            // calculate distance to last hurdle added
+            double lastHurdlePos = hurdle.last.worldLocation.dx;
+            double newHurdlePos = runDistance + Random().nextInt(200) + screenSize.width / worlToPixelRatio;
+            double distToLastHurdle = newHurdlePos - lastHurdlePos;
+
+            // choose new position for hurdle if too close to last hurdle
+            if (distToLastHurdle < minHurdleSpacing) {
+              newHurdlePos = lastHurdlePos + minHurdleSpacing;
+            }
+
             hurdle.remove(hurdles);
             hurdle.add(Hurdle(
                 worldLocation: Offset(
-                    runDistance +
-                        Random().nextInt(100) +
-                        MediaQuery.of(context).size.width / worlToPixelRatio,
+                    newHurdlePos,
                     0)));
           });
         }
