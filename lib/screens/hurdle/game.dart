@@ -8,13 +8,8 @@ import 'game_object.dart';
 import 'ground.dart';
 import 'constants.dart';
 
-void game() {
-  runApp(const MyApp());
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+/*class Game extends StatelessWidget {
+  const Game({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +22,15 @@ class MyApp extends StatelessWidget {
       home: MyHomePage(),
     );
   }
-}
+} */
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class Game extends StatefulWidget {
+  const Game({Key? key}) : super(key: key);
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<Game> createState() => _GameState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
+class _GameState extends State<Game>
     with SingleTickerProviderStateMixin {
   Bruin bruin = Bruin();
   double runVelocity = initialVelocity;
