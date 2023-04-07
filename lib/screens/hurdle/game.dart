@@ -89,6 +89,11 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
           backgroundColor: darkBruinBlue);
       worldController.stop();
       bruin.die();
+      // return showGameOverScreen();
+      // Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) => const ()));
     });
   }
 
@@ -283,7 +288,7 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                     left: screenSize.width / 2 - 30,
                     top: 100,
                     child: Text(
-                      'Score: ' + runDistance.toInt().toString(),
+                      'Score: ${runDistance.toInt()}',
                       style: TextStyle(
                         color: (runDistance ~/ dayNightOffest) % 2 == 0
                             ? Colors.black
@@ -300,7 +305,7 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                     left: screenSize.width / 2 - 50,
                     top: 120,
                     child: Text(
-                      'High Score: ' + highScore.toString(),
+                      'High Score: $highScore',
                       style: TextStyle(
                         color: (runDistance ~/ dayNightOffest) % 2 == 0
                             ? Colors.black
