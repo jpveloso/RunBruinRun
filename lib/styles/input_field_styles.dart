@@ -76,6 +76,8 @@ TextFormField passwordTextFormFieldStyle(String? labelText, String? hintText,
     validator: (value) {
       if (value == null || value.isEmpty) {
         return '$labelText is required';
+      } else if (value.length < 6) {
+        return 'Must be at least 6 characters!';
       }
       return null;
     },

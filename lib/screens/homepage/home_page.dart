@@ -34,12 +34,15 @@ class _HomePageState extends State<HomePage> {
                 'lib/images/Sheridan_Bruins_Logo.png',
               ),
               const SizedBox(height: 50),
-              const Text(
-                'RUN BRUIN RUN',
-                style: TextStyle(
-                  fontSize: 28,
-                  color: darkBruinBlue,
-                  fontFamily: 'PressStart2P',
+              const FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  'RUN BRUIN RUN',
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: darkBruinBlue,
+                    fontFamily: 'PressStart2P',
+                  ),
                 ),
               ),
               const SizedBox(height: 120),

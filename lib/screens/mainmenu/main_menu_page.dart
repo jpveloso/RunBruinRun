@@ -41,19 +41,12 @@ class _MainMenuPageState extends State<MainMenuPage> {
           if (snapshot.hasError) {
             return const Text("Something went wrong");
           } else if (snapshot.connectionState == ConnectionState.done) {
-            print("Connection state DONEEEEEEE " + snapshot.hasData.toString());
             if (snapshot.hasData) {
-              print("SNAPSHOT HAS DATA " + snapshot.hasData.toString());
-              // signedInAnon = false;
               Map<String, dynamic> data =
                   snapshot.data.data() as Map<String, dynamic>;
               _userName = data['userName'];
               return mainMenuScaffold(context, _userName);
             }
-            // else {
-            //   _userName = "Guest";
-            //   return mainMenuScaffold(context, _userName);
-            // }
           }
           return loadingScreen();
         },
@@ -87,21 +80,27 @@ Scaffold mainMenuScaffold(BuildContext context, String? userName) {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Text(
-              'RUN BRUIN RUN',
-              style: TextStyle(
-                fontSize: 28,
-                color: darkBruinBlue,
-                fontFamily: 'PressStart2P',
+            const FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                'RUN BRUIN RUN',
+                style: TextStyle(
+                  fontSize: 24,
+                  color: darkBruinBlue,
+                  fontFamily: 'PressStart2P',
+                ),
               ),
             ),
-            Text(
-              'Welcome \n$userName',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 25,
-                color: Colors.white,
-                fontFamily: 'PressStart2P',
+            FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                'Welcome \n$userName',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontFamily: 'PressStart2P',
+                ),
               ),
             ),
             Wrap(
@@ -111,12 +110,15 @@ Scaffold mainMenuScaffold(BuildContext context, String? userName) {
               spacing: 10,
               runSpacing: 30,
               children: <Widget>[
-                const Text(
-                  'SINGLE PLAYER',
-                  style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.white,
-                    fontFamily: 'PressStart2P',
+                const FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    'SINGLE PLAYER',
+                    style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontFamily: 'PressStart2P',
+                    ),
                   ),
                 ),
                 ElevatedButton(
@@ -132,12 +134,15 @@ Scaffold mainMenuScaffold(BuildContext context, String? userName) {
                     style: getSmallButtonStyle(),
                     onPressed: () {},
                     child: const Text('Basketball')),
-                const Text(
-                  'MULTIPLAYER',
-                  style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.white,
-                    fontFamily: 'PressStart2P',
+                const FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    'MULTIPLAYER',
+                    style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontFamily: 'PressStart2P',
+                    ),
                   ),
                 ),
                 ElevatedButton(
@@ -158,38 +163,42 @@ Scaffold mainMenuScaffold(BuildContext context, String? userName) {
                               builder: (context) => const JoinSessionPage()));
                     },
                     child: const Text('Join Session')),
-                const Text(
-                  'SCOREBOARD',
-                  style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.white,
-                    fontFamily: 'PressStart2P',
+                const FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    'SCOREBOARD',
+                    style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontFamily: 'PressStart2P',
+                    ),
                   ),
                 ),
                 ElevatedButton(
                     style: getSmallButtonStyle(),
-                    onPressed: () {
-                    },
+                    onPressed: () {},
                     child: const Text('Hurdles')),
                 ElevatedButton(
                     style: getSmallButtonStyle(),
                     onPressed: () {},
                     child: const Text('Basketball')),
-                SizedBox(
-                  height: 80,
-                  width: 250,
+                FittedBox(
+                  fit: BoxFit.fitWidth,
                   child: ElevatedButton(
                       style: getButtonStyle(),
-                      onPressed: () {
+                      onPressed: () async {
                         _signOutUser();
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const HomePage()));
                       },
-                      child: const Text(
-                        'Logout',
-                        style: TextStyle(fontSize: 20),
+                      child: const FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          'Logout',
+                          style: TextStyle(fontSize: 25),
+                        ),
                       )),
                 )
               ],

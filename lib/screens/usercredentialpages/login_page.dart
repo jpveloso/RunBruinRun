@@ -8,8 +8,6 @@ import 'package:run_bruin_run/styles/input_field_styles.dart';
 import '../../styles/button_styles.dart';
 import '../../styles/colours.dart';
 
-// final emailFieldController = TextEditingController();
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -48,12 +46,16 @@ class _LoginPageState extends State<LoginPage> {
           MaterialPageRoute(builder: (context) => const MainMenuPage()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        Fluttertoast.showToast(
-            msg: "User with email does not exist!", toastLength: Toast.LENGTH_LONG);
+        Fluttertoast.showToast(fontSize: 20, gravity: ToastGravity.CENTER,
+            msg: "User with that email does not exist!", toastLength: Toast.LENGTH_SHORT);
         _errorMessage = 'No user found with that email address.';
       } else if (e.code == 'wrong-password') {
+        Fluttertoast.showToast(fontSize: 20, gravity: ToastGravity.CENTER,
+            msg: "Password is incorrect!", toastLength: Toast.LENGTH_SHORT);
         _errorMessage = 'Incorrect password.';
       } else {
+        Fluttertoast.showToast(fontSize: 20, gravity: ToastGravity.CENTER,
+            msg: "An error occurred. Please try again later.", toastLength: Toast.LENGTH_SHORT);
         _errorMessage = 'An error occurred. Please try again later.';
       }
     }
@@ -71,75 +73,71 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const SizedBox(height: 50),
-                  const Text(
-                    'LOGIN PAGE',
-                    style: TextStyle(
-                      fontSize: 35,
-                      color: darkBruinBlue,
-                      fontFamily: 'PressStart2P',
+                  const FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text(
+                      'LOGIN PAGE',
+                      style: TextStyle(
+                        fontSize: 30,
+                        color: darkBruinBlue,
+                        fontFamily: 'PressStart2P',
+                      ),
                     ),
                   ),
                   const SizedBox(height: 100),
-                  SizedBox(
-                    width: 350,
-                    height: 200,
-                    child: Column(children: [
-                      inputTextFormFieldStyle(
-                          "Email",
-                          "Enter your email",
-                          _emailFieldController,
-                          emailNotFound
-                              ? 'No user found with that email address.'
-                              : null),
-                      const SizedBox(height: 30),
-                      passwordTextFormFieldStyle(
-                          "Password",
-                          "Enter your password",
-                          _passwordFieldController,
-                          wrongPassword ? 'Incorrect password.' : null),
-                    ]),
-                  ),
-                  const SizedBox(height: 10),
                   Wrap(
                     direction: Axis.vertical,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     spacing: 20,
                     children: [
-                      ElevatedButton(
-                          style: getButtonStyle(),
-                          // onPressed: () {
-                          //   if (_formKey.currentState!.validate()) {
-                          //     ScaffoldMessenger.of(context).showSnackBar(
-                          //       const SnackBar(content: Text('Signing in')),
-                          //     );
-                          //   }
-                          // },
-                          onPressed: () {
-                            if (_formKey.currentState?.validate() ?? false) {
-                              _signInWithEmailAndPassword(); //.then((value){
-                              //         Navigator.push(
-                              //           context,
-                              //         MaterialPageRoute(
-                              //           builder: (context) =>
-                              //             const MainMenuPage()));
-                              //  });
-                            }
-                          },
-                          child: const Text(
-                            'Sign in',
-                            style: TextStyle(),
-                          )),
-                      ElevatedButton(
-                          style: getButtonStyle(),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomePage()));
-                          },
-                          child: const Text('Back'))
+                      SizedBox(
+                        width: 350,
+                        height: 220,
+                        child: Column(children: [
+                          inputTextFormFieldStyle(
+                              "Email",
+                              "Enter your email",
+                              _emailFieldController,
+                              emailNotFound
+                                  ? 'No user found with that email address.'
+                                  : null),
+                          const SizedBox(height: 30),
+                          passwordTextFormFieldStyle(
+                              "Password",
+                              "Enter your password",
+                              _passwordFieldController,
+                              wrongPassword ? 'Incorrect password.' : null),
+                        ]),
+                      ),
+                      Wrap(
+                        direction: Axis.vertical,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 20,
+                        children: [
+                          ElevatedButton(
+                              style: getButtonStyle(),
+                              onPressed: () {
+                                if (_formKey.currentState?.validate() ?? false) {
+                                  _signInWithEmailAndPassword();
+                                }
+                              },
+                              child: const Text(
+                                'Sign in',
+                                style: TextStyle(),
+                              )),
+                          ElevatedButton(
+                              style: getButtonStyle(),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const HomePage()));
+                              },
+                              child: const Text('Back'))
+                        ],
+                      ),
                     ],
-                  ),
+                  )
                 ],
               ),
             )));
