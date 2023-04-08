@@ -101,28 +101,31 @@ class _SignUpPageState extends State<SignUpPage> {
     return Form(
       key: _formKey,
       child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: lightBruinBlue,
-          body: Center(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: lightBruinBlue,
+        body: SingleChildScrollView(
+          child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const SizedBox(height: 50),
-                const Text(
-                  'SIGN UP PAGE',
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: darkBruinBlue,
-                    fontFamily: 'PressStart2P',
+                const FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    'SIGN UP PAGE',
+                    style: TextStyle(
+                      fontSize: 27,
+                      color: darkBruinBlue,
+                      fontFamily: 'PressStart2P',
+                    ),
                   ),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 40),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
+                  alignment: Alignment.center,
                   child: Wrap(
-                    direction: Axis.horizontal,
-                    crossAxisAlignment: WrapCrossAlignment.center,
                     runSpacing: 25,
+                    direction: Axis.horizontal,
                     children: [
                       emailTextFormFieldStyle(
                           "Email", "enter email", _emailFieldController),
@@ -135,81 +138,63 @@ class _SignUpPageState extends State<SignUpPage> {
                           "retype password",
                           _retypePasswordFieldController,
                           _passwordFieldController),
+                      const SizedBox(height: 5),
+                      Wrap(
+                        alignment: WrapAlignment.center,
+                        runSpacing: 15,
+                        children: [
+                          ElevatedButton(
+                            style: getButtonStyle(),
+                            onPressed: () {
+                              if (_formKey.currentState?.validate() ?? false) {
+                                verifySignUp(_usernameFieldController.text,
+                                    _emailFieldController.text);
+                              }
+                            },
+                            child: const Text(
+                              'Sign up',
+                              style: TextStyle(),
+                            ),
+                          ),
+                          const Center(
+                            child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Text(
+                                'Already Have An Account?',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontStyle: FontStyle.italic,
+                                  color: Colors.white,
+                                  fontFamily: 'PressStart2P',
+                                ),
+                              ),
+                            ),
+                          ),
+                          ElevatedButton(
+                            style: getButtonStyle(),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginPage()),
+                              );
+                            },
+                            child: const Text('Login Page'),
+                          ),
+                          Container(
+                            height: MediaQuery.of(context).size.height *
+                                0.01, // smoothes out the touch scroll animation from the bottom
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
-                Wrap(
-                  direction: Axis.vertical,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  spacing: 20,
-                  children: [
-                    ElevatedButton(
-                        style: getButtonStyle(),
-                        onPressed: () {
-                          if (_formKey.currentState?.validate() ?? false) {
-                            // _signUp();
-                            verifySignUp(_usernameFieldController.text,
-                                _emailFieldController.text);
-                          }
-                        },
-                        child: const Text(
-                          'Sign up',
-                          style: TextStyle(),
-                        )),
-                    const Text(
-                      'Already Have An Account?',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontStyle: FontStyle.italic,
-                        color: Colors.white,
-                        fontFamily: 'PressStart2P',
-                      ),
-                    ),
-                    ElevatedButton(
-                        style: getButtonStyle(),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginPage()));
-                        },
-                        child: const Text('Login Page'))
-                  ],
-                ),
               ],
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
-
-// void _signUp() async {
-//   //New Navigator to get rid of Linter warninglines
-//   final navigator = Navigator.of(context);
-//   try {
-//     UserCredential userCredential =
-//         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-//       email: _emailFieldController.text,
-//       password: _passwordFieldController.text,
-//     );
-//     // User is signed up, navigate to home page
-//     //New Navigator to get rid of Linter warninglines
-//     navigator.pushReplacement(
-//         MaterialPageRoute(builder: (context) => const LoginPage()));
-//
-//     //Old implementation of ^^^
-//     // Navigator.pushReplacement(
-//     //   context,
-//     //   MaterialPageRoute(builder: (context) => const LoginPage()),
-//     // );
-//   } on FirebaseAuthException catch (e) {
-//     //weak-password means less than 6 chars
-//     if (e.code == 'weak-password') {
-//       print('The password provided is too weak.');
-//     } else if (e.code == 'email-already-in-use') {
-//       print('The account already exists for that email.');
-//     }
-//   } catch (e) {
-//     print(e);
-//   }
-// }
 }
