@@ -50,8 +50,6 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
       TextEditingController(text: jumpVelocity.toString());
   TextEditingController runVelocityController =
       TextEditingController(text: initialVelocity.toString());
-  TextEditingController dayNightOffsetController =
-      TextEditingController(text: dayNightOffest.toString());
 
   late AnimationController worldController;
   Duration lastUpdateCall = const Duration();
@@ -226,7 +224,6 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
     accelerationController.dispose();
     jumpVelocityController.dispose();
     runVelocityController.dispose();
-    dayNightOffsetController.dispose();
     super.dispose();
   }
 
@@ -256,9 +253,6 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
     return Scaffold(
       body: AnimatedContainer(
         duration: const Duration(milliseconds: 5000),
-        color: (runDistance ~/ dayNightOffest) % 2 == 0
-            ? Colors.white
-            : Colors.black,
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
@@ -470,8 +464,6 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                                           height: 25,
                                           width: 75,
                                           child: TextField(
-                                            controller:
-                                                dayNightOffsetController,
                                             key: UniqueKey(),
                                             keyboardType: TextInputType.number,
                                             decoration: InputDecoration(
@@ -495,8 +487,6 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                                         runVelocityController.text);
                                     jumpVelocity = double.parse(
                                         jumpVelocityController.text);
-                                    dayNightOffest = int.parse(
-                                        dayNightOffsetController.text);
                                     Navigator.of(context).pop();
                                   },
                                   child: const Text(
