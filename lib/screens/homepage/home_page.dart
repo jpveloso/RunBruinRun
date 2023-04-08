@@ -22,10 +22,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         backgroundColor: lightBruinBlue,
         resizeToAvoidBottomInset: false,
-        // appBar: AppBar(
-        //   backgroundColor: darkBruinBlue,
-        //   title: Text('Run Bruin Run'),
-        // ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -100,6 +96,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-        ));
+        )
+    );
   }
 }
