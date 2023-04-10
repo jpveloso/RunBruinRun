@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../screens/usercredentialpages/signup_page.dart';
 import 'colours.dart';
 
 //Input Pages Login/Signup
@@ -52,11 +53,18 @@ TextFormField emailTextFormFieldStyle(
       validator: (value) {
         if (value == null || value.isEmpty) {
           return '$labelText is required';
+        } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+            .hasMatch(value)) {
+          return 'Please enter a valid email address';
+        } else if (value.contains(' ')) {
+          return '$labelText address should not contain spaces';
+        } else {
+          return null;
         }
-        return null;
       },
       controller: controller,
       maxLength: 25,
+      inputFormatters: [NoSpaceFormatter()],
       cursorColor: Colors.white,
       autofocus: true,
       style: const TextStyle(

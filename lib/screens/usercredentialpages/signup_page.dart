@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:run_bruin_run/screens/usercredentialpages/login_page.dart';
 import 'package:run_bruin_run/styles/input_field_styles.dart';
@@ -196,5 +197,21 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
+  }
+}
+
+class NoSpaceFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.contains(' ')) {
+      // Remove spaces
+      final String trimmedValue = newValue.text.replaceAll(' ', '');
+      return TextEditingValue(
+        text: trimmedValue,
+        selection: TextSelection.collapsed(offset: trimmedValue.length),
+      );
+    }
+    return newValue;
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,6 +14,8 @@ import 'constants.dart';
 import 'game_object.dart';
 import 'ground.dart';
 import 'hurdle.dart';
+
+final _audioPlayer = AudioPlayer();
 
 class Game extends StatelessWidget {
   const Game({Key? key}) : super(key: key);
@@ -99,6 +102,9 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
     setState(() {
       worldController.stop();
       bruin.die();
+
+      Source gameOverSound = AssetSource('sounds/smb_gameover.wav');
+      _audioPlayer.play(gameOverSound);
       _isGameOver = true;
     });
   }
@@ -280,46 +286,52 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                   Container(
                     decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('lib/images/background.png'),
+                        image: AssetImage('assets/images/background.png'),
                         fit: BoxFit.cover,
                       ),
                     ),
                   ),
                   ...children,
-                  AnimatedBuilder(
-                    animation: worldController,
-                    builder: (context, _) {
-                      return Positioned(
-                        left: screenSize.width / 2 - 30,
-                        top: 100,
-                        child: Text(
-                          'Score: ${runDistance.toInt()}',
-                          style: TextStyle(
-                            color: (runDistance ~/ dayNightOffest) % 2 == 0
-                                ? Colors.black
-                                : Colors.white,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  AnimatedBuilder(
-                    animation: worldController,
-                    builder: (context, _) {
-                      return Positioned(
-                        left: screenSize.width / 2 - 50,
-                        top: 120,
-                        child: Text(
-                          'High Score: $highScore',
-                          style: TextStyle(
-                            color: (runDistance ~/ dayNightOffest) % 2 == 0
-                                ? Colors.black
-                                : Colors.white,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                      AnimatedBuilder(
+                        animation: worldController,
+                        builder: (context, _) {
+                          return Positioned(
+                            left: screenSize.width / 2 - 60,
+                            top: 100,
+                            child: Text(
+                              'Score:${runDistance.toInt()}',
+                              style: TextStyle(
+                                fontFamily: 'PressStart2P',
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: (runDistance ~/ dayNightOffest) % 2 == 0
+                                    ? Colors.white
+                                    : Colors.white,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      AnimatedBuilder(
+                        animation: worldController,
+                        builder: (context, _) {
+                          return Positioned(
+                            left: screenSize.width / 2 - 90,
+                            top: 120,
+                            child: Text(
+                              'High Score:$highScore',
+                              style: TextStyle(
+                                fontFamily: 'PressStart2P',
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: (runDistance ~/ dayNightOffest) % 2 == 0
+                                    ? Colors.white
+                                    : Colors.white,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                   Positioned(
                     right: 20,
                     top: 20,
@@ -578,7 +590,10 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                 const SizedBox(height: 50),
                 ElevatedButton(
                   style: getButtonStyle(),
-                  onPressed: onPlayAgain,
+                  onPressed: () {
+                    onPlayAgain();
+                    _audioPlayer.stop();
+                  },
                   child: const Text(
                     'Play Again?',
                     style: TextStyle(

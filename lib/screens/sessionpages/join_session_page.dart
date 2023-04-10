@@ -61,7 +61,7 @@ class _JoinSessionPageState extends State<JoinSessionPage> {
                       ),
                       SizedBox(
                         width: 350,
-                        height: 155,
+                        height: 160,
                         child: Column(children: [
                           joinCodeTextFieldStyle(joinCodeFieldController),
                           const SizedBox(height: 30),
