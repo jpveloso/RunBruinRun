@@ -32,119 +32,120 @@ class _LoginPageState extends State<LoginPage> {
 
   // Sign in the user with the email and password provided
   Future<void> _signInWithEmailAndPassword() async {
+    // emailNotFound = false;
     final navigator = Navigator.of(context);
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailFieldController.text.trim(),
-        password: _passwordFieldController.text.trim(),
+        email: _emailFieldController.text,
+        password: _passwordFieldController.text,
       );
       // Navigate to home screen or another authenticated screen
       navigator.pushReplacement(
           MaterialPageRoute(builder: (context) => const MainMenuPage()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
+        // emailNotFound = true;
         Fluttertoast.showToast(
-            fontSize: 20,
+            fontSize: 14,
             gravity: ToastGravity.CENTER,
             msg: "User with that email does not exist!",
-            toastLength: Toast.LENGTH_SHORT);
+            toastLength: Toast.LENGTH_LONG);
       } else if (e.code == 'wrong-password') {
         Fluttertoast.showToast(
             fontSize: 20,
             gravity: ToastGravity.CENTER,
             msg: "Password is incorrect!",
-            toastLength: Toast.LENGTH_SHORT);
+            toastLength: Toast.LENGTH_LONG);
       } else {
         Fluttertoast.showToast(
             fontSize: 20,
             gravity: ToastGravity.CENTER,
             msg: "An error occurred. Please try again later.",
-            toastLength: Toast.LENGTH_SHORT);
+            toastLength: Toast.LENGTH_LONG);
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Form(
       key: _formKey,
-      resizeToAvoidBottomInset: false,
-      backgroundColor: lightBruinBlue,
-      body: Center(
-        child: Column(
-          children: [
-            const SizedBox(height: 50),
-            const FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(
-                'LOGIN PAGE',
-                style: TextStyle(
-                  fontSize: 30,
-                  color: darkBruinBlue,
-                  fontFamily: 'PressStart2P',
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: lightBruinBlue,
+        body: Center(
+          child: Column(
+            children: [
+              const SizedBox(height: 50),
+              const FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  'LOGIN PAGE',
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: darkBruinBlue,
+                    fontFamily: 'PressStart2P',
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 80),
-            Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                alignment: WrapAlignment.center,
-                spacing: 20,
-                children: [
-                  SizedBox(
-                    width: 350,
-                    height: 220,
-                    child: Column(children: [
-                      inputTextFormFieldStyle(
-                          "Email",
-                          "Enter your email",
-                          _emailFieldController,
-                          emailNotFound
-                              ? 'No user found with that email address.'
-                              : null),
-                      const SizedBox(height: 30),
-                      passwordTextFormFieldStyle(
-                          "Password",
-                          "Enter your password",
-                          _passwordFieldController,
-                          wrongPassword ? 'Incorrect password.' : null),
-                    ]),
-                  ),
-                  Wrap(
-                    direction: Axis.vertical,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    spacing: 20,
-                    children: [
-                      ElevatedButton(
-                          style: getButtonStyle(),
-                          onPressed: () {
-                            if (_formKey.currentState?.validate() ?? false) {
-                              _signInWithEmailAndPassword();
-                            }
-                          },
-                          child: const Text(
-                            'Sign in',
-                            style: TextStyle(),
-                          )),
-                      ElevatedButton(
-                          style: getButtonStyle(),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomePage()));
-                          },
-                          child: const Text('Back'))
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
+              const SizedBox(height: 80),
+              Container(
+                alignment: Alignment.center,
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  alignment: WrapAlignment.center,
+                  spacing: 20,
+                  children: [
+                    SizedBox(
+                      width: 350,
+                      height: 220,
+                      child: Column(children: [
+                        emailTextFormFieldStyle(
+                            "Email",
+                            "Enter your email",
+                            _emailFieldController),
+                        const SizedBox(height: 30),
+                        passwordTextFormFieldStyle(
+                            "Password",
+                            "Enter your password",
+                            _passwordFieldController,
+                            wrongPassword ? 'Incorrect password.' : null),
+                      ]),
+                    ),
+                    Wrap(
+                      direction: Axis.vertical,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 20,
+                      children: [
+                        ElevatedButton(
+                            style: getButtonStyle(),
+                            onPressed: () {
+                              if (_formKey.currentState?.validate() ?? false) {
+                                _signInWithEmailAndPassword();
+                              }
+                            },
+                            child: const Text(
+                              'Sign in',
+                              style: TextStyle(),
+                            )),
+                        ElevatedButton(
+                            style: getButtonStyle(),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage()));
+                            },
+                            child: const Text('Back'))
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

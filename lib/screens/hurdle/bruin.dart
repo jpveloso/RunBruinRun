@@ -1,32 +1,34 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
 import 'constants.dart';
 import 'game_object.dart';
 import 'sprite.dart';
 
 List<Sprite> bruin = [
   Sprite()
-    ..imagePath = "lib/images/player_bear.png"
+    ..imagePath = "assets/images/player_bear.png"
     ..imageWidth = 88
     ..imageHeight = 94,
   Sprite()
-    ..imagePath = "lib/images/player_bear.png"
+    ..imagePath = "assets/images/player_bear.png"
     ..imageWidth = 88
     ..imageHeight = 94,
   Sprite()
-    ..imagePath = "lib/images/player_bear.png"
+    ..imagePath = "assets/images/player_bear.png"
     ..imageWidth = 88
     ..imageHeight = 94,
   Sprite()
-    ..imagePath = "lib/images/player_bear.png"
+    ..imagePath = "assets/images/player_bear.png"
     ..imageWidth = 88
     ..imageHeight = 94,
   Sprite()
-    ..imagePath = "lib/images/player_bear.png"
+    ..imagePath = "assets/images/player_bear.png"
     ..imageWidth = 88
     ..imageHeight = 94,
   Sprite()
-    ..imagePath = "lib/images/player_bear.png"
+    ..imagePath = "assets/images/player_bear.png"
     ..imageWidth = 88
     ..imageHeight = 94,
 ];
@@ -62,17 +64,16 @@ class Bruin extends GameObject {
   void update(Duration lastUpdate, Duration? elapsedTime) {
     double elapsedTimeSeconds;
     try {
-      currentSprite = bruin[(elapsedTime!.inMilliseconds / 100).floor() % 2 + 2];
+      currentSprite =
+          bruin[(elapsedTime!.inMilliseconds / 100).floor() % 2 + 2];
     } catch (_) {
       currentSprite = bruin[0];
     }
-    try{
+    try {
       elapsedTimeSeconds = (elapsedTime! - lastUpdate).inMilliseconds / 1000;
-    }
-    catch(_){
+    } catch (_) {
       elapsedTimeSeconds = 0;
     }
-
 
     dispY += velY * elapsedTimeSeconds;
     if (dispY <= 0) {
@@ -88,6 +89,9 @@ class Bruin extends GameObject {
     if (state != BruinState.jumping) {
       state = BruinState.jumping;
       velY = jumpVelocity;
+      final audioPlayer = AudioPlayer();
+      Source jumpingSound = AssetSource('sounds/jumping_sound.mp3');
+      audioPlayer.play(jumpingSound);
     }
   }
 

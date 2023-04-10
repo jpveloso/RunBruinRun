@@ -2,7 +2,7 @@
     package="sheridan.ASP.run_bruin_run">
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
    <application
-        android:label="run_bruin_run"
+        android:label="Run Bruin Run"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">

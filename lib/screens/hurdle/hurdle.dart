@@ -6,7 +6,7 @@ import 'sprite.dart';
 
 List<Sprite> cacti = [
   Sprite()
-    ..imagePath = "lib/images/hurdle.png"
+    ..imagePath = "assets/images/hurdle.png"
     ..imageWidth = 40
     ..imageHeight = 60,
 ];

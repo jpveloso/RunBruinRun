@@ -27,9 +27,8 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'lib/images/Sheridan_Bruins_Logo.png',
+                'assets/images/Sheridan_Bruins_Logo_Border.png',
               ),
-              const SizedBox(height: 50),
               const FittedBox(
                 fit: BoxFit.fitWidth,
                 child: Text(
@@ -41,7 +40,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 120),
+              const SizedBox(height: 80),
               Wrap(
                 direction: Axis.vertical,
                 // crossAxisAlignment: WrapCrossAlignment.center,
@@ -96,7 +95,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-        )
-    );
+        ));
   }
 }

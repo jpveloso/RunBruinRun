@@ -5,7 +5,7 @@ import 'game_object.dart';
 import 'sprite.dart';
 
 Sprite groundSprite = Sprite()
-  ..imagePath = "lib/images/ground.png"
+  ..imagePath = "assets/images/ground.png"
   ..imageWidth = 2399
   ..imageHeight = 24;
 

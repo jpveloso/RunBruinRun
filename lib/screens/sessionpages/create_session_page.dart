@@ -49,31 +49,37 @@ class _CreateSessionPageState extends State<CreateSessionPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const SizedBox(height: 50),
-                  const Text(
-                    'CREATE SESSION',
-                    style: TextStyle(
-                      fontSize: 27,
-                      color: darkBruinBlue,
-                      fontFamily: 'PressStart2P',
+                  const FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text(
+                      'CREATE SESSION',
+                      style: TextStyle(
+                        fontSize: 27,
+                        color: darkBruinBlue,
+                        fontFamily: 'PressStart2P',
+                      ),
                     ),
                   ),
                   const SizedBox(height: 50),
                   Wrap(
                     direction: Axis.vertical,
                     crossAxisAlignment: WrapCrossAlignment.center,
-                    spacing: 30,
+                    spacing: 10,
                     children: [
-                      const Text(
-                        'Join Code',
-                        style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.white,
-                          fontFamily: 'PressStart2P',
+                      const FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          'Join Code',
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                            fontFamily: 'PressStart2P',
+                          ),
                         ),
                       ),
                       SizedBox(
-                        width: 300,
-                        height: 100,
+                        width: 275,
+                        height: 110,
                         child: Column(children: [
                           generatedCodeTextFieldStyle(_joinCodeFieldController),
                         ]),
