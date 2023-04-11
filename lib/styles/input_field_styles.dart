@@ -50,18 +50,35 @@ TextFormField emailTextFormFieldStyle(
     String? labelText, String? hintText, TextEditingController? controller) {
   return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      //old
+      // validator: (value) {
+      //   if (value == null || value.isEmpty) {
+      //     return '$labelText is required';
+      //   } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+      //       .hasMatch(value)) {
+      //     return 'Please enter a valid email address';
+      //   } else if (value.contains(' ')) {
+      //     return '$labelText address should not contain spaces';
+      //   } else {
+      //     return null;
+      //   }
+      // },
+
       validator: (value) {
         if (value == null || value.isEmpty) {
           return '$labelText is required';
-        } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+        } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
             .hasMatch(value)) {
           return 'Please enter a valid email address';
         } else if (value.contains(' ')) {
           return '$labelText address should not contain spaces';
+        } else if (value.split('@')[1].contains(RegExp(r'[A-Z]'))) {
+          return 'No uppercase letters after @';
         } else {
           return null;
         }
       },
+
       controller: controller,
       maxLength: 25,
       inputFormatters: [NoSpaceFormatter()],
