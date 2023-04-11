@@ -61,7 +61,7 @@ class _FriendsPageState extends State<FriendsPage> {
       }
     } else {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Cannot add yourself as a friend :(')));
+          .showSnackBar(const SnackBar(content: Text('Cannot add yourself as a friend :(')));
     }
   }
 
@@ -74,7 +74,7 @@ class _FriendsPageState extends State<FriendsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Friends'),
+        title: const Text('Friends'),
       ),
       body: Column(
         children: [
@@ -82,7 +82,7 @@ class _FriendsPageState extends State<FriendsPage> {
             children: [
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: TextField(
                     controller: _addFriendController,
                     decoration: const InputDecoration(
@@ -92,7 +92,7 @@ class _FriendsPageState extends State<FriendsPage> {
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: _addFriend,
               ),
             ],
@@ -111,12 +111,10 @@ class _FriendsPageState extends State<FriendsPage> {
                       // if (_showConfirmationDialog(friend)) {
                       _showConfirmationDialog(friend);
                         String friendUid = _getFriendUid(friend.email) as String;
-                        if (friendUid != null) {
-                          _removeFriend(friendUid);
-                          setState(() {
-                            _friends.remove(friend);
-                          });
-                        }
+                        _removeFriend(friendUid);
+                        setState(() {
+                          _friends.remove(friend);
+                        });
                       // }
                     },
                   ),
@@ -138,7 +136,7 @@ class _FriendsPageState extends State<FriendsPage> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Remove Friend'),
+            title: const Text('Remove Friend'),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
@@ -148,15 +146,15 @@ class _FriendsPageState extends State<FriendsPage> {
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: Text('Remove'),
+                child: const Text('Remove'),
                 onPressed: () {
-                  _removeFriend(friendUid!);
+                  _removeFriend(friendUid);
                   Navigator.of(context).pop();
                 },
               ),

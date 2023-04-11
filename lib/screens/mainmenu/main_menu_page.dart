@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:run_bruin_run/screens/friends/friends_page.dart';
 import 'package:run_bruin_run/screens/homepage/home_page.dart';
 import 'package:run_bruin_run/screens/hurdle/game.dart';
-import 'package:run_bruin_run/screens/sessionpages/create_session_page.dart';
 import 'package:run_bruin_run/screens/sessionpages/join_session_page.dart';
 import 'package:run_bruin_run/services/friends_service.dart';
 
