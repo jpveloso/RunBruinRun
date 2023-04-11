@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:run_bruin_run/screens/friends/friends_page.dart';
 import 'package:run_bruin_run/screens/homepage/home_page.dart';
 import 'package:run_bruin_run/screens/hurdle/game.dart';
 import 'package:run_bruin_run/screens/sessionpages/create_session_page.dart';
 import 'package:run_bruin_run/screens/sessionpages/join_session_page.dart';
+import 'package:run_bruin_run/services/friends_service.dart';
 
 import '../../styles/button_styles.dart';
 import '../../styles/colours.dart';
@@ -18,10 +20,12 @@ class MainMenuPage extends StatefulWidget {
 }
 
 class _MainMenuPageState extends State<MainMenuPage> {
+  late final FriendsService _friendsService;
   User? authenticatedUser = FirebaseAuth.instance.currentUser;
   final bool? _signedInAnon = FirebaseAuth.instance.currentUser?.isAnonymous;
   String? _userName;
   String? _email;
+
 
   @override
   void initState() {
@@ -73,6 +77,7 @@ Future<void> _signOutUser() async {
 }
 
 Scaffold mainMenuScaffold(BuildContext context, String? userName) {
+  String? currentUserID = FirebaseAuth.instance.currentUser?.uid;
   return Scaffold(
       backgroundColor: lightBruinBlue,
       resizeToAvoidBottomInset: false,
@@ -151,9 +156,9 @@ Scaffold mainMenuScaffold(BuildContext context, String? userName) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const CreateSessionPage()));
+                              builder: (context) => FriendsPage(friendsService: FriendsService(currentUserId: currentUserID),)));
                     },
-                    child: const Text('Create Session')),
+                    child: const Text('Friends List')),
                 ElevatedButton(
                     style: getSmallButtonStyle(),
                     onPressed: () {

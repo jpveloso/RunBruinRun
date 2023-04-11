@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:run_bruin_run/screens/usercredentialpages/login_page.dart';
+import 'package:run_bruin_run/services/firestore_service.dart';
 import 'package:run_bruin_run/styles/input_field_styles.dart';
 
 import '../../styles/button_styles.dart';
@@ -51,29 +52,33 @@ class _SignUpPageState extends State<SignUpPage> {
           password: _passwordFieldController.text,
         );
 
-        CollectionReference users =
-            FirebaseFirestore.instance.collection('users');
-        users.add({
-          'email': _emailFieldController.text,
-          'password': _passwordFieldController.text,
-          'userName': _usernameFieldController.text
-        });
+        FirestoreService fs = FirestoreService();
+        fs.createUser(_emailFieldController.text, _usernameFieldController.text);
+
+        //Old method
+        // CollectionReference users =
+        //     FirebaseFirestore.instance.collection('users');
+        // users.add({
+        //   'email': _emailFieldController.text,
+        //   // 'password': _passwordFieldController.text,
+        //   'userName': _usernameFieldController.text
+        // });
         navigator.pushReplacement(
             MaterialPageRoute(builder: (context) => const LoginPage()));
       } else if (_checkUserName == true && _checkEmail == true) {
         _usernameFieldController.text = '';
         _emailFieldController.text = '';
         Fluttertoast.showToast(
-            msg: "Username and Email Already Exists!",
+            msg: "Username and Email already in use!\nChoose different credentials!",
             toastLength: Toast.LENGTH_LONG);
       } else if (_checkUserName == true && _checkEmail == false) {
         _usernameFieldController.text = '';
         Fluttertoast.showToast(
-            msg: "Username Already Exists!", toastLength: Toast.LENGTH_LONG);
+            msg: "Username already in use!\nChoose a different Username!", toastLength: Toast.LENGTH_LONG);
       } else if (_checkUserName == false && _checkEmail == true) {
         _emailFieldController.text = '';
         Fluttertoast.showToast(
-            msg: "Email Already Exists!", toastLength: Toast.LENGTH_LONG);
+            msg: "Email already in use!\nChoose a different Email!", toastLength: Toast.LENGTH_LONG);
       }
     } on FirebaseAuthException catch (e) {
       //weak-password means less than 6 chars
