@@ -111,7 +111,7 @@ Scaffold mainMenuScaffold(BuildContext context, String? userName) {
               direction: Axis.horizontal,
               runAlignment: WrapAlignment.center,
               alignment: WrapAlignment.center,
-              spacing: 10,
+              spacing: 35,
               runSpacing: 30,
               children: <Widget>[
                 const FittedBox(
