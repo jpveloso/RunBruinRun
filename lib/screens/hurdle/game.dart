@@ -8,6 +8,7 @@ import 'package:run_bruin_run/screens/mainmenu/main_menu_page.dart';
 import 'package:run_bruin_run/styles/colours.dart';
 
 import '../../styles/button_styles.dart';
+import '../loading_screens/my_game_loading_screen.dart';
 import 'bruin.dart';
 import 'cloud.dart';
 import 'constants.dart';
@@ -80,12 +81,22 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
     // worldController.forward();
     worldController.stop();
     bruin.die();
+
     Fluttertoast.showToast(
         msg: "Tap to play!",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
         fontSize: 40,
         backgroundColor: darkBruinBlue);
+
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   const SnackBar(
+    //     content: Text('Tap to play!'),
+    //     duration: Duration(seconds: 2),
+    //     backgroundColor: darkBruinBlue,
+    //   ),
+    // );
+
     // _die();
   }
 
@@ -93,16 +104,17 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
     setState(() {
       _isGameOver = false;
     });
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const MyGame()));
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => const LoadingScreen()));
     // Reset the game here
+    // Navigator.pushReplacement(
+    //     context, MaterialPageRoute(builder: (context) => const MyGame()));
   }
 
   void _die() {
     setState(() {
       worldController.stop();
       bruin.die();
-
       Source gameOverSound = AssetSource('sounds/smb_gameover.wav');
       _audioPlayer.play(gameOverSound);
       _isGameOver = true;
@@ -170,7 +182,6 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
         if (bruinRect.overlaps(obstacleRect.deflate(20))) {
           _die();
         }
-
         if (obstacleRect.right < 0) {
           setState(() {
             // calculate distance to last hurdle added
@@ -292,46 +303,50 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                     ),
                   ),
                   ...children,
-                      AnimatedBuilder(
-                        animation: worldController,
-                        builder: (context, _) {
-                          return Positioned(
-                            left: screenSize.width / 2 - 60,
-                            top: 100,
-                            child: Text(
-                              'Score:${runDistance.toInt()}',
-                              style: TextStyle(
-                                fontFamily: 'PressStart2P',
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: (runDistance ~/ dayNightOffest) % 2 == 0
-                                    ? Colors.white
-                                    : Colors.white,
-                              ),
+                  AnimatedBuilder(
+                    animation: worldController,
+                    builder: (context, _) {
+                      return Positioned(
+                        // left: screenSize.width / 2,
+                        top: 200,
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            // 'Score:${runDistance.toInt()}',
+                            '${runDistance.toInt()}',
+                            style: TextStyle(
+                              fontFamily: 'PressStart2P',
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: (runDistance ~/ dayNightOffest) % 2 == 0
+                                  ? Colors.white
+                                  : Colors.white,
                             ),
-                          );
-                        },
-                      ),
-                      AnimatedBuilder(
-                        animation: worldController,
-                        builder: (context, _) {
-                          return Positioned(
-                            left: screenSize.width / 2 - 90,
-                            top: 120,
-                            child: Text(
-                              'High Score:$highScore',
-                              style: TextStyle(
-                                fontFamily: 'PressStart2P',
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: (runDistance ~/ dayNightOffest) % 2 == 0
-                                    ? Colors.white
-                                    : Colors.white,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  // AnimatedBuilder(
+                  //   animation: worldController,
+                  //   builder: (context, _) {
+                  //     return Positioned(
+                  //       left: screenSize.width / 2 - 90,
+                  //       top: 120,
+                  //       child: Text(
+                  //         'High Score:$highScore',
+                  //         style: TextStyle(
+                  //           fontFamily: 'PressStart2P',
+                  //           fontSize: 14,
+                  //           fontWeight: FontWeight.bold,
+                  //           color: (runDistance ~/ dayNightOffest) % 2 == 0
+                  //               ? Colors.white
+                  //               : Colors.white,
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                   Positioned(
                     right: 20,
                     top: 20,

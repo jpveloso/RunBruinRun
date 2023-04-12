@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:run_bruin_run/screens/friends/friends_page.dart';
 import 'package:run_bruin_run/screens/homepage/home_page.dart';
 import 'package:run_bruin_run/screens/hurdle/game.dart';
@@ -10,6 +11,7 @@ import 'package:run_bruin_run/services/friends_service.dart';
 import '../../styles/button_styles.dart';
 import '../../styles/colours.dart';
 import '../../styles/loading_style.dart';
+import '../loading_screens/my_game_loading_screen.dart';
 
 class MainMenuPage extends StatefulWidget {
   const MainMenuPage({Key? key}) : super(key: key);
@@ -24,7 +26,6 @@ class _MainMenuPageState extends State<MainMenuPage> {
   final bool? _signedInAnon = FirebaseAuth.instance.currentUser?.isAnonymous;
   String? _userName;
   String? _email;
-
 
   @override
   void initState() {
@@ -131,7 +132,7 @@ Scaffold mainMenuScaffold(BuildContext context, String? userName) {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const MyGame()));
+                              builder: (context) => const LoadingScreen()));
                     },
                     child: const Text('Hurdles')),
                 ElevatedButton(
@@ -152,10 +153,36 @@ Scaffold mainMenuScaffold(BuildContext context, String? userName) {
                 ElevatedButton(
                     style: getSmallButtonStyle(),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => FriendsPage(friendsService: FriendsService(currentUserId: currentUserID),)));
+                      if (FirebaseAuth.instance.currentUser?.isAnonymous ==
+                          true) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                          content: Text(
+                            "Guests cannot add friends :/",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 14.0,
+                                fontFamily: 'PressStart2P',
+                                color: Colors.white,
+                                fontWeight: FontWeight.w900),
+                          ),
+                          backgroundColor: darkBruinBlue,
+                        ));
+                      } else if (FirebaseAuth
+                              .instance.currentUser?.isAnonymous ==
+                          false) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FriendsPage(
+                                      friendsService: FriendsService(
+                                          currentUserId: currentUserID),
+                                    )));
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: "Something went wrong :/",
+                            toastLength: Toast.LENGTH_LONG);
+                      }
                     },
                     child: const Text('Friends List')),
                 ElevatedButton(

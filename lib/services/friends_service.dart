@@ -26,8 +26,10 @@ class FriendsService {
         DocumentSnapshot friendSnapshot =
         await FirebaseFirestore.instance.collection('users').doc(friendUid).get();
         int highScore = 0;
-        if (await FirebaseFirestore.instance.collection('scores').doc(friendUid).get().then((value) => value.exists)) {
-          highScore = (await FirebaseFirestore.instance.collection('scores').doc(friendUid).get())['score'] ?? 0;
+        QuerySnapshot scoresSnapshot =
+        await FirebaseFirestore.instance.collection('scores').doc(friendUid).collection('userScores').orderBy('score', descending: true).limit(1).get();
+        if (scoresSnapshot.size > 0) {
+          highScore = scoresSnapshot.docs[0]['score'];
         }
         friends.add(Friend(
           email: friendSnapshot['email'] ?? '',
@@ -38,6 +40,7 @@ class FriendsService {
       return friends;
     }
   }
+
 
 
 
