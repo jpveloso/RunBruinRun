@@ -1,12 +1,10 @@
 import 'dart:math';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:run_bruin_run/screens/mainmenu/main_menu_page.dart';
 import 'package:run_bruin_run/styles/colours.dart';
-
 import '../../styles/button_styles.dart';
 import 'bruin.dart';
 import 'cloud.dart';
@@ -14,8 +12,10 @@ import 'constants.dart';
 import 'game_object.dart';
 import 'ground.dart';
 import 'hurdle.dart';
+import 'package:run_bruin_run/screens/scoreboard/hurdle_scores.dart';
 
 final _audioPlayer = AudioPlayer();
+
 
 class Game extends StatelessWidget {
   const Game({Key? key}) : super(key: key);
@@ -46,6 +46,7 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
   double runVelocity = initialVelocity;
   double runDistance = 0;
   int highScore = 0;
+
   TextEditingController gravityController =
       TextEditingController(text: gravity.toString());
   TextEditingController accelerationController =
@@ -95,6 +96,7 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
     });
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const MyGame()));
+    // context, MaterialPageRoute(builder: (context) => const HurdleScorePage()));
     // Reset the game here
   }
 
@@ -106,6 +108,7 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
       Source gameOverSound = AssetSource('sounds/smb_gameover.wav');
       _audioPlayer.play(gameOverSound);
       _isGameOver = true;
+
     });
   }
 
@@ -138,6 +141,10 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
 
       worldController.forward();
     });
+    /*Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => HurdleScoresPage(highScore: highScore)),
+    );*/
   }
 
   _update() {
