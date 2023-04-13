@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:run_bruin_run/screens/friends/friends_page.dart';
 import 'package:run_bruin_run/screens/homepage/home_page.dart';
-import 'package:run_bruin_run/screens/hurdle/game.dart';
 import 'package:run_bruin_run/screens/sessionpages/join_session_page.dart';
 import 'package:run_bruin_run/services/friends_service.dart';
 
@@ -21,7 +20,6 @@ class MainMenuPage extends StatefulWidget {
 }
 
 class _MainMenuPageState extends State<MainMenuPage> {
-  late final FriendsService _friendsService;
   User? authenticatedUser = FirebaseAuth.instance.currentUser;
   final bool? _signedInAnon = FirebaseAuth.instance.currentUser?.isAnonymous;
   String? _userName;
@@ -34,7 +32,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    //Make this display the scaffold first then the other if not a guest
+    //Make this display the scaffold first then the other if an authenticated user
     if (_signedInAnon == true) {
       _userName = "Guest";
       return mainMenuScaffold(context, _userName);
@@ -102,7 +100,7 @@ Scaffold mainMenuScaffold(BuildContext context, String? userName) {
                 'Welcome \n$userName',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 25,
                   color: Colors.white,
                   fontFamily: 'PressStart2P',
                 ),

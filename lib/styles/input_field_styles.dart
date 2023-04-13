@@ -17,7 +17,7 @@ TextFormField inputTextFormFieldStyle(String? labelText, String? hintText,
       controller: controller,
       maxLength: 25,
       cursorColor: Colors.white,
-      autofocus: true,
+      autofocus: false,
       style: const TextStyle(
         color: Colors.white,
       ),
@@ -38,7 +38,6 @@ TextFormField userNameTextFormFieldStyle(
       controller: controller,
       maxLength: 25,
       cursorColor: Colors.white,
-      autofocus: true,
       style: const TextStyle(
         color: Colors.white,
       ),
@@ -46,28 +45,14 @@ TextFormField userNameTextFormFieldStyle(
 }
 
 //For Email field in SignUp Page
-TextFormField emailTextFormFieldStyle(
-    String? labelText, String? hintText, TextEditingController? controller) {
+TextFormField emailTextFormFieldStyle(String? labelText, String? hintText,
+    TextEditingController? controller, bool autoFocus) {
   return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      //old
-      // validator: (value) {
-      //   if (value == null || value.isEmpty) {
-      //     return '$labelText is required';
-      //   } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-      //       .hasMatch(value)) {
-      //     return 'Please enter a valid email address';
-      //   } else if (value.contains(' ')) {
-      //     return '$labelText address should not contain spaces';
-      //   } else {
-      //     return null;
-      //   }
-      // },
-
       validator: (value) {
         if (value == null || value.isEmpty) {
           return '$labelText is required';
-        } else if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+        } else if (!RegExp(r'^[a-zA-Z\d._%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$')
             .hasMatch(value)) {
           return 'Please enter a valid email address';
         } else if (value.contains(' ')) {
@@ -78,16 +63,57 @@ TextFormField emailTextFormFieldStyle(
           return null;
         }
       },
-
       controller: controller,
       maxLength: 25,
       inputFormatters: [NoSpaceFormatter()],
       cursorColor: Colors.white,
-      autofocus: true,
+      autofocus: autoFocus,
       style: const TextStyle(
         color: Colors.white,
       ),
       decoration: decorationStyle(labelText, hintText, null));
+}
+
+//Used in Friends Page
+TextFormField addFriendTextFormFieldStyle(
+    String? hintText, TextEditingController? controller, bool autoFocus) {
+  return TextFormField(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return '$hintText is required';
+        } else if (!RegExp(r'^[a-zA-Z\d._%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$')
+            .hasMatch(value)) {
+          return 'Please enter a valid email address';
+        } else if (value.contains(' ')) {
+          return '$hintText address should not contain spaces';
+        } else if (value.split('@')[1].contains(RegExp(r'[A-Z]'))) {
+          return 'No uppercase letters after @';
+        } else {
+          return null;
+        }
+      },
+      controller: controller,
+      maxLength: 25,
+      inputFormatters: [NoSpaceFormatter()],
+      cursorColor: Colors.white,
+      autofocus: autoFocus,
+      style: const TextStyle(
+        color: Colors.white,
+      ),
+      decoration: InputDecoration(
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        counterStyle: counterTextStyle(),
+        errorStyle: const TextStyle(
+            fontSize: 12.0, color: darkBruinBlue, fontWeight: FontWeight.w900),
+        filled: true,
+        fillColor: darkBruinBlue,
+        hintStyle: const TextStyle(color: Colors.white54),
+        hintText: hintText,
+        border: OutlineInputBorder(
+          borderSide: BorderSide.none,
+        ),
+      ));
 }
 
 //Same as Login Page password ^^^ just with hidden characters for password

@@ -53,32 +53,28 @@ class _SignUpPageState extends State<SignUpPage> {
         );
 
         FirestoreService fs = FirestoreService();
-        fs.createUser(_emailFieldController.text, _usernameFieldController.text);
+        fs.createUser(
+            _emailFieldController.text, _usernameFieldController.text);
 
-        //Old method
-        // CollectionReference users =
-        //     FirebaseFirestore.instance.collection('users');
-        // users.add({
-        //   'email': _emailFieldController.text,
-        //   // 'password': _passwordFieldController.text,
-        //   'userName': _usernameFieldController.text
-        // });
         navigator.pushReplacement(
             MaterialPageRoute(builder: (context) => const LoginPage()));
       } else if (_checkUserName == true && _checkEmail == true) {
         _usernameFieldController.text = '';
         _emailFieldController.text = '';
         Fluttertoast.showToast(
-            msg: "Username and Email already in use!\nChoose different credentials!",
+            msg:
+                "Username and Email already in use!\nChoose different credentials!",
             toastLength: Toast.LENGTH_LONG);
       } else if (_checkUserName == true && _checkEmail == false) {
         _usernameFieldController.text = '';
         Fluttertoast.showToast(
-            msg: "Username already in use!\nChoose a different Username!", toastLength: Toast.LENGTH_LONG);
+            msg: "Username already in use!\nChoose a different Username!",
+            toastLength: Toast.LENGTH_LONG);
       } else if (_checkUserName == false && _checkEmail == true) {
         _emailFieldController.text = '';
         Fluttertoast.showToast(
-            msg: "Email already in use!\nChoose a different Email!", toastLength: Toast.LENGTH_LONG);
+            msg: "Email already in use!\nChoose a different Email!",
+            toastLength: Toast.LENGTH_LONG);
       }
     } on FirebaseAuthException catch (e) {
       //weak-password means less than 6 chars
@@ -134,7 +130,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     direction: Axis.horizontal,
                     children: [
                       emailTextFormFieldStyle(
-                          "Email", "enter email", _emailFieldController),
+                          "Email", "enter email", _emailFieldController, false),
                       userNameTextFormFieldStyle("Username", "enter username",
                           _usernameFieldController),
                       signUpPasswordTextFormFieldStyle("Password",

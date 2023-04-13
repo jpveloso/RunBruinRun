@@ -74,77 +74,85 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: lightBruinBlue,
-        body: Center(
-          child: Column(
-            children: [
-              const SizedBox(height: 50),
-              const FittedBox(
-                fit: BoxFit.fitWidth,
-                child: Text(
-                  'LOGIN PAGE',
-                  style: TextStyle(
-                    fontSize: 30,
-                    color: darkBruinBlue,
-                    fontFamily: 'PressStart2P',
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Center(
+            child: ListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.symmetric(vertical: 50),
+              children: [
+                const FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    'LOGIN PAGE',
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: darkBruinBlue,
+                      fontFamily: 'PressStart2P',
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 80),
-              Container(
-                alignment: Alignment.center,
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  alignment: WrapAlignment.center,
-                  spacing: 20,
-                  children: [
-                    SizedBox(
-                      width: 350,
-                      height: 220,
-                      child: Column(children: [
-                        emailTextFormFieldStyle(
-                            "Email",
-                            "Enter your email",
-                            _emailFieldController),
-                        const SizedBox(height: 30),
-                        passwordTextFormFieldStyle(
-                            "Password",
-                            "Enter your password",
-                            _passwordFieldController,
-                            wrongPassword ? 'Incorrect password.' : null),
-                      ]),
-                    ),
-                    Wrap(
-                      direction: Axis.vertical,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: 20,
-                      children: [
-                        ElevatedButton(
-                            style: getButtonStyle(),
-                            onPressed: () {
-                              if (_formKey.currentState?.validate() ?? false) {
-                                _signInWithEmailAndPassword();
-                              }
-                            },
-                            child: const Text(
-                              'Sign in',
-                              style: TextStyle(),
-                            )),
-                        ElevatedButton(
-                            style: getButtonStyle(),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const HomePage()));
-                            },
-                            child: const Text('Back'))
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            ],
+                const SizedBox(height: 80),
+                Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    alignment: WrapAlignment.center,
+                    spacing: 20,
+                    children: [
+                      SizedBox(
+                        width: 350,
+                        height: 220,
+                        child: Column(
+                          children: [
+                            emailTextFormFieldStyle("Email", "Enter your email",
+                                _emailFieldController, true),
+                            const SizedBox(height: 30),
+                            passwordTextFormFieldStyle(
+                                "Password",
+                                "Enter your password",
+                                _passwordFieldController,
+                                wrongPassword ? 'Incorrect password.' : null),
+                          ],
+                        ),
+                      ),
+                      Wrap(
+                        direction: Axis.vertical,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 20,
+                        children: [
+                          ElevatedButton(
+                              style: getButtonStyle(),
+                              onPressed: () {
+                                if (_formKey.currentState?.validate() ??
+                                    false) {
+                                  _signInWithEmailAndPassword();
+                                }
+                              },
+                              child: const Text(
+                                'Sign in',
+                                style: TextStyle(),
+                              )),
+                          ElevatedButton(
+                              style: getButtonStyle(),
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const HomePage()));
+                              },
+                              child: const Text('Back'))
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

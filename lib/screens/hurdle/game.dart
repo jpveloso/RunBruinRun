@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart' as cf;
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -82,20 +83,20 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
     worldController.stop();
     bruin.die();
 
-    Fluttertoast.showToast(
-        msg: "Tap to play!",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        fontSize: 40,
-        backgroundColor: darkBruinBlue);
+    // Fluttertoast.showToast(
+    //     msg: "Tap to play!",
+    //     toastLength: Toast.LENGTH_LONG,
+    //     gravity: ToastGravity.CENTER,
+    //     fontSize: 40,
+    //     backgroundColor: darkBruinBlue);
 
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   const SnackBar(
-    //     content: Text('Tap to play!'),
-    //     duration: Duration(seconds: 2),
-    //     backgroundColor: darkBruinBlue,
-    //   ),
-    // );
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Tap to play!'),
+        duration: Duration(seconds: 2),
+        backgroundColor: darkBruinBlue,
+      ),
+    );
 
     // _die();
   }
@@ -288,6 +289,7 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                   bruin.jump();
                 }
                 if (bruin.state == BruinState.dead) {
+                  _audioPlayer.stop();
                   _newGame();
                 }
               },

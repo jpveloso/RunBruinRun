@@ -9,8 +9,10 @@ class FriendsService {
   FriendsService({required this.currentUserId});
 
   Future<List<Friend>> getFriends() async {
-    DocumentSnapshot userSnapshot =
-    await FirebaseFirestore.instance.collection('users').doc(currentUserId).get();
+    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUserId)
+        .get();
 
     if (!userSnapshot.exists) {
       return [];
@@ -23,11 +25,18 @@ class FriendsService {
     } else {
       List<Friend> friends = [];
       for (String friendUid in friendUids) {
-        DocumentSnapshot friendSnapshot =
-        await FirebaseFirestore.instance.collection('users').doc(friendUid).get();
+        DocumentSnapshot friendSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(friendUid)
+            .get();
         int highScore = 0;
-        QuerySnapshot scoresSnapshot =
-        await FirebaseFirestore.instance.collection('scores').doc(friendUid).collection('userScores').orderBy('score', descending: true).limit(1).get();
+        QuerySnapshot scoresSnapshot = await FirebaseFirestore.instance
+            .collection('scores')
+            .doc(friendUid)
+            .collection('userScores')
+            .orderBy('score', descending: true)
+            .limit(1)
+            .get();
         if (scoresSnapshot.size > 0) {
           highScore = scoresSnapshot.docs[0]['score'];
         }
@@ -41,45 +50,12 @@ class FriendsService {
     }
   }
 
-
-
-
-
-
-  // Future<void> addFriend(String friendUid) async {
-  //   // Check if the friend exists
-  //   DocumentSnapshot friendSnapshot = await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(friendUid)
-  //       .get();
-  //   if (!friendSnapshot.exists) {
-  //     throw Exception('User not found');
-  //   }
-  //
-  //   // Add the friend's UID to the current user's friends array
-  //   await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(currentUserId)
-  //       .update({
-  //     'friends': FieldValue.arrayUnion([friendUid])
-  //   });
-  // }
-
   Future<void> addFriend(String friendUid) async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
     await FirebaseFirestore.instance.collection('users').doc(uid).update({
       'friends': FieldValue.arrayUnion([friendUid]),
     });
   }
-
-  // Future<void> removeFriend(String friendUid) async {
-  //   await FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(currentUserId)
-  //       .update({
-  //     'friends': FieldValue.arrayRemove([friendUid])
-  //   });
-  // }
 
   Future<void> removeFriend(String friendUid) async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
