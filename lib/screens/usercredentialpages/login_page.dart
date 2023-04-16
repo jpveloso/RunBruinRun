@@ -16,7 +16,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
   final _emailFieldController = TextEditingController();
   final _passwordFieldController = TextEditingController();
   bool emailNotFound = false;
@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: _loginFormKey,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: lightBruinBlue,
@@ -127,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                           ElevatedButton(
                               style: getButtonStyle(),
                               onPressed: () {
-                                if (_formKey.currentState?.validate() ??
+                                if (_loginFormKey.currentState?.validate() ??
                                     false) {
                                   _signInWithEmailAndPassword();
                                 }

@@ -25,8 +25,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _checkUserName = false;
   bool _checkEmail = false;
 
-  //final _formKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _signUpFormKey = GlobalKey<FormState>();
 
   Future<void> verifySignUp(String userName, String email) async {
     final navigator = Navigator.of(context);
@@ -101,7 +100,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: _signUpFormKey,
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: lightBruinBlue,
@@ -148,7 +147,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ElevatedButton(
                             style: getButtonStyle(),
                             onPressed: () {
-                              if (_formKey.currentState?.validate() ?? false) {
+                              if (_signUpFormKey.currentState?.validate() ?? false) {
                                 verifySignUp(_usernameFieldController.text,
                                     _emailFieldController.text);
                               }

@@ -76,9 +76,14 @@ TextFormField emailTextFormFieldStyle(String? labelText, String? hintText,
 
 //Used in Friends Page
 TextFormField addFriendTextFormFieldStyle(
-    String? hintText, TextEditingController? controller, bool autoFocus) {
+    String? hintText,
+    TextEditingController? controller,
+    bool autoFocus,
+    bool isSubmitted) {
   return TextFormField(
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      autovalidateMode: isSubmitted
+          ? AutovalidateMode.always
+          : AutovalidateMode.disabled,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return '$hintText is required';
@@ -110,7 +115,7 @@ TextFormField addFriendTextFormFieldStyle(
         fillColor: darkBruinBlue,
         hintStyle: const TextStyle(color: Colors.white54),
         hintText: hintText,
-        border: OutlineInputBorder(
+        border: const OutlineInputBorder(
           borderSide: BorderSide.none,
         ),
       ));

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:run_bruin_run/screens/friends/friends_page.dart';
 import 'package:run_bruin_run/screens/homepage/home_page.dart';
 import 'package:run_bruin_run/screens/sessionpages/join_session_page.dart';
@@ -9,8 +8,11 @@ import 'package:run_bruin_run/services/friends_service.dart';
 
 import '../../styles/button_styles.dart';
 import '../../styles/colours.dart';
-import '../../styles/loading_style.dart';
+import '../loading_screens/loading_screen.dart';
 import '../loading_screens/my_game_loading_screen.dart';
+
+final GlobalKey<ScaffoldMessengerState> _mainMenuScaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
 
 class MainMenuPage extends StatefulWidget {
   const MainMenuPage({Key? key}) : super(key: key);
@@ -22,6 +24,8 @@ class MainMenuPage extends StatefulWidget {
 class _MainMenuPageState extends State<MainMenuPage> {
   User? authenticatedUser = FirebaseAuth.instance.currentUser;
   final bool? _signedInAnon = FirebaseAuth.instance.currentUser?.isAnonymous;
+  final GlobalKey<FormState> _mainMenuFormKey = GlobalKey<FormState>();
+
   String? _userName;
   String? _email;
 
@@ -35,7 +39,14 @@ class _MainMenuPageState extends State<MainMenuPage> {
     //Make this display the scaffold first then the other if an authenticated user
     if (_signedInAnon == true) {
       _userName = "Guest";
-      return mainMenuScaffold(context, _userName);
+      return WillPopScope(
+        key: _mainMenuFormKey,
+          onWillPop: () async {
+            return false;
+          },
+          child: ScaffoldMessenger(
+              key: _mainMenuScaffoldMessengerKey,
+              child: mainMenuScaffold(context, _userName)));
     } else {
       return FutureBuilder<QueryDocumentSnapshot<Object?>>(
         future: getUserNameByEmail(),
@@ -47,10 +58,17 @@ class _MainMenuPageState extends State<MainMenuPage> {
               Map<String, dynamic> data =
                   snapshot.data.data() as Map<String, dynamic>;
               _userName = data['userName'];
-              return mainMenuScaffold(context, _userName);
+              return WillPopScope(
+                key: _mainMenuFormKey,
+                  onWillPop: () async {
+                    return false;
+                  },
+                  child: ScaffoldMessenger(
+                      key: _mainMenuScaffoldMessengerKey,
+                      child: mainMenuScaffold(context, _userName)));
             }
           }
-          return loadingScreen();
+          return const LoadingScreen();
         },
       );
     }
@@ -72,6 +90,33 @@ Future<void> _signOutUser() async {
     user?.delete();
   }
   await FirebaseAuth.instance.signOut();
+}
+
+bool _isShowingSnackbar = false;
+
+void _showMySnackbar(String message) {
+  if (!_isShowingSnackbar) {
+    _isShowingSnackbar = true;
+    _mainMenuScaffoldMessengerKey.currentState!
+        .showSnackBar(
+          SnackBar(
+            duration: const Duration(milliseconds: 1000),
+            content: Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 14.0,
+                fontFamily: 'PressStart2P',
+                color: Colors.white,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
+            backgroundColor: darkBruinBlue,
+          ),
+        )
+        .closed
+        .then((_) => _isShowingSnackbar = false);
+  }
 }
 
 Scaffold mainMenuScaffold(BuildContext context, String? userName) {
@@ -127,10 +172,10 @@ Scaffold mainMenuScaffold(BuildContext context, String? userName) {
                 ElevatedButton(
                     style: getSmallButtonStyle(),
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const LoadingScreen()));
+                              builder: (context) => const GameLoadingScreen()));
                     },
                     child: const Text('Hurdles')),
                 ElevatedButton(
@@ -150,22 +195,10 @@ Scaffold mainMenuScaffold(BuildContext context, String? userName) {
                 ),
                 ElevatedButton(
                     style: getSmallButtonStyle(),
-                    onPressed: () {
+                    onPressed: () async {
                       if (FirebaseAuth.instance.currentUser?.isAnonymous ==
                           true) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text(
-                            "Guests cannot add friends :/",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 14.0,
-                                fontFamily: 'PressStart2P',
-                                color: Colors.white,
-                                fontWeight: FontWeight.w900),
-                          ),
-                          backgroundColor: darkBruinBlue,
-                        ));
+                        _showMySnackbar("Guests cannot add friends :/");
                       } else if (FirebaseAuth
                               .instance.currentUser?.isAnonymous ==
                           false) {
@@ -177,9 +210,7 @@ Scaffold mainMenuScaffold(BuildContext context, String? userName) {
                                           currentUserId: currentUserID),
                                     )));
                       } else {
-                        Fluttertoast.showToast(
-                            msg: "Something went wrong :/",
-                            toastLength: Toast.LENGTH_LONG);
+                        _showMySnackbar("Something went wrong :/");
                       }
                     },
                     child: const Text('Friends List')),

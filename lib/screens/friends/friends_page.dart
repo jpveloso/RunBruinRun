@@ -17,10 +17,12 @@ class FriendsPage extends StatefulWidget {
 }
 
 class _FriendsPageState extends State<FriendsPage> {
+  bool _isSubmitted = false;
   final TextEditingController _addFriendController = TextEditingController();
   List<Friend> _friends = [];
-  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
+  final GlobalKey<ScaffoldMessengerState> _friendScaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
+  final GlobalKey<FormState> _friendFormKey = GlobalKey<FormState>();
 
   Future<String?> _getFriendUid(String friendEmail) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -49,38 +51,49 @@ class _FriendsPageState extends State<FriendsPage> {
   }
 
   void _addFriend() async {
-    String email = _addFriendController.text.trim();
+    String email = _addFriendController.text;
     String? friendUid = await _getFriendUid(email);
     String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
 
     if (email.isNotEmpty && friendUid != null && friendUid != currentUserId) {
-      try {
-        await widget.friendsService.addFriend(friendUid);
-        _addFriendController.clear();
-        _loadFriends(); // call _loadFriends() after friend is added
-        return;
-      } catch (e) {
-        _scaffoldMessengerKey.currentState!
-            .showSnackBar(SnackBar(content: Text(e.toString())));
+      // check if friend is already added
+      bool isFriendAlreadyAdded =
+          _friends.any((friend) => friend.email == email);
+      if (!isFriendAlreadyAdded) {
+        try {
+          await widget.friendsService.addFriend(friendUid);
+          _addFriendController.clear();
+          _loadFriends(); // call _loadFriends() after friend is added
+          setState(() {
+            _isSubmitted = false;
+          });
+          return;
+        } catch (e) {
+          _friendScaffoldMessengerKey.currentState!
+              .showSnackBar(SnackBar(content: Text(e.toString())));
+        }
+      } else {
+        _friendScaffoldMessengerKey.currentState!.showSnackBar(
+            const SnackBar(content: Text('This friend is already added'), duration: Duration(milliseconds: 1000),));
       }
     } else {
-      _scaffoldMessengerKey.currentState!.showSnackBar(
-          const SnackBar(content: Text('Cannot add yourself as a friend :(')));
+      _friendScaffoldMessengerKey.currentState!.showSnackBar(
+          const SnackBar(content: Text('Cannot add yourself as a friend :('), duration: Duration(milliseconds: 1000),));
     }
   }
 
   void _removeFriend(String friendId) async {
-    final context = _scaffoldMessengerKey.currentContext;
+    // final context = _scaffoldMessengerKey.currentContext;
     await widget.friendsService.removeFriend(friendId);
     _loadFriends();
-    ScaffoldMessenger.of(context!)
-        .showSnackBar(const SnackBar(content: Text('Friend removed')));
+    _friendScaffoldMessengerKey.currentState!.showSnackBar(
+        const SnackBar(content: Text('Friend removed :('), duration: Duration(milliseconds: 1000),));
   }
 
   @override
   Widget build(BuildContext context) {
     return ScaffoldMessenger(
-      key: _scaffoldMessengerKey,
+      key: _friendScaffoldMessengerKey,
       child: Scaffold(
         backgroundColor: lightBruinBlue,
         appBar: AppBar(
@@ -102,100 +115,109 @@ class _FriendsPageState extends State<FriendsPage> {
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 30),
-                      child: addFriendTextFormFieldStyle(
-                          "Enter friends email", _addFriendController, true),
-                    ),
-                  ),
-                  Center(
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 25, right: 15),
-                      decoration: BoxDecoration(
-                        color: darkBruinBlue,
-                        borderRadius: BorderRadius.circular(50.0),
-                      ),
-                      child: IconButton(
-                        icon: const Icon(Icons.add),
-                        onPressed: _addFriend,
-                        color: Colors.white,
+          child: Form(
+            key: _friendFormKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 30),
+                        child: addFriendTextFormFieldStyle(
+                            "Enter friends email", _addFriendController, true, _isSubmitted),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _friends.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    Friend friend = _friends[index];
-                    return ListTile(
-                      title: Text(
-                        friend.userName,
-                        style: const TextStyle(
-                          fontSize: 18,
+                    Center(
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 25, right: 15),
+                        decoration: BoxDecoration(
+                          color: darkBruinBlue,
+                          borderRadius: BorderRadius.circular(50.0),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.add),
+                          onPressed: () {
+                            if (_friendFormKey.currentState!.validate()) {
+                              _addFriend();
+                              setState(() {
+                                _isSubmitted = true;
+                              });
+                            }
+                          },
                           color: Colors.white,
-                          fontFamily: 'PressStart2P',
                         ),
                       ),
-                      subtitle: Text(
-                        'High score: ${friend.highScore}',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: darkBruinBlue,
-                          fontFamily: 'PressStart2P',
-                        ),
-                      ),
-                      trailing: Container(
-                        // margin: const EdgeInsets.only(right: 0),
-                        decoration: const BoxDecoration(
-                          color: darkBruinBlue,
-                          shape: BoxShape.circle,
-                        ),
-                        child: ClipOval(
-                          child: Material(
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _friends.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      Friend friend = _friends[index];
+                      return ListTile(
+                        title: Text(
+                          friend.userName,
+                          style: const TextStyle(
+                            fontSize: 18,
                             color: Colors.white,
-                            child: InkWell(
-                              splashColor: darkBruinBlue,
-                              highlightColor: Colors.white38,
-                              child: const SizedBox(
-                                width: 45,
-                                height: 45,
-                                child: Icon(
-                                  Icons.remove_circle,
-                                  color: darkBruinBlue,
-                                  size: 45.0,
+                            fontFamily: 'PressStart2P',
+                          ),
+                        ),
+                        subtitle: Text(
+                          'High score: ${friend.highScore}',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: darkBruinBlue,
+                            fontFamily: 'PressStart2P',
+                          ),
+                        ),
+                        trailing: Container(
+                          // margin: const EdgeInsets.only(right: 0),
+                          decoration: const BoxDecoration(
+                            color: darkBruinBlue,
+                            shape: BoxShape.circle,
+                          ),
+                          child: ClipOval(
+                            child: Material(
+                              color: Colors.white,
+                              child: InkWell(
+                                splashColor: darkBruinBlue,
+                                highlightColor: Colors.white38,
+                                child: const SizedBox(
+                                  width: 45,
+                                  height: 45,
+                                  child: Icon(
+                                    Icons.remove_circle,
+                                    color: darkBruinBlue,
+                                    size: 45.0,
+                                  ),
                                 ),
+                                onTap: () async {
+                                  _showConfirmationDialog(friend);
+                                  String friendUid =
+                                      _getFriendUid(friend.email) as String;
+                                  _removeFriend(friendUid);
+                                  setState(() {
+                                    _friends.remove(friend);
+                                  });
+                                  // }
+                                },
                               ),
-                              onTap: () async {
-                                // if (_showConfirmationDialog(friend)) {
-                                _showConfirmationDialog(friend);
-                                String friendUid =
-                                    _getFriendUid(friend.email) as String;
-                                _removeFriend(friendUid);
-                                setState(() {
-                                  _friends.remove(friend);
-                                });
-                                // }
-                              },
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-              )
-            ],
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

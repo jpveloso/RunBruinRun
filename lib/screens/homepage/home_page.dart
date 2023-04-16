@@ -64,8 +64,7 @@ class _HomePageState extends State<HomePage> {
                     style: getButtonStyle(),
                     onPressed: () async {
                       try {
-                        final userCredential =
-                            await FirebaseAuth.instance.signInAnonymously();
+                        await FirebaseAuth.instance.signInAnonymously();
                         print("Signed in with temporary account.");
                       } on FirebaseAuthException catch (e) {
                         switch (e.code) {

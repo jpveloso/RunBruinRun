@@ -16,7 +16,7 @@ class JoinSessionPage extends StatefulWidget {
 }
 
 class _JoinSessionPageState extends State<JoinSessionPage> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _joinSessionFormKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -28,7 +28,7 @@ class _JoinSessionPageState extends State<JoinSessionPage> {
   @override
   Widget build(BuildContext context) {
     return Form(
-        key: _formKey,
+        key: _joinSessionFormKey,
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: lightBruinBlue,
@@ -70,7 +70,7 @@ class _JoinSessionPageState extends State<JoinSessionPage> {
                       ElevatedButton(
                           style: getButtonStyle(),
                           onPressed: () {
-                            if (_formKey.currentState!.validate()) {
+                            if (_joinSessionFormKey.currentState!.validate()) {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
