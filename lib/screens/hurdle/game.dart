@@ -106,6 +106,7 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
 
   void _die() {
     setState(() {
+      highScore = max(highScore, runDistance.toInt());
       worldController.stop();
       bruin.die();
       Source gameOverSound = AssetSource('sounds/game_over_bad_chest.wav');
