@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:run_bruin_run/screens/usercredentialpages/login_page.dart';
 import 'package:run_bruin_run/services/firestore_service.dart';
 import 'package:run_bruin_run/styles/input_field_styles.dart';
 
 import '../../styles/button_styles.dart';
 import '../../styles/colours.dart';
+import '../../styles/snackbar_styles.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -25,7 +25,25 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _checkUserName = false;
   bool _checkEmail = false;
 
-  final GlobalKey<FormState> _signUpFormKey = GlobalKey<FormState>();
+  late final GlobalKey<FormState> _signUpFormKey;
+  late final GlobalKey<ScaffoldMessengerState> _signUpScaffoldMessengerKey;
+
+  @override
+  void initState() {
+    super.initState();
+    _signUpFormKey = GlobalKey<FormState>();
+    _signUpScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+  }
+
+  @override
+  void dispose() {
+    //Release memory allocated to the fields after the page is removed
+    _emailFieldController.dispose();
+    _usernameFieldController.dispose();
+    _passwordFieldController.dispose();
+    _retypePasswordFieldController.dispose();
+    super.dispose();
+  }
 
   Future<void> verifySignUp(String userName, String email) async {
     final navigator = Navigator.of(context);
@@ -60,23 +78,22 @@ class _SignUpPageState extends State<SignUpPage> {
       } else if (_checkUserName == true && _checkEmail == true) {
         _usernameFieldController.text = '';
         _emailFieldController.text = '';
-        Fluttertoast.showToast(
-            msg:
-                "Username and Email already in use!\nChoose different credentials!",
-            toastLength: Toast.LENGTH_LONG);
+        _signUpScaffoldMessengerKey.currentState?.showSnackBar(
+            showLongLengthSnackbar(
+                "Username and Email already in use!\nChoose different credentials!"));
       } else if (_checkUserName == true && _checkEmail == false) {
         _usernameFieldController.text = '';
-        Fluttertoast.showToast(
-            msg: "Username already in use!\nChoose a different Username!",
-            toastLength: Toast.LENGTH_LONG);
+        _signUpScaffoldMessengerKey.currentState?.showSnackBar(
+            showLongLengthSnackbar(
+                "Username already in use!\nChoose a different Username!"));
       } else if (_checkUserName == false && _checkEmail == true) {
         _emailFieldController.text = '';
-        Fluttertoast.showToast(
-            msg: "Email already in use!\nChoose a different Email!",
-            toastLength: Toast.LENGTH_LONG);
+        _signUpScaffoldMessengerKey.currentState?.showSnackBar(
+            showLongLengthSnackbar(
+                "Email already in use!\nChoose a different Email!"));
       }
     } on FirebaseAuthException catch (e) {
-      //weak-password means less than 6 chars
+      //weak-password means less than 6 characters
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
@@ -88,110 +105,104 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   @override
-  void dispose() {
-    //Release memory allocated to the fields after the page is removed
-    _emailFieldController.dispose();
-    _usernameFieldController.dispose();
-    _passwordFieldController.dispose();
-    _retypePasswordFieldController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _signUpFormKey,
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: lightBruinBlue,
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                const SizedBox(height: 50),
-                const FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Text(
-                    'SIGN UP PAGE',
-                    style: TextStyle(
-                      fontSize: 27,
-                      color: darkBruinBlue,
-                      fontFamily: 'PressStart2P',
+    return ScaffoldMessenger(
+      key: _signUpScaffoldMessengerKey,
+      child: Form(
+        key: _signUpFormKey,
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          backgroundColor: lightBruinBlue,
+          body: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                children: [
+                  const SizedBox(height: 50),
+                  const FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text(
+                      'SIGN UP PAGE',
+                      style: TextStyle(
+                        fontSize: 27,
+                        color: darkBruinBlue,
+                        fontFamily: 'PressStart2P',
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 40),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  alignment: Alignment.center,
-                  child: Wrap(
-                    runSpacing: 25,
-                    direction: Axis.horizontal,
-                    children: [
-                      emailTextFormFieldStyle(
-                          "Email", "enter email", _emailFieldController, false),
-                      userNameTextFormFieldStyle("Username", "enter username",
-                          _usernameFieldController),
-                      signUpPasswordTextFormFieldStyle("Password",
-                          "enter password", _passwordFieldController),
-                      retypePasswordTextFormFieldStyle(
-                          "Retype Password",
-                          "retype password",
-                          _retypePasswordFieldController,
-                          _passwordFieldController),
-                      const SizedBox(height: 5),
-                      Wrap(
-                        alignment: WrapAlignment.center,
-                        runSpacing: 15,
-                        children: [
-                          ElevatedButton(
-                            style: getButtonStyle(),
-                            onPressed: () {
-                              if (_signUpFormKey.currentState?.validate() ?? false) {
-                                verifySignUp(_usernameFieldController.text,
-                                    _emailFieldController.text);
-                              }
-                            },
-                            child: const Text(
-                              'Sign up',
-                              style: TextStyle(),
+                  const SizedBox(height: 40),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    alignment: Alignment.center,
+                    child: Wrap(
+                      runSpacing: 25,
+                      direction: Axis.horizontal,
+                      children: [
+                        emailTextFormFieldStyle("Email", "enter email",
+                            _emailFieldController, false),
+                        userNameTextFormFieldStyle("Username", "enter username",
+                            _usernameFieldController),
+                        signUpPasswordTextFormFieldStyle("Password",
+                            "enter password", _passwordFieldController),
+                        retypePasswordTextFormFieldStyle(
+                            "Retype Password",
+                            "retype password",
+                            _retypePasswordFieldController,
+                            _passwordFieldController),
+                        const SizedBox(height: 5),
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          runSpacing: 15,
+                          children: [
+                            ElevatedButton(
+                              style: getButtonStyle(),
+                              onPressed: () {
+                                if (_signUpFormKey.currentState?.validate() ??
+                                    false) {
+                                  verifySignUp(_usernameFieldController.text,
+                                      _emailFieldController.text);
+                                }
+                              },
+                              child: const Text(
+                                'Sign up',
+                                style: TextStyle(),
+                              ),
                             ),
-                          ),
-                          const Center(
-                            child: FittedBox(
-                              fit: BoxFit.fitWidth,
-                              child: Text(
-                                'Already Have An Account?',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontStyle: FontStyle.italic,
-                                  color: Colors.white,
-                                  fontFamily: 'PressStart2P',
+                            const Center(
+                              child: FittedBox(
+                                fit: BoxFit.fitWidth,
+                                child: Text(
+                                  'Already Have An Account?',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.white,
+                                    fontFamily: 'PressStart2P',
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          ElevatedButton(
-                            style: getButtonStyle(),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const LoginPage()),
-                              );
-                            },
-                            child: const Text('Login Page'),
-                          ),
-                          Container(
-                            height: MediaQuery.of(context).size.height *
-                                0.01, // smoothes out the touch scroll animation from the bottom
-                          ),
-                        ],
-                      ),
-                    ],
+                            ElevatedButton(
+                              style: getButtonStyle(),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const LoginPage()),
+                                );
+                              },
+                              child: const Text('Login Page'),
+                            ),
+                            Container(
+                              height: MediaQuery.of(context).size.height *
+                                  0.01, // smoothes out the touch scroll animation from the bottom
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

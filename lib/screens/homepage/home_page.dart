@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:run_bruin_run/screens/loading_screens/loading_screen.dart';
 import 'package:run_bruin_run/screens/mainmenu/main_menu_page.dart';
 import 'package:run_bruin_run/screens/usercredentialpages/signup_page.dart';
 
@@ -17,9 +18,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
+    precacheImage(const AssetImage('assets/images/Sheridan_Bruins_Logo_Border.png'), context);
+    ImageCache? imageCache = PaintingBinding.instance.imageCache;
+    imageCache.clear();
     return Scaffold(
         backgroundColor: lightBruinBlue,
         resizeToAvoidBottomInset: false,
@@ -64,6 +74,8 @@ class _HomePageState extends State<HomePage> {
                     style: getButtonStyle(),
                     onPressed: () async {
                       try {
+                        navigator.pushReplacement(MaterialPageRoute(
+                            builder: (context) => const LoadingScreen()));
                         await FirebaseAuth.instance.signInAnonymously();
                         print("Signed in with temporary account.");
                       } on FirebaseAuthException catch (e) {
@@ -76,9 +88,8 @@ class _HomePageState extends State<HomePage> {
                             print("Unknown error.");
                         }
                       }
-                      navigator.pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => const MainMenuPage()));
+                      navigator.pushReplacement(MaterialPageRoute(
+                          builder: (context) => const MainMenuPage()));
                     },
                     child: const Text('Guest'),
                   ),

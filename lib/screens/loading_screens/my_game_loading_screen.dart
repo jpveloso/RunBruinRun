@@ -1,15 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:run_bruin_run/screens/hurdle/game.dart';
-import 'package:audioplayers/audioplayers.dart';
 
 import 'loading_screen.dart';
-import '/screens/hurdle/bruin.dart';
-import '../hurdle/cloud.dart';
-import '../hurdle/constants.dart';
-import '../hurdle/game_object.dart';
-import '../hurdle/ground.dart';
-import '../hurdle/hurdle.dart';
 
 class GameLoadingScreen extends StatefulWidget {
   const GameLoadingScreen({Key? key}) : super(key: key);

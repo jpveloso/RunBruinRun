@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:run_bruin_run/styles/snackbar_styles.dart';
 
 import '../../models/friend.dart';
 import '../../services/friends_service.dart';
@@ -20,9 +21,8 @@ class _FriendsPageState extends State<FriendsPage> {
   bool _isSubmitted = false;
   final TextEditingController _addFriendController = TextEditingController();
   List<Friend> _friends = [];
-  final GlobalKey<ScaffoldMessengerState> _friendScaffoldMessengerKey =
-      GlobalKey<ScaffoldMessengerState>();
-  final GlobalKey<FormState> _friendFormKey = GlobalKey<FormState>();
+  late final GlobalKey<ScaffoldMessengerState> _friendScaffoldMessengerKey;
+  late final GlobalKey<FormState> _friendFormKey;
 
   Future<String?> _getFriendUid(String friendEmail) async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
@@ -40,6 +40,8 @@ class _FriendsPageState extends State<FriendsPage> {
   @override
   void initState() {
     super.initState();
+    _friendScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+    _friendFormKey = GlobalKey<FormState>();
     _loadFriends();
   }
 
@@ -58,36 +60,40 @@ class _FriendsPageState extends State<FriendsPage> {
     if (email.isNotEmpty && friendUid != null && friendUid != currentUserId) {
       // check if friend is already added
       bool isFriendAlreadyAdded =
-          _friends.any((friend) => friend.email == email);
+      _friends.any((friend) => friend.email == email);
       if (!isFriendAlreadyAdded) {
         try {
           await widget.friendsService.addFriend(friendUid);
           _addFriendController.clear();
-          _loadFriends(); // call _loadFriends() after friend is added
+          _loadFriends();
           setState(() {
             _isSubmitted = false;
           });
           return;
         } catch (e) {
           _friendScaffoldMessengerKey.currentState!
-              .showSnackBar(SnackBar(content: Text(e.toString())));
+              .showSnackBar(showShortLengthSnackbar(e.toString()));
         }
       } else {
         _friendScaffoldMessengerKey.currentState!.showSnackBar(
-            const SnackBar(content: Text('This friend is already added'), duration: Duration(milliseconds: 1000),));
+            showShortLengthSnackbar('This friend is already added'));
       }
+    } else if (friendUid == null) {
+      _friendScaffoldMessengerKey.currentState!.showSnackBar(
+          showShortLengthSnackbar('No account with that email address found!'));
     } else {
       _friendScaffoldMessengerKey.currentState!.showSnackBar(
-          const SnackBar(content: Text('Cannot add yourself as a friend :('), duration: Duration(milliseconds: 1000),));
+          showShortLengthSnackbar('Cannot add yourself as a friend :('));
     }
   }
+
 
   void _removeFriend(String friendId) async {
     // final context = _scaffoldMessengerKey.currentContext;
     await widget.friendsService.removeFriend(friendId);
     _loadFriends();
-    _friendScaffoldMessengerKey.currentState!.showSnackBar(
-        const SnackBar(content: Text('Friend removed :('), duration: Duration(milliseconds: 1000),));
+    _friendScaffoldMessengerKey.currentState!
+        .showSnackBar(showShortLengthSnackbar('Friend removed :('));
   }
 
   @override
@@ -129,7 +135,10 @@ class _FriendsPageState extends State<FriendsPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 30),
                         child: addFriendTextFormFieldStyle(
-                            "Enter friends email", _addFriendController, true, _isSubmitted),
+                            "Enter friends email",
+                            _addFriendController,
+                            false,
+                            _isSubmitted),
                       ),
                     ),
                     Center(
@@ -235,7 +244,7 @@ class _FriendsPageState extends State<FriendsPage> {
           return AlertDialog(
             backgroundColor: Colors.white,
             title: const Text('Remove Friend',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   color: darkBruinBlue,
                   fontFamily: 'PressStart2P',
@@ -256,12 +265,6 @@ class _FriendsPageState extends State<FriendsPage> {
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Cancel',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.white,
-                      fontFamily: 'PressStart2P',
-                    )),
                 onPressed: () {
                   Navigator.of(dialogContext).pop();
                 },
@@ -269,14 +272,14 @@ class _FriendsPageState extends State<FriendsPage> {
                   backgroundColor:
                       MaterialStateProperty.all<Color>(darkBruinBlue),
                 ),
-              ),
-              TextButton(
-                child: const Text('Remove',
-                    style: const TextStyle(
+                child: const Text('Cancel',
+                    style: TextStyle(
                       fontSize: 12,
                       color: Colors.white,
                       fontFamily: 'PressStart2P',
                     )),
+              ),
+              TextButton(
                 onPressed: () {
                   _removeFriend(friendUid);
                   Navigator.of(dialogContext).pop();
@@ -285,6 +288,12 @@ class _FriendsPageState extends State<FriendsPage> {
                   backgroundColor:
                       MaterialStateProperty.all<Color>(darkBruinBlue),
                 ),
+                child: const Text('Remove',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                      fontFamily: 'PressStart2P',
+                    )),
               ),
             ],
           );

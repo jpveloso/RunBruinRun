@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:run_bruin_run/screens/mainmenu/main_menu_page.dart';
 import 'package:run_bruin_run/styles/colours.dart';
 
@@ -42,8 +41,8 @@ class MyGame extends StatefulWidget {
 }
 
 class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
-  final GlobalKey<ScaffoldState> _gameScaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<FormState> _gameFormKey = GlobalKey<FormState>();
+  late final GlobalKey<ScaffoldState> _gameScaffoldKey;
+  late final GlobalKey<FormState> _gameFormKey;
   Bruin bruin = Bruin();
   bool _isGameOver = false;
   double runVelocity = initialVelocity;
@@ -77,6 +76,8 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    _gameScaffoldKey = GlobalKey<ScaffoldState>();
+    _gameFormKey = GlobalKey<FormState>();
     worldController =
         AnimationController(vsync: this, duration: const Duration(days: 99));
     worldController.addListener(_update);
@@ -86,7 +87,7 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Tap to play!', textAlign: TextAlign.center),
+          content: Text('Tap to play!', textAlign: TextAlign.center, style: TextStyle(fontSize: 30)),
           duration: Duration(milliseconds: 2000),
           backgroundColor: darkBruinBlue,
         ),
@@ -109,7 +110,7 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
     setState(() {
       worldController.stop();
       bruin.die();
-      Source gameOverSound = AssetSource('sounds/smb_gameover.wav');
+      Source gameOverSound = AssetSource('sounds/game_over_bad_chest.wav');
       _audioPlayer.play(gameOverSound);
       _isGameOver = true;
     });
@@ -243,6 +244,7 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
     accelerationController.dispose();
     jumpVelocityController.dispose();
     runVelocityController.dispose();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -320,9 +322,10 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                                   fontFamily: 'PressStart2P',
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold,
-                                  color: (runDistance ~/ dayNightOffest) % 2 == 0
-                                      ? Colors.white
-                                      : Colors.white,
+                                  color:
+                                      (runDistance ~/ dayNightOffest) % 2 == 0
+                                          ? Colors.white
+                                          : Colors.white,
                                 ),
                               ),
                             ),
@@ -373,22 +376,25 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 const Text("Gravity:"),
                                                 SizedBox(
                                                   height: 25,
                                                   width: 75,
                                                   child: TextField(
-                                                    controller: gravityController,
+                                                    controller:
+                                                        gravityController,
                                                     key: UniqueKey(),
                                                     keyboardType:
                                                         TextInputType.number,
                                                     decoration: InputDecoration(
-                                                      border: OutlineInputBorder(
+                                                      border:
+                                                          OutlineInputBorder(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                5),
+                                                            BorderRadius
+                                                                .circular(5),
                                                       ),
                                                     ),
                                                   ),
@@ -406,7 +412,8 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 const Text("Acceleration:"),
                                                 SizedBox(
@@ -419,10 +426,11 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                                                     keyboardType:
                                                         TextInputType.number,
                                                     decoration: InputDecoration(
-                                                      border: OutlineInputBorder(
+                                                      border:
+                                                          OutlineInputBorder(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                5),
+                                                            BorderRadius
+                                                                .circular(5),
                                                       ),
                                                     ),
                                                   ),
@@ -440,7 +448,8 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 const Text("Initial Velocity:"),
                                                 SizedBox(
@@ -453,10 +462,11 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                                                     keyboardType:
                                                         TextInputType.number,
                                                     decoration: InputDecoration(
-                                                      border: OutlineInputBorder(
+                                                      border:
+                                                          OutlineInputBorder(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                5),
+                                                            BorderRadius
+                                                                .circular(5),
                                                       ),
                                                     ),
                                                   ),
@@ -474,7 +484,8 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 const Text("Jump Velocity:"),
                                                 SizedBox(
@@ -487,10 +498,11 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                                                     keyboardType:
                                                         TextInputType.number,
                                                     decoration: InputDecoration(
-                                                      border: OutlineInputBorder(
+                                                      border:
+                                                          OutlineInputBorder(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                5),
+                                                            BorderRadius
+                                                                .circular(5),
                                                       ),
                                                     ),
                                                   ),
@@ -508,7 +520,8 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 const Text("Day-Night Offset:"),
                                                 SizedBox(
@@ -519,10 +532,11 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                                                     keyboardType:
                                                         TextInputType.number,
                                                     decoration: InputDecoration(
-                                                      border: OutlineInputBorder(
+                                                      border:
+                                                          OutlineInputBorder(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                5),
+                                                            BorderRadius
+                                                                .circular(5),
                                                       ),
                                                     ),
                                                   ),
@@ -533,8 +547,8 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                                         ),
                                         TextButton(
                                           onPressed: () {
-                                            gravity =
-                                                int.parse(gravityController.text);
+                                            gravity = int.parse(
+                                                gravityController.text);
                                             acceleration = double.parse(
                                                 accelerationController.text);
                                             initialVelocity = double.parse(
@@ -545,7 +559,8 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                                           },
                                           child: const Text(
                                             "Done",
-                                            style: TextStyle(color: Colors.grey),
+                                            style:
+                                                TextStyle(color: Colors.grey),
                                           ),
                                         )
                                       ],
@@ -628,8 +643,7 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                const MainMenuPage()));
+                                builder: (context) => const MainMenuPage()));
                       },
                       child: const Text(
                         'Quit',

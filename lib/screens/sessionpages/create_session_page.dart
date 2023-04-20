@@ -14,7 +14,7 @@ class CreateSessionPage extends StatefulWidget {
 }
 
 class _CreateSessionPageState extends State<CreateSessionPage> {
-  final GlobalKey<FormState> _createSessionFormKey = GlobalKey<FormState>();
+  late final GlobalKey<FormState> _createSessionFormKey;
   String yourPlayerName = "You";
   String playerName2 = "Player 2";
   String playerName3 = "Player 3";
@@ -26,6 +26,7 @@ class _CreateSessionPageState extends State<CreateSessionPage> {
   @override
   void initState() {
     super.initState();
+    _createSessionFormKey = GlobalKey<FormState>();
     joinCode = Random().nextInt(900000) + 100000;
     _joinCodeFieldController = TextEditingController(text: "$joinCode");
   }

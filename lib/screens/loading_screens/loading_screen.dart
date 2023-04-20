@@ -11,10 +11,10 @@ class LoadingScreen extends StatefulWidget {
 
 class LoadingScreenState extends State<LoadingScreen> {
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class LoadingScreenState extends State<LoadingScreen> {
               ),
             ),
             ],
-          )
+          ),
       ),
     );
   }

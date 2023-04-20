@@ -16,7 +16,13 @@ class JoinSessionPage extends StatefulWidget {
 }
 
 class _JoinSessionPageState extends State<JoinSessionPage> {
-  final GlobalKey<FormState> _joinSessionFormKey = GlobalKey<FormState>();
+  late final GlobalKey<FormState> _joinSessionFormKey;
+
+  @override
+  void initState(){
+    super.initState();
+    _joinSessionFormKey = GlobalKey<FormState>();
+  }
 
   @override
   void dispose() {

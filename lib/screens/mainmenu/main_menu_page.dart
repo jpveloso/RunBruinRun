@@ -8,11 +8,11 @@ import 'package:run_bruin_run/services/friends_service.dart';
 
 import '../../styles/button_styles.dart';
 import '../../styles/colours.dart';
+import '../../styles/snackbar_styles.dart';
 import '../loading_screens/loading_screen.dart';
 import '../loading_screens/my_game_loading_screen.dart';
 
-final GlobalKey<ScaffoldMessengerState> _mainMenuScaffoldMessengerKey =
-    GlobalKey<ScaffoldMessengerState>();
+bool _isShowingSnackBar = false;
 
 class MainMenuPage extends StatefulWidget {
   const MainMenuPage({Key? key}) : super(key: key);
@@ -24,7 +24,8 @@ class MainMenuPage extends StatefulWidget {
 class _MainMenuPageState extends State<MainMenuPage> {
   User? authenticatedUser = FirebaseAuth.instance.currentUser;
   final bool? _signedInAnon = FirebaseAuth.instance.currentUser?.isAnonymous;
-  final GlobalKey<FormState> _mainMenuFormKey = GlobalKey<FormState>();
+  late final GlobalKey<ScaffoldMessengerState> _mainMenuFormKey;
+  late final GlobalKey<ScaffoldMessengerState> _mainMenuGuestFormKey;
 
   String? _userName;
   String? _email;
@@ -32,6 +33,8 @@ class _MainMenuPageState extends State<MainMenuPage> {
   @override
   void initState() {
     super.initState();
+    _mainMenuFormKey = GlobalKey<ScaffoldMessengerState>();
+    _mainMenuGuestFormKey = GlobalKey<ScaffoldMessengerState>();
   }
 
   @override
@@ -39,14 +42,13 @@ class _MainMenuPageState extends State<MainMenuPage> {
     //Make this display the scaffold first then the other if an authenticated user
     if (_signedInAnon == true) {
       _userName = "Guest";
-      return WillPopScope(
-        key: _mainMenuFormKey,
-          onWillPop: () async {
-            return false;
-          },
-          child: ScaffoldMessenger(
-              key: _mainMenuScaffoldMessengerKey,
-              child: mainMenuScaffold(context, _userName)));
+      return ScaffoldMessenger(
+        child: WillPopScope(
+            onWillPop: () async {
+              return false;
+            },
+            child: mainMenuScaffold(context, _userName, _mainMenuGuestFormKey)),
+      );
     } else {
       return FutureBuilder<QueryDocumentSnapshot<Object?>>(
         future: getUserNameByEmail(),
@@ -58,14 +60,14 @@ class _MainMenuPageState extends State<MainMenuPage> {
               Map<String, dynamic> data =
                   snapshot.data.data() as Map<String, dynamic>;
               _userName = data['userName'];
-              return WillPopScope(
-                key: _mainMenuFormKey,
-                  onWillPop: () async {
-                    return false;
-                  },
-                  child: ScaffoldMessenger(
-                      key: _mainMenuScaffoldMessengerKey,
-                      child: mainMenuScaffold(context, _userName)));
+              return ScaffoldMessenger(
+                child: WillPopScope(
+                    onWillPop: () async {
+                      return false;
+                    },
+                    child:
+                        mainMenuScaffold(context, _userName, _mainMenuFormKey)),
+              );
             }
           }
           return const LoadingScreen();
@@ -92,178 +94,166 @@ Future<void> _signOutUser() async {
   await FirebaseAuth.instance.signOut();
 }
 
-bool _isShowingSnackbar = false;
-
-void _showMySnackbar(String message) {
-  if (!_isShowingSnackbar) {
-    _isShowingSnackbar = true;
-    _mainMenuScaffoldMessengerKey.currentState!
-        .showSnackBar(
-          SnackBar(
-            duration: const Duration(milliseconds: 1000),
-            content: Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 14.0,
-                fontFamily: 'PressStart2P',
-                color: Colors.white,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-            backgroundColor: darkBruinBlue,
-          ),
-        )
-        .closed
-        .then((_) => _isShowingSnackbar = false);
-  }
-}
-
-Scaffold mainMenuScaffold(BuildContext context, String? userName) {
+ScaffoldMessenger mainMenuScaffold(BuildContext context, String? userName,
+    GlobalKey<ScaffoldMessengerState> key) {
   String? currentUserID = FirebaseAuth.instance.currentUser?.uid;
-  return Scaffold(
-      backgroundColor: lightBruinBlue,
-      resizeToAvoidBottomInset: false,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(
-                'RUN BRUIN RUN',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: darkBruinBlue,
-                  fontFamily: 'PressStart2P',
+  return ScaffoldMessenger(
+    key: key,
+    child: Scaffold(
+        backgroundColor: lightBruinBlue,
+        resizeToAvoidBottomInset: false,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  'RUN BRUIN RUN',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: darkBruinBlue,
+                    fontFamily: 'PressStart2P',
+                  ),
                 ),
               ),
-            ),
-            FittedBox(
-              fit: BoxFit.fitWidth,
-              child: Text(
-                'Welcome \n$userName',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 25,
-                  color: Colors.white,
-                  fontFamily: 'PressStart2P',
+              FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  'Welcome \n$userName',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 25,
+                    color: Colors.white,
+                    fontFamily: 'PressStart2P',
+                  ),
                 ),
               ),
-            ),
-            Wrap(
-              direction: Axis.horizontal,
-              runAlignment: WrapAlignment.center,
-              alignment: WrapAlignment.center,
-              spacing: 35,
-              runSpacing: 30,
-              children: <Widget>[
-                const FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Text(
-                    'SINGLE PLAYER',
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.white,
-                      fontFamily: 'PressStart2P',
+              Wrap(
+                direction: Axis.horizontal,
+                runAlignment: WrapAlignment.center,
+                alignment: WrapAlignment.center,
+                spacing: 35,
+                runSpacing: 22,
+                children: <Widget>[
+                  const FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text(
+                      'SINGLE PLAYER',
+                      style: TextStyle(
+                        fontSize: 22,
+                        color: Colors.white,
+                        fontFamily: 'PressStart2P',
+                      ),
                     ),
                   ),
-                ),
-                ElevatedButton(
-                    style: getSmallButtonStyle(),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const GameLoadingScreen()));
-                    },
-                    child: const Text('Hurdles')),
-                ElevatedButton(
-                    style: getSmallButtonStyle(),
-                    onPressed: () {},
-                    child: const Text('Basketball')),
-                const FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Text(
-                    'MULTIPLAYER',
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.white,
-                      fontFamily: 'PressStart2P',
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                    style: getSmallButtonStyle(),
-                    onPressed: () async {
-                      if (FirebaseAuth.instance.currentUser?.isAnonymous ==
-                          true) {
-                        _showMySnackbar("Guests cannot add friends :/");
-                      } else if (FirebaseAuth
-                              .instance.currentUser?.isAnonymous ==
-                          false) {
-                        Navigator.push(
+                  ElevatedButton(
+                      style: getSmallButtonStyle(),
+                      onPressed: () {
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => FriendsPage(
-                                      friendsService: FriendsService(
-                                          currentUserId: currentUserID),
-                                    )));
-                      } else {
-                        _showMySnackbar("Something went wrong :/");
-                      }
-                    },
-                    child: const Text('Friends List')),
-                ElevatedButton(
-                    style: getSmallButtonStyle(),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const JoinSessionPage()));
-                    },
-                    child: const Text('Join Session')),
-                const FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Text(
-                    'SCOREBOARD',
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.white,
-                      fontFamily: 'PressStart2P',
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                    style: getSmallButtonStyle(),
-                    onPressed: () {},
-                    child: const Text('Hurdles')),
-                ElevatedButton(
-                    style: getSmallButtonStyle(),
-                    onPressed: () {},
-                    child: const Text('Basketball')),
-                FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: ElevatedButton(
-                      style: getButtonStyle(),
-                      onPressed: () async {
-                        _signOutUser();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomePage()));
+                                builder: (context) =>
+                                    const GameLoadingScreen()));
                       },
-                      child: const FittedBox(
-                        fit: BoxFit.fitWidth,
-                        child: Text(
-                          'Logout',
-                          style: TextStyle(fontSize: 25),
-                        ),
-                      )),
-                )
-              ],
-            ),
-          ],
-        ),
-      ));
+                      child: const Text('Hurdles')),
+                  ElevatedButton(
+                      style: getSmallButtonStyle(),
+                      onPressed: () {},
+                      child: const Text('Basketball')),
+                  const FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text(
+                      'MULTIPLAYER',
+                      style: TextStyle(
+                        fontSize: 22,
+                        color: Colors.white,
+                        fontFamily: 'PressStart2P',
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                      style: getSmallButtonStyle(),
+                      onPressed: () async {
+                        if (FirebaseAuth.instance.currentUser?.isAnonymous ==
+                            true) {
+                          final snackBar =
+                              showShortLengthSnackbar("Guests cannot add friends :/");
+                          if (!_isShowingSnackBar) {
+                            _isShowingSnackBar = true;
+                            key.currentState
+                                ?.showSnackBar(snackBar)
+                                .closed
+                                .then((value) => _isShowingSnackBar = false);
+                          }
+                        } else if (FirebaseAuth
+                                .instance.currentUser?.isAnonymous ==
+                            false) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => FriendsPage(
+                                        friendsService: FriendsService(
+                                            currentUserId: currentUserID),
+                                      )));
+                        } else {
+                          final snackBar =
+                              showShortLengthSnackbar("Something went wrong :/");
+                          key.currentState?.showSnackBar(snackBar);
+                        }
+                      },
+                      child: const Text('Friends List')),
+                  ElevatedButton(
+                      style: getSmallButtonStyle(),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const JoinSessionPage()));
+                      },
+                      child: const Text('Join Session')),
+                  const FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text(
+                      'SCOREBOARD',
+                      style: TextStyle(
+                        fontSize: 22,
+                        color: Colors.white,
+                        fontFamily: 'PressStart2P',
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                      style: getSmallButtonStyle(),
+                      onPressed: () {},
+                      child: const Text('Hurdles')),
+                  ElevatedButton(
+                      style: getSmallButtonStyle(),
+                      onPressed: () {},
+                      child: const Text('Basketball')),
+                  FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: ElevatedButton(
+                        style: getButtonStyle(),
+                        onPressed: () async {
+                          _signOutUser();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomePage()));
+                        },
+                        child: const FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            'Logout',
+                            style: TextStyle(fontSize: 25),
+                          ),
+                        )),
+                  )
+                ],
+              ),
+            ],
+          ),
+        )),
+  );
 }
