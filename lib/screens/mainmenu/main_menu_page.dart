@@ -229,7 +229,7 @@ ScaffoldMessenger mainMenuScaffold(BuildContext context, String? userName,
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const HurdleScoresPage()));
+                          MaterialPageRoute(builder: (context) => HurdleScoresPage()));
 
                       },
                       child: const Text('Hurdles')),
