@@ -24,7 +24,6 @@ class LoadingScreenState extends State<LoadingScreen> {
       body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-// crossAxisAlignment: CrossAxisAlignment.center,
             children: const [ Text(
               'LOADING...',
               style: TextStyle(

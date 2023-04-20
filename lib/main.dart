@@ -17,16 +17,29 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late Future<void> _precacheImageFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _precacheImageFuture = precacheImage(
+      const AssetImage('assets/images/Sheridan_Bruins_Logo_Border.png'),
+      context,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: precacheImage(
-        const AssetImage('assets/images/Sheridan_Bruins_Logo_Border.png'),
-        context,
-      ),
+      future: _precacheImageFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const MaterialApp(
@@ -36,7 +49,6 @@ class MyApp extends StatelessWidget {
         } else {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'My App',
             theme: ThemeData(
               pageTransitionsTheme: const PageTransitionsTheme(
                 builders: {
@@ -63,3 +75,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

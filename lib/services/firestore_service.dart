@@ -9,8 +9,9 @@ class FirestoreService {
       'userName': userName,
       'friends': [],
     });
-    await FirebaseFirestore.instance.collection('scores').doc(uid).set({
-      'highScores': [0],
+    await FirebaseFirestore.instance.collection('highScores').doc(uid).collection('scores').doc().set({
+      'score': 0,
+      'timestamp': FieldValue.serverTimestamp(),
     });
   }
 }

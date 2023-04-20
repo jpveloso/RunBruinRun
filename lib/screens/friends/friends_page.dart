@@ -14,7 +14,7 @@ class FriendsPage extends StatefulWidget {
   const FriendsPage({Key? key, required this.friendsService}) : super(key: key);
 
   @override
-  _FriendsPageState createState() => _FriendsPageState();
+  State<FriendsPage> createState() => _FriendsPageState();
 }
 
 class _FriendsPageState extends State<FriendsPage> {
@@ -116,6 +116,18 @@ class _FriendsPageState extends State<FriendsPage> {
             ),
           ),
           titleSpacing: 5,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () {
+                _loadFriends();
+              },
+            ),
+          ],
         ),
         body: GestureDetector(
           onTap: () {
@@ -123,109 +135,114 @@ class _FriendsPageState extends State<FriendsPage> {
           },
           child: Form(
             key: _friendFormKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 30),
-                        child: addFriendTextFormFieldStyle(
-                            "Enter friends email",
-                            _addFriendController,
-                            false,
-                            _isSubmitted),
-                      ),
-                    ),
-                    Center(
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 25, right: 15),
-                        decoration: BoxDecoration(
-                          color: darkBruinBlue,
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        child: IconButton(
-                          icon: const Icon(Icons.add),
-                          onPressed: () {
-                            if (_friendFormKey.currentState!.validate()) {
-                              _addFriend();
-                              setState(() {
-                                _isSubmitted = true;
-                              });
-                            }
-                          },
-                          color: Colors.white,
+            child: RefreshIndicator(
+              onRefresh: () async {
+                _loadFriends();
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 30),
+                          child: addFriendTextFormFieldStyle(
+                              "Enter friends email",
+                              _addFriendController,
+                              false,
+                              _isSubmitted),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: _friends.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      Friend friend = _friends[index];
-                      return ListTile(
-                        title: Text(
-                          friend.userName,
-                          style: const TextStyle(
-                            fontSize: 18,
+                      Center(
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 25, right: 15),
+                          decoration: BoxDecoration(
+                            color: darkBruinBlue,
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                          child: IconButton(
+                            icon: const Icon(Icons.add),
+                            onPressed: () {
+                              if (_friendFormKey.currentState!.validate()) {
+                                _addFriend();
+                                setState(() {
+                                  _isSubmitted = true;
+                                });
+                              }
+                            },
                             color: Colors.white,
-                            fontFamily: 'PressStart2P',
                           ),
                         ),
-                        subtitle: Text(
-                          'High score: ${friend.highScore}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: darkBruinBlue,
-                            fontFamily: 'PressStart2P',
-                          ),
-                        ),
-                        trailing: Container(
-                          // margin: const EdgeInsets.only(right: 0),
-                          decoration: const BoxDecoration(
-                            color: darkBruinBlue,
-                            shape: BoxShape.circle,
-                          ),
-                          child: ClipOval(
-                            child: Material(
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _friends.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Friend friend = _friends[index];
+                        return ListTile(
+                          title: Text(
+                            friend.userName,
+                            style: const TextStyle(
+                              fontSize: 18,
                               color: Colors.white,
-                              child: InkWell(
-                                splashColor: darkBruinBlue,
-                                highlightColor: Colors.white38,
-                                child: const SizedBox(
-                                  width: 45,
-                                  height: 45,
-                                  child: Icon(
-                                    Icons.remove_circle,
-                                    color: darkBruinBlue,
-                                    size: 45.0,
+                              fontFamily: 'PressStart2P',
+                            ),
+                          ),
+                          subtitle: Text(
+                            'High score: ${friend.highScore}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: darkBruinBlue,
+                              fontFamily: 'PressStart2P',
+                            ),
+                          ),
+                          trailing: Container(
+                            // margin: const EdgeInsets.only(right: 0),
+                            decoration: const BoxDecoration(
+                              color: darkBruinBlue,
+                              shape: BoxShape.circle,
+                            ),
+                            child: ClipOval(
+                              child: Material(
+                                color: Colors.white,
+                                child: InkWell(
+                                  splashColor: darkBruinBlue,
+                                  highlightColor: Colors.white38,
+                                  child: const SizedBox(
+                                    width: 45,
+                                    height: 45,
+                                    child: Icon(
+                                      Icons.remove_circle,
+                                      color: darkBruinBlue,
+                                      size: 45.0,
+                                    ),
                                   ),
+                                  onTap: () async {
+                                    _showConfirmationDialog(friend);
+                                    String friendUid =
+                                        _getFriendUid(friend.email) as String;
+                                    _removeFriend(friendUid);
+                                    setState(() {
+                                      _friends.remove(friend);
+                                    });
+                                    // }
+                                  },
                                 ),
-                                onTap: () async {
-                                  _showConfirmationDialog(friend);
-                                  String friendUid =
-                                      _getFriendUid(friend.email) as String;
-                                  _removeFriend(friendUid);
-                                  setState(() {
-                                    _friends.remove(friend);
-                                  });
-                                  // }
-                                },
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                )
-              ],
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

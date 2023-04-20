@@ -31,14 +31,14 @@ class FriendsService {
             .get();
         int highScore = 0;
         QuerySnapshot scoresSnapshot = await FirebaseFirestore.instance
-            .collection('scores')
+            .collection('highScores')
             .doc(friendUid)
-            .collection('userScores')
+            .collection('scores')
             .orderBy('score', descending: true)
             .limit(1)
             .get();
-        if (scoresSnapshot.size > 0) {
-          highScore = scoresSnapshot.docs[0]['score'];
+        if (scoresSnapshot.docs.isNotEmpty) {
+          highScore = scoresSnapshot.docs.first.get('score');
         }
         friends.add(Friend(
           email: friendSnapshot['email'] ?? '',
@@ -46,9 +46,12 @@ class FriendsService {
           highScore: highScore,
         ));
       }
+      friends.sort((a, b) => b.highScore.compareTo(a.highScore));
       return friends;
     }
   }
+
+
 
   Future<void> addFriend(String friendUid) async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;

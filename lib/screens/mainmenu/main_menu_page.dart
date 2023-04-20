@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:run_bruin_run/screens/friends/friends_page.dart';
 import 'package:run_bruin_run/screens/homepage/home_page.dart';
 import 'package:run_bruin_run/screens/scoreboard/hurdle_scores.dart';
-import 'package:run_bruin_run/screens/sessionpages/join_session_page.dart';
 import 'package:run_bruin_run/services/friends_service.dart';
 
 import '../../styles/button_styles.dart';
@@ -25,7 +24,6 @@ class MainMenuPage extends StatefulWidget {
 class _MainMenuPageState extends State<MainMenuPage> {
   User? authenticatedUser = FirebaseAuth.instance.currentUser;
   final bool? _signedInAnon = FirebaseAuth.instance.currentUser?.isAnonymous;
-  late final GlobalKey<ScaffoldMessengerState> _mainMenuFormKey;
   late final GlobalKey<ScaffoldMessengerState> _mainMenuGuestFormKey;
 
   String? _userName;
@@ -34,7 +32,6 @@ class _MainMenuPageState extends State<MainMenuPage> {
   @override
   void initState() {
     super.initState();
-    _mainMenuFormKey = GlobalKey<ScaffoldMessengerState>();
     _mainMenuGuestFormKey = GlobalKey<ScaffoldMessengerState>();
   }
 
@@ -66,8 +63,8 @@ class _MainMenuPageState extends State<MainMenuPage> {
                     onWillPop: () async {
                       return false;
                     },
-                    child:
-                        mainMenuScaffold(context, _userName, _mainMenuFormKey)),
+                    child: mainMenuScaffold(
+                        context, _userName, _mainMenuGuestFormKey)),
               );
             }
           }
@@ -89,9 +86,7 @@ class _MainMenuPageState extends State<MainMenuPage> {
 
 Future<void> _signOutUser() async {
   User? user = FirebaseAuth.instance.currentUser;
-  if (user?.isAnonymous == true) {
-    user?.delete();
-  }
+  user?.isAnonymous ?? false ? user?.delete() : null;
   await FirebaseAuth.instance.signOut();
 }
 
@@ -178,8 +173,8 @@ ScaffoldMessenger mainMenuScaffold(BuildContext context, String? userName,
                       onPressed: () async {
                         if (FirebaseAuth.instance.currentUser?.isAnonymous ==
                             true) {
-                          final snackBar =
-                              showShortLengthSnackbar("Guests cannot add friends :/");
+                          final snackBar = showShortLengthSnackbar(
+                              "Guests cannot add friends :/");
                           if (!_isShowingSnackBar) {
                             _isShowingSnackBar = true;
                             key.currentState
@@ -198,21 +193,12 @@ ScaffoldMessenger mainMenuScaffold(BuildContext context, String? userName,
                                             currentUserId: currentUserID),
                                       )));
                         } else {
-                          final snackBar =
-                              showShortLengthSnackbar("Something went wrong :/");
+                          final snackBar = showShortLengthSnackbar(
+                              "Something went wrong :/");
                           key.currentState?.showSnackBar(snackBar);
                         }
                       },
                       child: const Text('Friends List')),
-                  ElevatedButton(
-                      style: getSmallButtonStyle(),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const JoinSessionPage()));
-                      },
-                      child: const Text('Join Session')),
                   const FittedBox(
                     fit: BoxFit.fitWidth,
                     child: Text(
@@ -226,11 +212,31 @@ ScaffoldMessenger mainMenuScaffold(BuildContext context, String? userName,
                   ),
                   ElevatedButton(
                       style: getSmallButtonStyle(),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HurdleScoresPage()));
-
+                      onPressed: () async {
+                        if (FirebaseAuth.instance.currentUser?.isAnonymous ==
+                            true) {
+                          final snackBar = showShortLengthSnackbar(
+                              "Guests cannot view scores :/");
+                          if (!_isShowingSnackBar) {
+                            _isShowingSnackBar = true;
+                            key.currentState
+                                ?.showSnackBar(snackBar)
+                                .closed
+                                .then((value) => _isShowingSnackBar = false);
+                          }
+                        } else if (FirebaseAuth
+                                .instance.currentUser?.isAnonymous ==
+                            false) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HurdleScoresPage(),
+                                      ));
+                        } else {
+                          final snackBar = showShortLengthSnackbar(
+                              "Something went wrong :/");
+                          key.currentState?.showSnackBar(snackBar);
+                        }
                       },
                       child: const Text('Hurdles')),
                   ElevatedButton(
@@ -242,8 +248,8 @@ ScaffoldMessenger mainMenuScaffold(BuildContext context, String? userName,
                     child: ElevatedButton(
                         style: getButtonStyle(),
                         onPressed: () async {
-                          _signOutUser();
-                          Navigator.push(
+                          await _signOutUser();
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const HomePage()));
