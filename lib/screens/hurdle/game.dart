@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:run_bruin_run/screens/mainmenu/main_menu_page.dart';
 import 'package:run_bruin_run/styles/colours.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart' as cf;
 import '../../styles/button_styles.dart';
 import '../loading_screens/my_game_loading_screen.dart';
 import 'bruin.dart';
@@ -78,6 +78,7 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
     super.initState();
     _gameScaffoldKey = GlobalKey<ScaffoldState>();
     _gameFormKey = GlobalKey<FormState>();
+    highScore = 0;
     worldController =
         AnimationController(vsync: this, duration: const Duration(days: 99));
     worldController.addListener(_update);
@@ -101,9 +102,6 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
     });
     Navigator.pushReplacement(context,
         MaterialPageRoute(builder: (context) => const GameLoadingScreen()));
-    // Reset the game here
-    // Navigator.pushReplacement(
-    //     context, MaterialPageRoute(builder: (context) => const MyGame()));
   }
 
   void _die() {
@@ -114,11 +112,18 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
       _audioPlayer.play(gameOverSound);
       _isGameOver = true;
     });
+    print('Saving high score: $highScore');
+    cf.FirebaseFirestore.instance.collection('score').add({
+      'score': highScore,
+      'timestamp': cf.FieldValue.serverTimestamp(),
+    });
+
   }
 
   void _newGame() {
     setState(() {
       highScore = max(highScore, runDistance.toInt());
+      print('New high score: $highScore');
       runDistance = 0;
       runVelocity = initialVelocity;
       bruin.state = BruinState.running;
@@ -142,7 +147,6 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
         Cloud(worldLocation: const Offset(500, 10)),
         Cloud(worldLocation: const Offset(550, -10)),
       ];
-
       worldController.forward();
     });
   }
