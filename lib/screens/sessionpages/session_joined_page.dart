@@ -12,7 +12,7 @@ class SessionJoinedPage extends StatefulWidget {
 }
 
 class _SessionJoinedPageState extends State<SessionJoinedPage> {
-  final _formKey = GlobalKey<FormState>();
+  late final GlobalKey<FormState> _sessionJoinedFormKey;
   String yourPlayerName = "Player 1";
   String playerName2 = "You";
   String playerName3 = "Player 3";
@@ -21,12 +21,11 @@ class _SessionJoinedPageState extends State<SessionJoinedPage> {
   final TextEditingController _joinCodeFieldController =
       joinCodeFieldController;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // joinCode = Random().nextInt(900000) + 100000;
-  //   // _joinCodeFieldController = TextEditingController(text: "$joinCode");
-  // }
+  @override
+  void initState() {
+    super.initState();
+    _sessionJoinedFormKey = GlobalKey<FormState>();
+  }
   //
   // @override
   // void dispose() {
@@ -38,7 +37,7 @@ class _SessionJoinedPageState extends State<SessionJoinedPage> {
   @override
   Widget build(BuildContext context) {
     return Form(
-        key: _formKey,
+        key: _sessionJoinedFormKey,
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: lightBruinBlue,

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:run_bruin_run/screens/homepage/home_page.dart';
+import 'package:run_bruin_run/screens/loading_screens/loading_screen.dart';
 import 'package:run_bruin_run/screens/mainmenu/main_menu_page.dart';
 
 void main() async {
@@ -17,28 +18,48 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'My App',
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // Show loading indicator if auth state is still being determined
-            return const CircularProgressIndicator();
-          } else if (snapshot.hasData) {
-            // User is already authenticated, show main menu page
-            return const MainMenuPage();
-          } else {
-            // User is not authenticated, show login page
-            return const HomePage();
-          }
-        },
+    return FutureBuilder(
+      future: precacheImage(
+        const AssetImage('assets/images/Sheridan_Bruins_Logo_Border.png'),
+        context,
       ),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: LoadingScreen(),
+          );
+        } else {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'My App',
+            theme: ThemeData(
+              pageTransitionsTheme: const PageTransitionsTheme(
+                builders: {
+                  TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+                  TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
+                },
+              ),
+            ),
+            home: StreamBuilder<User?>(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  // User is already authenticated, show Main Menu Page
+                  return const MainMenuPage();
+                } else {
+                  // User is not authenticated, show Home Page
+                  return const HomePage();
+                }
+              },
+            ),
+          );
+        }
+      },
     );
   }
 }
