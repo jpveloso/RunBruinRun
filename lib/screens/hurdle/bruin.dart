@@ -11,26 +11,6 @@ List<Sprite> bruin = [
     ..imagePath = "assets/images/player_bear.png"
     ..imageWidth = 88
     ..imageHeight = 94,
-  Sprite()
-    ..imagePath = "assets/images/player_bear.png"
-    ..imageWidth = 88
-    ..imageHeight = 94,
-  Sprite()
-    ..imagePath = "assets/images/player_bear.png"
-    ..imageWidth = 88
-    ..imageHeight = 94,
-  Sprite()
-    ..imagePath = "assets/images/player_bear.png"
-    ..imageWidth = 88
-    ..imageHeight = 94,
-  Sprite()
-    ..imagePath = "assets/images/player_bear.png"
-    ..imageWidth = 88
-    ..imageHeight = 94,
-  Sprite()
-    ..imagePath = "assets/images/player_bear.png"
-    ..imageWidth = 88
-    ..imageHeight = 94,
 ];
 
 enum BruinState {
@@ -65,7 +45,7 @@ class Bruin extends GameObject {
     double elapsedTimeSeconds;
     try {
       currentSprite =
-          bruin[(elapsedTime!.inMilliseconds / 100).floor() % 2 + 2];
+      bruin[(elapsedTime!.inMilliseconds / 100).floor() % 2 + 2];
     } catch (_) {
       currentSprite = bruin[0];
     }
@@ -96,7 +76,7 @@ class Bruin extends GameObject {
   }
 
   void die() {
-    currentSprite = bruin[5];
+    currentSprite = bruin[0];
     state = BruinState.dead;
   }
 }
