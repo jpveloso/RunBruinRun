@@ -4,7 +4,7 @@ import 'constants.dart';
 import 'game_object.dart';
 import 'sprite.dart';
 
-List<Sprite> cacti = [
+List<Sprite> hurdle = [
   Sprite()
     ..imagePath = "assets/images/hurdle.png"
     ..imageWidth = 40
@@ -15,7 +15,7 @@ class Hurdle extends GameObject {
   final Sprite sprite;
   final Offset worldLocation;
 
-  Hurdle({required this.worldLocation}) : sprite = cacti[0]; // Select the only sprite available.
+  Hurdle({required this.worldLocation}) : sprite = hurdle[0]; // Select the only sprite available.
 
   @override
   Rect getRect(Size screenSize, double runDistance) {
