@@ -1,7 +1,5 @@
 import 'dart:ui';
-
 import 'package:flame/components.dart';
-
 import 'game.dart';
 
 class Floor extends PositionComponent {
@@ -19,7 +17,7 @@ class Floor extends PositionComponent {
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    final paint = Paint()..color = Color(0xFF000000);
+    final paint = Paint()..color = const Color(0xFF000000);
     canvas.drawRect(size.toRect(), paint);
   }
 }

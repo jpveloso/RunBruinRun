@@ -60,10 +60,8 @@ class GameOverOverlay extends Component {
     quitPainter.paint(canvas, Offset(screenSize.x / 2 - quitPainter.width / 2, screenSize.y / 2 + 100));
   }
 
-  @override
   bool isHud() => true;
 
-  @override
   bool onTapDown(Vector2 eventPosition) {
     final playAgainRect = Rect.fromLTWH(screenSize.x / 2 - 50, screenSize.y / 2 + 50, 100, 30);
     final quitRect = Rect.fromLTWH(screenSize.x / 2 - 50, screenSize.y / 2 + 100, 100, 30);

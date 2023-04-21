@@ -5,7 +5,6 @@ class Player extends SpriteComponent {
       : super(
     size: Vector2(150, 150),
     position: Vector2(50, 300),
-//    sprite: Sprite('BBPlayer.png'),
   );
 
   @override

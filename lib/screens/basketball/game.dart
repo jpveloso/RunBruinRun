@@ -5,7 +5,6 @@ import 'package:flame/game.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show Colors, TextPainter;
 import '../../services/BBscore_service.dart';
-import '../../services/score_service.dart';
 import 'ball.dart';
 import 'floor.dart';
 import 'gameOverOverlay.dart';
@@ -21,7 +20,6 @@ class BasketballGame extends FlameGame with TapDetector {
   late Sprite gameOverBearSprite; // Declare the gameOverBearSprite sprite
   bool _gameOver = false; // Move the _gameOver variable inside the class
   final VoidCallback onQuit;
-
   BasketballGame({required this.onQuit});
 
   int score = 0;
@@ -116,7 +114,6 @@ class BasketballGame extends FlameGame with TapDetector {
           onPlayAgain: () {
             _gameOver = false;
             score = 0;
-//            addGameTimer();
             gameTimer.reset(); // Reset the game timer
             createNewBall();
           },
