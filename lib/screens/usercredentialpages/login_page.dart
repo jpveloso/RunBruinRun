@@ -59,7 +59,8 @@ class _LoginPageState extends State<LoginPage> {
             ?.showSnackBar(showShortLengthSnackbar("Password is incorrect!"));
       } else {
         _loginScaffoldMessengerKey.currentState?.showSnackBar(
-            showShortLengthSnackbar("An error occurred. Please try again later."));
+            showShortLengthSnackbar(
+                "An error occurred. Please try again later."));
       }
     }
   }

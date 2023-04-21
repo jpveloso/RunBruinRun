@@ -8,8 +8,6 @@ import '../../styles/button_styles.dart';
 import '../../styles/colours.dart';
 import '../usercredentialpages/login_page.dart';
 
-//dart fix --apply
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -18,7 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   void initState() {
     super.initState();
@@ -27,7 +24,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final navigator = Navigator.of(context);
-    precacheImage(const AssetImage('assets/images/Sheridan_Bruins_Logo_Border.png'), context);
+    precacheImage(
+        const AssetImage('assets/images/Sheridan_Bruins_Logo_Border.png'),
+        context);
     ImageCache? imageCache = PaintingBinding.instance.imageCache;
     imageCache.clear();
     return Scaffold(
@@ -54,8 +53,6 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 80),
               Wrap(
                 direction: Axis.vertical,
-                // crossAxisAlignment: WrapCrossAlignment.center,
-                // alignment: WrapAlignment.center,
                 spacing: 20,
                 children: [
                   ElevatedButton(

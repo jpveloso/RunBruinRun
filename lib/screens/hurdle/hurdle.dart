@@ -15,7 +15,8 @@ class Hurdle extends GameObject {
   final Sprite sprite;
   final Offset worldLocation;
 
-  Hurdle({required this.worldLocation}) : sprite = cacti[0]; // Select the only sprite available.
+  Hurdle({required this.worldLocation})
+      : sprite = cacti[0]; // Select the only sprite available.
 
   @override
   Rect getRect(Size screenSize, double runDistance) {

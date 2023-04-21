@@ -58,9 +58,9 @@ class _FriendsPageState extends State<FriendsPage> {
     String? currentUserId = FirebaseAuth.instance.currentUser?.uid;
 
     if (email.isNotEmpty && friendUid != null && friendUid != currentUserId) {
-      // check if friend is already added
+      // Check if friend is already added
       bool isFriendAlreadyAdded =
-      _friends.any((friend) => friend.email == email);
+          _friends.any((friend) => friend.email == email);
       if (!isFriendAlreadyAdded) {
         try {
           await widget.friendsService.addFriend(friendUid);
@@ -87,9 +87,7 @@ class _FriendsPageState extends State<FriendsPage> {
     }
   }
 
-
   void _removeFriend(String friendId) async {
-    // final context = _scaffoldMessengerKey.currentContext;
     await widget.friendsService.removeFriend(friendId);
     _loadFriends();
     _friendScaffoldMessengerKey.currentState!

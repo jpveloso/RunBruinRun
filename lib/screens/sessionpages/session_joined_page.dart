@@ -26,7 +26,7 @@ class _SessionJoinedPageState extends State<SessionJoinedPage> {
     super.initState();
     _sessionJoinedFormKey = GlobalKey<FormState>();
   }
-  //
+
   // @override
   // void dispose() {
   //   //Release memory allocated to the fields after the page is removed

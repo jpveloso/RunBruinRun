@@ -22,7 +22,6 @@ class GameLoadingScreenState extends State<GameLoadingScreen> {
   }
 
   void _loadAssets() async {
-    // Load game assets here
     await Future.delayed(const Duration(milliseconds: 1000));
     setState(() {
       _isLoading = false;
@@ -32,9 +31,7 @@ class GameLoadingScreenState extends State<GameLoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldMessenger(
-      child: _isLoading
-          ? const LoadingScreen()
-          : const MyGame(),
+      child: _isLoading ? const LoadingScreen() : const MyGame(),
     );
   }
 }

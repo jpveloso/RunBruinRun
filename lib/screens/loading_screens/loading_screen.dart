@@ -10,7 +10,6 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class LoadingScreenState extends State<LoadingScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -22,9 +21,10 @@ class LoadingScreenState extends State<LoadingScreen> {
       backgroundColor: lightBruinBlue,
       resizeToAvoidBottomInset: false,
       body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [ Text(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: const [
+            Text(
               'LOADING...',
               style: TextStyle(
                 fontSize: 28,
@@ -32,8 +32,8 @@ class LoadingScreenState extends State<LoadingScreen> {
                 fontFamily: 'PressStart2P',
               ),
             ),
-            ],
-          ),
+          ],
+        ),
       ),
     );
   }

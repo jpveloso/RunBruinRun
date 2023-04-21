@@ -51,14 +51,12 @@ class _SignUpPageState extends State<SignUpPage> {
       _checkUserName = await FirebaseFirestore.instance
           .collection('users')
           .where('userName', isEqualTo: userName)
-          // .limit(1)
           .get()
           .then((value) => value.size > 0 ? true : false);
 
       _checkEmail = await FirebaseFirestore.instance
           .collection('users')
           .where('email', isEqualTo: email)
-          // .limit(1)
           .get()
           .then((value) => value.size > 0 ? true : false);
 
@@ -194,7 +192,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             ),
                             Container(
                               height: MediaQuery.of(context).size.height *
-                                  0.01, // smoothes out the touch scroll animation from the bottom
+                                  0.01, // Smoothes out the touch scroll animation from the bottom
                             ),
                           ],
                         ),
@@ -216,7 +214,6 @@ class NoSpaceFormatter extends TextInputFormatter {
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     if (newValue.text.contains(' ')) {
-      // Remove spaces
       final String trimmedValue = newValue.text.replaceAll(' ', '');
       return TextEditingValue(
         text: trimmedValue,
