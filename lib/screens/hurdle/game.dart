@@ -83,7 +83,6 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
     worldController =
         AnimationController(vsync: this, duration: const Duration(days: 99));
     worldController.addListener(_update);
-    // worldController.forward();
     worldController.stop();
     bruin.die();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -115,14 +114,12 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
       _audioPlayer.play(gameOverSound);
       _isGameOver = true;
     });
-    print('Saving high score: $highScore');
     saveHighScore(highScore);
   }
 
   void _newGame() {
     setState(() {
       highScore = max(highScore, runDistance.toInt());
-      print('New high score: $highScore');
       runDistance = 0;
       runVelocity = initialVelocity;
       bruin.state = BruinState.running;
@@ -166,7 +163,7 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
       runDistance += runVelocity * elapsedTimeSeconds;
       if (runDistance < 0) runDistance = 0;
 
-      final numHurdlesCleared = hurdle.length - 1; // ignore first hurdle
+      final numHurdlesCleared = hurdle.length - 1; // Ignore first hurdle
       acceleration =
           baseAcceleration + numHurdlesCleared * accelerationIncrement;
 
@@ -182,14 +179,14 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
         }
         if (obstacleRect.right < 0) {
           setState(() {
-            // calculate distance to last hurdle added
+            // Calculate distance to last hurdle added
             double lastHurdlePos = hurdle.last.worldLocation.dx;
             double newHurdlePos = runDistance +
                 Random().nextInt(200) +
                 screenSize.width / worlToPixelRatio;
             double distToLastHurdle = newHurdlePos - lastHurdlePos;
 
-            // choose new position for hurdle if too close to last hurdle
+            // Choose new position for hurdle if too close to last hurdle
             if (distToLastHurdle < minHurdleSpacing) {
               newHurdlePos = lastHurdlePos + minHurdleSpacing;
             }
@@ -233,7 +230,6 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
           });
         }
       }
-
       lastUpdateCall = worldController.lastElapsedDuration!;
     } catch (e) {
       //
@@ -335,243 +331,11 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                           );
                         },
                       ),
-                      // AnimatedBuilder(
-                      //   animation: worldController,
-                      //   builder: (context, _) {
-                      //     return Positioned(
-                      //       left: screenSize.width / 2 - 90,
-                      //       top: 120,
-                      //       child: Text(
-                      //         'High Score:$highScore',
-                      //         style: TextStyle(
-                      //           fontFamily: 'PressStart2P',
-                      //           fontSize: 14,
-                      //           fontWeight: FontWeight.bold,
-                      //           color: (runDistance ~/ dayNightOffest) % 2 == 0
-                      //               ? Colors.white
-                      //               : Colors.white,
-                      //         ),
-                      //       ),
-                      //     );
-                      //   },
-                      // ),
                       Positioned(
                         right: 20,
                         top: 20,
                         child: Wrap(
                           children: [
-                            // IconButton(
-                            //   icon: const Icon(Icons.settings),
-                            //   onPressed: () {
-                            //     _die();
-                            //     showDialog(
-                            //       context: context,
-                            //       builder: (context) {
-                            //         return AlertDialog(
-                            //           title: const Text("Change Physics"),
-                            //           actions: [
-                            //             Padding(
-                            //               padding: const EdgeInsets.all(8.0),
-                            //               child: SizedBox(
-                            //                 height: 25,
-                            //                 width: 280,
-                            //                 child: Row(
-                            //                   crossAxisAlignment:
-                            //                       CrossAxisAlignment.center,
-                            //                   mainAxisAlignment:
-                            //                       MainAxisAlignment
-                            //                           .spaceBetween,
-                            //                   children: [
-                            //                     const Text("Gravity:"),
-                            //                     SizedBox(
-                            //                       height: 25,
-                            //                       width: 75,
-                            //                       child: TextField(
-                            //                         controller:
-                            //                             gravityController,
-                            //                         key: UniqueKey(),
-                            //                         keyboardType:
-                            //                             TextInputType.number,
-                            //                         decoration: InputDecoration(
-                            //                           border:
-                            //                               OutlineInputBorder(
-                            //                             borderRadius:
-                            //                                 BorderRadius
-                            //                                     .circular(5),
-                            //                           ),
-                            //                         ),
-                            //                       ),
-                            //                     ),
-                            //                   ],
-                            //                 ),
-                            //               ),
-                            //             ),
-                            //             Padding(
-                            //               padding: const EdgeInsets.all(8.0),
-                            //               child: SizedBox(
-                            //                 height: 25,
-                            //                 width: 280,
-                            //                 child: Row(
-                            //                   crossAxisAlignment:
-                            //                       CrossAxisAlignment.center,
-                            //                   mainAxisAlignment:
-                            //                       MainAxisAlignment
-                            //                           .spaceBetween,
-                            //                   children: [
-                            //                     const Text("Acceleration:"),
-                            //                     SizedBox(
-                            //                       height: 25,
-                            //                       width: 75,
-                            //                       child: TextField(
-                            //                         controller:
-                            //                             accelerationController,
-                            //                         key: UniqueKey(),
-                            //                         keyboardType:
-                            //                             TextInputType.number,
-                            //                         decoration: InputDecoration(
-                            //                           border:
-                            //                               OutlineInputBorder(
-                            //                             borderRadius:
-                            //                                 BorderRadius
-                            //                                     .circular(5),
-                            //                           ),
-                            //                         ),
-                            //                       ),
-                            //                     ),
-                            //                   ],
-                            //                 ),
-                            //               ),
-                            //             ),
-                            //             Padding(
-                            //               padding: const EdgeInsets.all(8.0),
-                            //               child: SizedBox(
-                            //                 height: 25,
-                            //                 width: 280,
-                            //                 child: Row(
-                            //                   crossAxisAlignment:
-                            //                       CrossAxisAlignment.center,
-                            //                   mainAxisAlignment:
-                            //                       MainAxisAlignment
-                            //                           .spaceBetween,
-                            //                   children: [
-                            //                     const Text("Initial Velocity:"),
-                            //                     SizedBox(
-                            //                       height: 25,
-                            //                       width: 75,
-                            //                       child: TextField(
-                            //                         controller:
-                            //                             runVelocityController,
-                            //                         key: UniqueKey(),
-                            //                         keyboardType:
-                            //                             TextInputType.number,
-                            //                         decoration: InputDecoration(
-                            //                           border:
-                            //                               OutlineInputBorder(
-                            //                             borderRadius:
-                            //                                 BorderRadius
-                            //                                     .circular(5),
-                            //                           ),
-                            //                         ),
-                            //                       ),
-                            //                     ),
-                            //                   ],
-                            //                 ),
-                            //               ),
-                            //             ),
-                            //             Padding(
-                            //               padding: const EdgeInsets.all(8.0),
-                            //               child: SizedBox(
-                            //                 height: 25,
-                            //                 width: 280,
-                            //                 child: Row(
-                            //                   crossAxisAlignment:
-                            //                       CrossAxisAlignment.center,
-                            //                   mainAxisAlignment:
-                            //                       MainAxisAlignment
-                            //                           .spaceBetween,
-                            //                   children: [
-                            //                     const Text("Jump Velocity:"),
-                            //                     SizedBox(
-                            //                       height: 25,
-                            //                       width: 75,
-                            //                       child: TextField(
-                            //                         controller:
-                            //                             jumpVelocityController,
-                            //                         key: UniqueKey(),
-                            //                         keyboardType:
-                            //                             TextInputType.number,
-                            //                         decoration: InputDecoration(
-                            //                           border:
-                            //                               OutlineInputBorder(
-                            //                             borderRadius:
-                            //                                 BorderRadius
-                            //                                     .circular(5),
-                            //                           ),
-                            //                         ),
-                            //                       ),
-                            //                     ),
-                            //                   ],
-                            //                 ),
-                            //               ),
-                            //             ),
-                            //             Padding(
-                            //               padding: const EdgeInsets.all(8.0),
-                            //               child: SizedBox(
-                            //                 height: 25,
-                            //                 width: 280,
-                            //                 child: Row(
-                            //                   crossAxisAlignment:
-                            //                       CrossAxisAlignment.center,
-                            //                   mainAxisAlignment:
-                            //                       MainAxisAlignment
-                            //                           .spaceBetween,
-                            //                   children: [
-                            //                     const Text("Day-Night Offset:"),
-                            //                     SizedBox(
-                            //                       height: 25,
-                            //                       width: 75,
-                            //                       child: TextField(
-                            //                         key: UniqueKey(),
-                            //                         keyboardType:
-                            //                             TextInputType.number,
-                            //                         decoration: InputDecoration(
-                            //                           border:
-                            //                               OutlineInputBorder(
-                            //                             borderRadius:
-                            //                                 BorderRadius
-                            //                                     .circular(5),
-                            //                           ),
-                            //                         ),
-                            //                       ),
-                            //                     ),
-                            //                   ],
-                            //                 ),
-                            //               ),
-                            //             ),
-                            //             TextButton(
-                            //               onPressed: () {
-                            //                 gravity = int.parse(
-                            //                     gravityController.text);
-                            //                 acceleration = double.parse(
-                            //                     accelerationController.text);
-                            //                 initialVelocity = double.parse(
-                            //                     runVelocityController.text);
-                            //                 jumpVelocity = double.parse(
-                            //                     jumpVelocityController.text);
-                            //                 Navigator.of(context).pop();
-                            //               },
-                            //               child: const Text(
-                            //                 "Done",
-                            //                 style:
-                            //                     TextStyle(color: Colors.grey),
-                            //               ),
-                            //             )
-                            //           ],
-                            //         );
-                            //       },
-                            //     );
-                            //   },
-                            // ),
                             IconButton(
                                 style: getQuitButtonStyle(),
                                 onPressed: () {
@@ -586,18 +350,6 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                           ],
                         ),
                       ),
-                      // Positioned(
-                      //   bottom: 10,
-                      //   child: TextButton(
-                      //     onPressed: () {
-                      //       _die();
-                      //     },
-                      //     child: const Text(
-                      //       "Force Kill Bear",
-                      //       style: TextStyle(color: Colors.red),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),

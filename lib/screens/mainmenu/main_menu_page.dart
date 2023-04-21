@@ -238,8 +238,8 @@ ScaffoldMessenger mainMenuScaffold(BuildContext context, String? userName,
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const HurdleScoresPage(),
-                                      ));
+                                builder: (context) => const HurdleScoresPage(),
+                              ));
                         } else {
                           final snackBar = showShortLengthSnackbar(
                               "Something went wrong :/");

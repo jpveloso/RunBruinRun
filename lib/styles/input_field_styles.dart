@@ -52,6 +52,7 @@ TextFormField emailTextFormFieldStyle(String? labelText, String? hintText,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return '$labelText is required';
+          // Email Validation No Spaces and Capitals after @
         } else if (!RegExp(r'^[a-zA-Z\d._%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$')
             .hasMatch(value)) {
           return 'Please enter a valid email address';
@@ -75,18 +76,15 @@ TextFormField emailTextFormFieldStyle(String? labelText, String? hintText,
 }
 
 //Used in Friends Page
-TextFormField addFriendTextFormFieldStyle(
-    String? hintText,
-    TextEditingController? controller,
-    bool autoFocus,
-    bool isSubmitted) {
+TextFormField addFriendTextFormFieldStyle(String? hintText,
+    TextEditingController? controller, bool autoFocus, bool isSubmitted) {
   return TextFormField(
-      autovalidateMode: isSubmitted
-          ? AutovalidateMode.always
-          : AutovalidateMode.disabled,
+      autovalidateMode:
+          isSubmitted ? AutovalidateMode.always : AutovalidateMode.disabled,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return '$hintText is required';
+          // Email Validation No Spaces and Capitals after @
         } else if (!RegExp(r'^[a-zA-Z\d._%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$')
             .hasMatch(value)) {
           return 'Please enter a valid email address';

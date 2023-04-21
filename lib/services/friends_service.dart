@@ -51,8 +51,6 @@ class FriendsService {
     }
   }
 
-
-
   Future<void> addFriend(String friendUid) async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
     await FirebaseFirestore.instance.collection('users').doc(uid).update({
