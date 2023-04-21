@@ -162,7 +162,13 @@ ScaffoldMessenger mainMenuScaffold(BuildContext context, String? userName,
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => GameScreen()));
+                              builder: (context) => GameScreen(
+                                onQuit: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ),
+                            );
                       },
                       child: const Text('Basketball')),
                   const FittedBox(

@@ -3,21 +3,24 @@ import 'package:flame/events.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' show Colors, TextPainter, TextAlign;
+import 'package:flutter/material.dart' show Colors, TextPainter;
 import 'ball.dart';
 import 'floor.dart';
 import 'gameOverOverlay.dart';
 import 'gameTimer.dart';
 import 'hoop.dart';
-bool _gameOver = false;
 class BasketballGame extends FlameGame with TapDetector {
   late Ball ball;
   late Vector2 screenSize;
   late Floor floor, rimFront, rimBack,backBoard;
   late Hoop hoop;
+  final bool _timerIsActive = false;
   GameOverOverlay? gameOverOverlay; // Add this line to store the game over overlay
-   // Add this line to track the game over state
   late Sprite gameOverBearSprite; // Declare the gameOverBearSprite sprite
+  bool _gameOver = false; // Move the _gameOver variable inside the class
+  final VoidCallback onQuit;
+
+  BasketballGame({required this.onQuit});
 
   int score = 0;
   late TextPainter textPainter;
@@ -52,6 +55,7 @@ class BasketballGame extends FlameGame with TapDetector {
 
   @override
   Future<void> onLoad() async {
+    screenSize = size; // Initialize screenSize with a non-null value
     textPainter = TextPainter(textDirection: TextDirection.ltr);
     final backgroundSprite = await Sprite.load('BBBackground.png');
     final playerSprite = await Sprite.load('BBPlayer.png');
@@ -63,7 +67,6 @@ class BasketballGame extends FlameGame with TapDetector {
       size: size,
       sprite: backgroundSprite,
     );
-
     final player = SpriteComponent(
       size: Vector2(115, 170),
       position: Vector2(20, 550),
@@ -78,25 +81,25 @@ class BasketballGame extends FlameGame with TapDetector {
     );
     balls.add(ball);
     rimFront = Floor(
-      position: Vector2(230, 260),
+      position: Vector2(220, 310),
       size: Vector2(10, 10),
       gameRef: this,
     );
     rimBack = Floor(
-      position: Vector2(330, 260),
+      position: Vector2(320, 310),
       size: Vector2(10, 10),
       gameRef: this,
     );
     backBoard = Floor(
-      position: Vector2(360, 100),
-      size: Vector2(10, 130),
+      position: Vector2(360, 150),
+      size: Vector2(10, 180),
       gameRef: this,
     );
     // Create Hoop after initializing rimFront and rimBack
     hoop = Hoop(
       rimFront: rimFront,
       rimBack: rimBack,
-      backBoard: 150.0 + 30, // Add backBoard parameter
+      backBoard: 200.0 + 30, // Add backBoard parameter
       gameRef: this,
       hoopSprite: hoopSprite,
     );
@@ -111,7 +114,8 @@ class BasketballGame extends FlameGame with TapDetector {
           onPlayAgain: () {
             _gameOver = false;
             score = 0;
-            addGameTimer();
+//            addGameTimer();
+            gameTimer.reset(); // Reset the game timer
             createNewBall();
           },
           onQuit: () {
@@ -137,13 +141,28 @@ class BasketballGame extends FlameGame with TapDetector {
     screenSize = size;
   }
 
+  @override
   void onTapDown(TapDownInfo info) {
     if (_gameOver) {
-      gameOverOverlay?.playAgainButton.onTapDown(info);
-      gameOverOverlay?.quitButton.onTapDown(info);
+      if (_isTapWithinQuitButton(info.eventPosition.global)) {
+        onQuit();
+      } else if (_isTapWithinPlayAgainButton(info.eventPosition.global)) {
+        _gameOver = false;
+        score = 0;
+        gameTimer.reset();
+        createNewBall();
+
+      }
     } else {
+      if (!_timerIsActive) {
+        gameTimer.startTimer();
+      }
       ball.onTapDown(info.eventPosition.global);
     }
+  }
+
+  void saveScoreToFirebase(int score) {
+
   }
   void removeBall(Ball ball) {
     remove(ball);
@@ -169,7 +188,7 @@ class BasketballGame extends FlameGame with TapDetector {
   }
   void addGameTimer() {
     gameTimer = GameTimer(
-      countdownTimer: 30,
+      countdownTimer: 10,
       onGameOver: () {
         _gameOver = true;
         gameOverOverlay = GameOverOverlay(
@@ -179,7 +198,7 @@ class BasketballGame extends FlameGame with TapDetector {
           onPlayAgain: () {
             _gameOver = false;
             score = 0;
-            addGameTimer(); // Add a new instance of GameTimer
+            gameTimer.reset(); // Reset the game timer
             createNewBall();
           },
           onQuit: () {
@@ -190,16 +209,46 @@ class BasketballGame extends FlameGame with TapDetector {
       yPosition: 20,
     );
   }
+  void renderGameTimer(Canvas canvas) {
+    gameTimer.textPainter.text = TextSpan(
+      text: 'Time: ${gameTimer.countdownTimer}',
+      style: TextStyle(color: Colors.blue.shade300, fontSize: 20.0),
+    );
+    gameTimer.textPainter.layout();
+    gameTimer.textPainter.paint(canvas, Offset(gameTimer.xPosition / 2, 20));
+  }
+  bool _isTapWithinQuitButton(Vector2 tapPosition) {
+    double quitTextX = screenSize.x / 2;
+    double quitTextY = screenSize.y / 2 + 100;
+    double quitTextWidth = 100; // You can adjust this value according to the actual width of the text
+    double quitTextHeight = 24; // You can adjust this value according to the actual height of the text
+
+    return tapPosition.x >= quitTextX &&
+        tapPosition.x <= quitTextX + quitTextWidth &&
+        tapPosition.y >= quitTextY &&
+        tapPosition.y <= quitTextY + quitTextHeight;
+  }
+  bool _isTapWithinPlayAgainButton(Vector2 tapPosition) {
+    double playAgainTextX = screenSize.x / 2;
+    double playAgainTextY = screenSize.y / 2 + 60; // Adjust the Y position accordingly
+    double playAgainTextWidth = 150; // You can adjust this value according to the actual width of the text
+    double playAgainTextHeight = 24; // You can adjust this value according to the actual height of the text
+
+    return tapPosition.x >= playAgainTextX &&
+        tapPosition.x <= playAgainTextX + playAgainTextWidth &&
+        tapPosition.y >= playAgainTextY &&
+        tapPosition.y <= playAgainTextY + playAgainTextHeight;
+  }
   @override
   void render(Canvas canvas) {
     if (_gameOver) {
-      canvas.drawColor(Colors.white, BlendMode.srcOver); // Clear canvas with white color
+      canvas.drawColor(Colors.black, BlendMode.srcOver); // Clear canvas with white color
       gameOverOverlay?.render(canvas);
 
     } else {
       super.render(canvas);
       renderScore(canvas);
-      gameTimer.render(canvas); // Render the game timer
+      renderGameTimer(canvas); // Call the new renderGameTimer method
     }
   }
 }

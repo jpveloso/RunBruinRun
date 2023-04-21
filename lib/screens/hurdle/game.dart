@@ -310,12 +310,10 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                         animation: worldController,
                         builder: (context, _) {
                           return Positioned(
-                            // left: screenSize.width / 2,
                             top: 200,
                             child: FittedBox(
                               fit: BoxFit.fitWidth,
                               child: Text(
-                                // 'Score:${runDistance.toInt()}',
                                 '${runDistance.toInt()}',
                                 style: TextStyle(
                                   fontFamily: 'PressStart2P',
