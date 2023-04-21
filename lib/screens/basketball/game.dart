@@ -161,7 +161,9 @@ class BasketballGame extends FlameGame with TapDetector {
     }
   }
 
+  void saveScoreToFirebase(int score) {
 
+  }
   void removeBall(Ball ball) {
     remove(ball);
     balls.remove(ball);
