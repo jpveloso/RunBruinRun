@@ -1,7 +1,6 @@
 import 'package:flame/components.dart';
-import 'package:flutter/material.dart' show Canvas, Colors, TextDirection, TextPainter, TextSpan, TextStyle, VoidCallback;
+import 'package:flutter/material.dart';
 import 'package:flame/extensions.dart';
-import 'package:run_bruin_run/screens/basketball/textButtonComponent.dart';
 
 class GameOverOverlay extends Component {
   final int finalScore;
@@ -9,8 +8,6 @@ class GameOverOverlay extends Component {
   final Vector2 screenSize;
   final VoidCallback onPlayAgain;
   final VoidCallback onQuit;
-  late TextButtonComponent playAgainButton;
-  late TextButtonComponent quitButton;
 
   GameOverOverlay({
     required this.finalScore,
@@ -18,21 +15,7 @@ class GameOverOverlay extends Component {
     required this.screenSize,
     required this.onPlayAgain,
     required this.onQuit,
-  }) {
-    playAgainButton = TextButtonComponent(
-      text: 'Play Again',
-      textStyle: const TextStyle(color: Colors.white, fontSize: 24),
-      onPressed: onPlayAgain,
-    );
-    playAgainButton.position = screenSize / 2 - Vector2(playAgainButton.textPainter.width / 2, 50);
-
-    quitButton = TextButtonComponent(
-      text: 'Quit',
-      textStyle: const TextStyle(color: Colors.white, fontSize: 24),
-      onPressed: onQuit,
-    );
-    quitButton.position = screenSize / 2 - Vector2(quitButton.textPainter.width / 2, -50);
-  }
+  });
 
   @override
   void render(Canvas canvas) {
@@ -47,17 +30,52 @@ class GameOverOverlay extends Component {
     final textPainter = TextPainter(
       text: TextSpan(
         text: 'Score: $finalScore',
-        style: const TextStyle(color: Colors.black, fontSize: 40.0),
+        style: const TextStyle(color: Colors.white, fontSize: 40.0),
       ),
       textDirection: TextDirection.ltr,
     );
     textPainter.layout();
     textPainter.paint(canvas, Offset(screenSize.x / 2 - textPainter.width / 2, screenSize.y / 2 - 200));
 
-    playAgainButton.render(canvas);
-    quitButton.render(canvas);
+    // Render Play Again button
+    final playAgainPainter = TextPainter(
+      text: const TextSpan(
+        text: 'Play Again',
+        style: TextStyle(color: Colors.white, fontSize: 24.0),
+      ),
+      textDirection: TextDirection.ltr,
+    );
+    playAgainPainter.layout();
+    playAgainPainter.paint(canvas, Offset(screenSize.x / 2 - playAgainPainter.width / 2, screenSize.y / 2 + 50));
+
+    // Render Quit button
+    final quitPainter = TextPainter(
+      text: const TextSpan(
+        text: 'Quit',
+        style: TextStyle(color: Colors.white, fontSize: 24.0),
+      ),
+      textDirection: TextDirection.ltr,
+    );
+    quitPainter.layout();
+    quitPainter.paint(canvas, Offset(screenSize.x / 2 - quitPainter.width / 2, screenSize.y / 2 + 100));
   }
 
   @override
   bool isHud() => true;
+
+  @override
+  bool onTapDown(Vector2 eventPosition) {
+    final playAgainRect = Rect.fromLTWH(screenSize.x / 2 - 50, screenSize.y / 2 + 50, 100, 30);
+    final quitRect = Rect.fromLTWH(screenSize.x / 2 - 50, screenSize.y / 2 + 100, 100, 30);
+
+    if (playAgainRect.contains(eventPosition.toOffset())) {
+      onPlayAgain();
+      return true;
+    } else if (quitRect.contains(eventPosition.toOffset())) {
+      onQuit();
+      return true;
+    }
+
+    return false;
+  }
 }
