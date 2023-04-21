@@ -173,18 +173,39 @@ class HurdleScoresPage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 80.0),
-          ElevatedButton(
-            style: getSmallButtonStyle(),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const MyGame()),
-              );
-            },
-            child: const Text('Play Again'),
+          const SizedBox(height: 60.0),
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            alignment: WrapAlignment.center,
+            runSpacing: 20,
+            children: [
+              const Center(
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    'Improve Your Score?',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.white,
+                      fontFamily: 'PressStart2P',
+                    ),
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                style: getSmallButtonStyle(),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MyGame()),
+                  );
+                },
+                child: const Text('Play Again'),
+              ),
+            ],
           ),
-          const SizedBox(height: 30.0),
+          const SizedBox(height: 20.0),
         ],
       ),
     );
