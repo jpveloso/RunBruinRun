@@ -1,5 +1,4 @@
 import 'package:flame/components.dart';
-import 'package:flutter/cupertino.dart';
 import 'ball.dart';
 import 'floor.dart';
 import 'game.dart';
@@ -18,7 +17,7 @@ class Hoop {
     required Sprite hoopSprite,
   }) {
     hoopSpriteComponent = SpriteComponent(
-      size: Vector2(250, 700),
+      size: Vector2(300, 700),
       position: Vector2(rimFront.position.x - 9, backBoard-120),
       sprite: hoopSprite,
     );

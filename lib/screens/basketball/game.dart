@@ -69,13 +69,13 @@ class BasketballGame extends FlameGame with TapDetector {
     );
     final player = SpriteComponent(
       size: Vector2(115, 170),
-      position: Vector2(20, 550),
+      position: Vector2(20, 510),
       sprite: playerSprite,
     );
 
     ball = Ball(
       size: Vector2(50, 50),
-      position: Vector2(90, 670),
+      position: Vector2(90, 630),
       sprite: ballSprite,
       gameRef: this,
     );
@@ -95,7 +95,6 @@ class BasketballGame extends FlameGame with TapDetector {
       size: Vector2(10, 180),
       gameRef: this,
     );
-    // Create Hoop after initializing rimFront and rimBack
     hoop = Hoop(
       rimFront: rimFront,
       rimBack: rimBack,
@@ -117,9 +116,7 @@ class BasketballGame extends FlameGame with TapDetector {
             gameTimer.reset(); // Reset the game timer
             createNewBall();
           },
-          onQuit: () {
-            // Implement the quit functionality here.
-          },
+          onQuit: () {},
         );
       },
       xPosition: screenSize.x / 1.5,
@@ -187,7 +184,7 @@ class BasketballGame extends FlameGame with TapDetector {
   }
   void addGameTimer() {
     gameTimer = GameTimer(
-      countdownTimer: 10,
+      countdownTimer: 30,
       onGameOver: () {
         _gameOver = true;
         gameOverOverlay = GameOverOverlay(
