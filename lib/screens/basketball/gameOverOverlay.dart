@@ -19,19 +19,19 @@ class GameOverOverlay extends Component {
     required this.onPlayAgain,
     required this.onQuit,
   }) {
-    playAgainButton = TextButtonComponent(
-      text: 'Play Again',
-      textStyle: const TextStyle(color: Colors.white, fontSize: 24),
-      onPressed: onPlayAgain,
-    );
-    playAgainButton.position = screenSize / 2 - Vector2(playAgainButton.textPainter.width / 2, 50);
-
-    quitButton = TextButtonComponent(
-      text: 'Quit',
-      textStyle: const TextStyle(color: Colors.white, fontSize: 24),
-      onPressed: onQuit,
-    );
-    quitButton.position = screenSize / 2 - Vector2(quitButton.textPainter.width / 2, -50);
+    // playAgainButton = TextButtonComponent(
+    //   text: 'Play Again',
+    //   textStyle: const TextStyle(color: Colors.white, fontSize: 24),
+    //   onPressed: onPlayAgain,
+    // );
+    // playAgainButton.position = screenSize / 2 - Vector2(playAgainButton.textPainter.width / 2, 50);
+    //
+    // quitButton = TextButtonComponent(
+    //   text: 'Quit',
+    //   textStyle: const TextStyle(color: Colors.white, fontSize: 24),
+    //   onPressed: onQuit,
+    // );
+    // quitButton.position = screenSize / 2 - Vector2(quitButton.textPainter.width / 2, -50);
   }
 
   @override

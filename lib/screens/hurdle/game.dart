@@ -122,7 +122,6 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
   void _newGame() {
     setState(() {
       highScore = max(highScore, runDistance.toInt());
-      print('New high score: $highScore');
       runDistance = 0;
       runVelocity = initialVelocity;
       bruin.state = BruinState.running;
@@ -314,12 +313,10 @@ class _GameState extends State<MyGame> with SingleTickerProviderStateMixin {
                         animation: worldController,
                         builder: (context, _) {
                           return Positioned(
-                            // left: screenSize.width / 2,
                             top: 200,
                             child: FittedBox(
                               fit: BoxFit.fitWidth,
                               child: Text(
-                                // 'Score:${runDistance.toInt()}',
                                 '${runDistance.toInt()}',
                                 style: TextStyle(
                                   fontFamily: 'PressStart2P',

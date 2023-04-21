@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:run_bruin_run/screens/friends/friends_page.dart';
 import 'package:run_bruin_run/screens/homepage/home_page.dart';
@@ -11,7 +10,6 @@ import '../../styles/button_styles.dart';
 import '../../styles/colours.dart';
 import '../../styles/snackbar_styles.dart';
 import '../basketball/basketBallGameScreen.dart';
-import '../basketball/game.dart';
 import '../loading_screens/loading_screen.dart';
 import '../loading_screens/my_game_loading_screen.dart';
 
@@ -162,7 +160,8 @@ ScaffoldMessenger mainMenuScaffold(BuildContext context, String? userName,
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => GameScreen()));
+                                builder: (context) =>
+                                    const BasketballGameScreen()));
                       },
                       child: const Text('Basketball')),
                   const FittedBox(
@@ -238,8 +237,8 @@ ScaffoldMessenger mainMenuScaffold(BuildContext context, String? userName,
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const HurdleScoresPage(),
-                                      ));
+                                builder: (context) => const HurdleScoresPage(),
+                              ));
                         } else {
                           final snackBar = showShortLengthSnackbar(
                               "Something went wrong :/");

@@ -4,24 +4,30 @@ import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show Colors, TextPainter, TextAlign;
+
 import 'ball.dart';
 import 'floor.dart';
 import 'gameOverOverlay.dart';
 import 'gameTimer.dart';
 import 'hoop.dart';
-bool _gameOver = false;
+
+
 class BasketballGame extends FlameGame with TapDetector {
+  final Function(bool) onGameOver;
+  bool _gameOver = false;
+  BasketballGame(this.onGameOver, _gameOver);
   late Ball ball;
   late Vector2 screenSize;
-  late Floor floor, rimFront, rimBack,backBoard;
+  late Floor floor, rimFront, rimBack, backBoard;
   late Hoop hoop;
-  GameOverOverlay? gameOverOverlay; // Add this line to store the game over overlay
-   // Add this line to track the game over state
+  GameOverOverlay?
+      gameOverOverlay; // Add this line to store the game over overlay
+  // Add this line to track the game over state
   late Sprite gameOverBearSprite; // Declare the gameOverBearSprite sprite
-
   int score = 0;
   late TextPainter textPainter;
   List<Ball> balls = [];
+
   Ball get activeBall => balls.last;
   late GameTimer gameTimer; // Add this line to declare the GameTimer variable
 
@@ -47,7 +53,8 @@ class BasketballGame extends FlameGame with TapDetector {
       style: TextStyle(color: Colors.green.shade300, fontSize: 70.0),
     );
     textPainter.layout();
-    textPainter.paint(canvas, Offset(screenSize.x / 6 - textPainter.width / 6, 40));
+    textPainter.paint(
+        canvas, Offset(screenSize.x / 6 - textPainter.width / 6, 40));
   }
 
   @override
@@ -57,7 +64,8 @@ class BasketballGame extends FlameGame with TapDetector {
     final playerSprite = await Sprite.load('BBPlayer.png');
     final ballSprite = await Sprite.load('BBall.png');
     final hoopSprite = await Sprite.load('BBHoop.png');
-    gameOverBearSprite = await Sprite.load('BBGameOverBear.png'); // Load the gameOverBearSprite sprite
+    gameOverBearSprite = await Sprite.load(
+        'BBGameOverBear.png'); // Load the gameOverBearSprite sprite
 
     final background = SpriteComponent(
       size: size,
@@ -96,31 +104,35 @@ class BasketballGame extends FlameGame with TapDetector {
     hoop = Hoop(
       rimFront: rimFront,
       rimBack: rimBack,
-      backBoard: 150.0 + 30, // Add backBoard parameter
+      backBoard: 150.0 + 30,
+      // Add backBoard parameter
       gameRef: this,
       hoopSprite: hoopSprite,
     );
+
+
     gameTimer = GameTimer(
-      countdownTimer: 30,
+      countdownTimer: 5,
       onGameOver: () {
         _gameOver = true;
-        gameOverOverlay = GameOverOverlay(
-          finalScore: score,
-          bearSprite: gameOverBearSprite,
-          screenSize: screenSize,
-          onPlayAgain: () {
-            _gameOver = false;
-            score = 0;
-            addGameTimer();
-            createNewBall();
-          },
-          onQuit: () {
-            // Implement the quit functionality here.
-          },
-        );
+        onGameOver(true);
+        // gameOverOverlay = GameOverOverlay(
+        //   finalScore: score,
+        //   bearSprite: gameOverBearSprite,
+        //   screenSize: screenSize,
+        //   onPlayAgain: () {
+        //     _gameOver = false;
+        //     score = 0;
+        //     addGameTimer();
+        //     createNewBall();
+        //   },
+        //   onQuit: () {
+        //     // Implement the quit functionality here.
+        //   },
+        // );
       },
-      xPosition: screenSize.x / 1.5,
-      yPosition: 20,
+      xPosition: screenSize.x / 1.4,
+      yPosition: screenSize.y / 1.4,
     );
     add(background);
     add(player);
@@ -137,6 +149,7 @@ class BasketballGame extends FlameGame with TapDetector {
     screenSize = size;
   }
 
+  @override
   void onTapDown(TapDownInfo info) {
     if (_gameOver) {
       gameOverOverlay?.playAgainButton.onTapDown(info);
@@ -145,6 +158,7 @@ class BasketballGame extends FlameGame with TapDetector {
       ball.onTapDown(info.eventPosition.global);
     }
   }
+
   void removeBall(Ball ball) {
     remove(ball);
     balls.remove(ball);
@@ -161,41 +175,45 @@ class BasketballGame extends FlameGame with TapDetector {
     add(newBall);
     balls.add(newBall);
   }
+
   @override
   void update(double dt) {
     if (!_gameOver) {
       super.update(dt);
     }
   }
-  void addGameTimer() {
-    gameTimer = GameTimer(
-      countdownTimer: 30,
-      onGameOver: () {
-        _gameOver = true;
-        gameOverOverlay = GameOverOverlay(
-          finalScore: score,
-          bearSprite: gameOverBearSprite,
-          screenSize: screenSize,
-          onPlayAgain: () {
-            _gameOver = false;
-            score = 0;
-            addGameTimer(); // Add a new instance of GameTimer
-            createNewBall();
-          },
-          onQuit: () {
-            // Implement the quit functionality here.
-          },
-        );      },
-      xPosition: screenSize.x / 1.5,
-      yPosition: 20,
-    );
-  }
+  //
+  // void addGameTimer() {
+  //   gameTimer = GameTimer(
+  //     countdownTimer: 30,
+  //     onGameOver: () {
+  //       _gameOver = true;
+  //       gameOverOverlay = GameOverOverlay(
+  //         finalScore: score,
+  //         bearSprite: gameOverBearSprite,
+  //         screenSize: screenSize,
+  //         onPlayAgain: () {
+  //           _gameOver = false;
+  //           score = 0;
+  //           addGameTimer(); // Add a new instance of GameTimer
+  //           createNewBall();
+  //         },
+  //         onQuit: () {
+  //           // Implement the quit functionality here.
+  //         },
+  //       );
+  //     },
+  //     xPosition: screenSize.x / 1.5,
+  //     yPosition: 20,
+  //   );
+  // }
+
   @override
   void render(Canvas canvas) {
     if (_gameOver) {
-      canvas.drawColor(Colors.white, BlendMode.srcOver); // Clear canvas with white color
+      canvas.drawColor(
+          Colors.white, BlendMode.srcOver); // Clear canvas with white color
       gameOverOverlay?.render(canvas);
-
     } else {
       super.render(canvas);
       renderScore(canvas);

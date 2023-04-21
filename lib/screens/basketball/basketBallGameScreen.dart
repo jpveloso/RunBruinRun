@@ -1,53 +1,119 @@
 import 'package:flame/game.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../styles/colours.dart';
+import '../mainmenu/main_menu_page.dart';
+import 'basketball_game_over_screen.dart';
 import 'game.dart';
 
-class GameScreen extends StatefulWidget {
+class BasketballGameScreen extends StatefulWidget {
+  const BasketballGameScreen({Key? key}) : super(key: key);
+
   @override
-  _GameScreenState createState() => _GameScreenState();
+  State<BasketballGameScreen> createState() => _BasketballGameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> {
+class _BasketballGameScreenState extends State<BasketballGameScreen> {
   bool _gameOver = false;
+  bool _isTapped = false;
 
-  void _updateGameOver(bool gameOver) {
+  void updateGameOver(bool gameOver) {
     setState(() {
       _gameOver = gameOver;
     });
   }
 
+  void _handleTap() {
+    setState(() {
+      _isTapped = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _gameOver = false;
+      _isTapped = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final game = BasketballGame();
+    final game = BasketballGame(updateGameOver,
+        _gameOver); // pass _gameOver variable to BasketballGame constructor
     final dragger = Dragger(game);
+    Size screenSize = MediaQuery.of(context).size;
 
     return Stack(
       children: [
         Scaffold(
-          body: GestureDetector(
-            onPanStart: dragger.onDragStart,
-            onPanUpdate: dragger.onDragUpdate,
-            onPanEnd: dragger.onDragEnd,
-            child: GameWidget(game: game),
-          ),
-        ),
-        if (_gameOver)
-          Positioned.fill(
-            child: Container(
-              color: Colors.black.withOpacity(0.7),
-              child: const Center(
-                child: Text(
-                  'Game Over',
-                  style: TextStyle(
-                    fontSize: 48,
-                    color: Colors.white,
+          body: Stack(
+            children: [
+              if (_isTapped)
+                GestureDetector(
+                  onPanStart: dragger.onDragStart,
+                  onPanUpdate: dragger.onDragUpdate,
+                  onPanEnd: dragger.onDragEnd,
+                  child: GameWidget(game: game),
+                ),
+              if (!_isTapped)
+                GestureDetector(
+                  onTap: () {
+                    _handleTap();
+                  },
+                  child: Scaffold(
+                    backgroundColor: lightBruinBlue,
+                    resizeToAvoidBottomInset: false,
+                    body: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          Text(
+                            'Tap to Play!',
+                            style: TextStyle(
+                              fontSize: 28,
+                              color: darkBruinBlue,
+                              fontFamily: 'PressStart2P',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              Positioned(
+                top: 30,
+                right: 20,
+                child: SizedBox(
+                  width: 42,
+                  height: 42,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white, width: 1),
+                      shape: BoxShape.circle,
+                      color: lightBruinBlue,
+                    ),
+                    child: IconButton(
+                      color: Colors.white,
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MainMenuPage(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.clear),
+                    ),
                   ),
                 ),
               ),
-            ),
+              if (_gameOver)
+                BasketBallGameOverScreen(gameOver: _gameOver)
+            ],
           ),
+        ),
       ],
     );
   }
