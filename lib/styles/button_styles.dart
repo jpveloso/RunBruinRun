@@ -42,10 +42,8 @@ ButtonStyle getSmallSquaredButtonStyle() {
 
 //Quit button style for game
 ButtonStyle getQuitButtonStyle() {
-  return ElevatedButton.styleFrom(
+  return IconButton.styleFrom(
     foregroundColor: Colors.white,
-    backgroundColor: darkBruinBlue,
-    // fixedSize: const Size(140, 60),
-    // elevation: 15,
+    backgroundColor: Colors.white,
   );
 }

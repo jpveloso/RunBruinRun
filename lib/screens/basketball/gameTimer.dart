@@ -45,7 +45,7 @@ class GameTimer {
       style: TextStyle(color: Colors.blue.shade300, fontSize: 20.0),
     );
     textPainter.layout();
-    textPainter.paint(canvas, Offset(xPosition/2, 20));
+    textPainter.paint(canvas, Offset(yPosition / 4, 30));
 
   }
 }
