@@ -14,6 +14,7 @@ import '../basketball/basketBallGameScreen.dart';
 import '../basketball/game.dart';
 import '../loading_screens/loading_screen.dart';
 import '../loading_screens/my_game_loading_screen.dart';
+import '../scoreboard/basketball_scores.dart';
 
 bool _isShowingSnackBar = false;
 
@@ -255,7 +256,32 @@ ScaffoldMessenger mainMenuScaffold(BuildContext context, String? userName,
                       child: const Text('Hurdles')),
                   ElevatedButton(
                       style: getSmallButtonStyle(),
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (FirebaseAuth.instance.currentUser?.isAnonymous ==
+                            true) {
+                          final snackBar = showShortLengthSnackbar(
+                              "Guests cannot view scores :/");
+                          if (!_isShowingSnackBar) {
+                            _isShowingSnackBar = true;
+                            key.currentState
+                                ?.showSnackBar(snackBar)
+                                .closed
+                                .then((value) => _isShowingSnackBar = false);
+                          }
+                        } else if (FirebaseAuth
+                            .instance.currentUser?.isAnonymous ==
+                            false) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const BBScoresPage(),
+                              ));
+                        } else {
+                          final snackBar = showShortLengthSnackbar(
+                              "Something went wrong :/");
+                          key.currentState?.showSnackBar(snackBar);
+                        }
+                      },
                       child: const Text('Basketball')),
                   FittedBox(
                     fit: BoxFit.fitWidth,

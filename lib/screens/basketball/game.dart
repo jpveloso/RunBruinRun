@@ -4,6 +4,8 @@ import 'package:flame/extensions.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show Colors, TextPainter;
+import '../../services/BBscore_service.dart';
+import '../../services/score_service.dart';
 import 'ball.dart';
 import 'floor.dart';
 import 'gameOverOverlay.dart';
@@ -239,9 +241,15 @@ class BasketballGame extends FlameGame with TapDetector {
         tapPosition.y >= playAgainTextY &&
         tapPosition.y <= playAgainTextY + playAgainTextHeight;
   }
+  bool _scoreSaved = false;
+
   @override
   void render(Canvas canvas) {
     if (_gameOver) {
+      if (!_scoreSaved) {
+        BBsaveHighScore(score);
+        _scoreSaved = true;
+      }
       canvas.drawColor(Colors.black, BlendMode.srcOver); // Clear canvas with white color
       gameOverOverlay?.render(canvas);
 

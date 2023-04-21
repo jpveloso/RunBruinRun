@@ -24,6 +24,8 @@ class GameScreen extends StatelessWidget {
     final dragger = Dragger(game);
 
     return MaterialApp(
+      title: 'Flutter Bruin BB',
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: GestureDetector(
           onPanStart: dragger.onDragStart,
