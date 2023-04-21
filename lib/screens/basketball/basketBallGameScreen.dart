@@ -65,7 +65,9 @@ class Dragger {
 
   void onDragUpdate(DragUpdateDetails details) {
     game.activeBall.onDragUpdate(details);
-    Vector2 dragVector = game.activeBall.dragStartPosition! - details.globalPosition.toVector2();
+    if (game.activeBall.dragStartPosition != null) {
+      Vector2 dragVector = game.activeBall.dragStartPosition! - details.globalPosition.toVector2();
+    }
   }
 
   void onDragEnd(DragEndDetails details) {

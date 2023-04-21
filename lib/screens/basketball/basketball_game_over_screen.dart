@@ -16,7 +16,6 @@ class BasketBallGameOverScreen extends StatefulWidget {
       BasketBallGameOverScreenState();
 }
 
-
 class BasketBallGameOverScreenState extends State<BasketBallGameOverScreen> {
   @override
   void initState() {
@@ -27,11 +26,11 @@ class BasketBallGameOverScreenState extends State<BasketBallGameOverScreen> {
     setState(() {
       widget.gameOver = false;
     });
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const BasketBallGameLoadingScreen()));
-  }
+  //   Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //           builder: (context) => const BasketBallGameLoadingScreen()));
+   }
 
   @override
   Widget build(BuildContext context) {

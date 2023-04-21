@@ -13,7 +13,7 @@ import 'hoop.dart';
 class BasketballGame extends FlameGame with TapDetector {
   late Ball ball;
   late Vector2 screenSize;
-  late Floor floor, rimFront, rimBack,backBoard;
+  late Floor rimFront, rimBack,backBoard;
   late Hoop hoop;
   final bool _timerIsActive = false;
   GameOverOverlay? gameOverOverlay; // Add this line to store the game over overlay
@@ -32,17 +32,7 @@ class BasketballGame extends FlameGame with TapDetector {
     score++;
   }
 
-  void addNewBall() async {
-    final ballSprite = await Sprite.load('BBall.png');
-    final newBall = Ball(
-      size: Vector2(50, 50),
-      position: ball.initialPosition,
-      sprite: ballSprite,
-      gameRef: this,
-    );
-    add(newBall);
-    balls.add(newBall);
-  }
+
 
   void renderScore(Canvas canvas) {
     textPainter.text = TextSpan(
@@ -114,7 +104,7 @@ class BasketballGame extends FlameGame with TapDetector {
             _gameOver = false;
             score = 0;
             gameTimer.reset(); // Reset the game timer
-            createNewBall();
+            addNewBall();
           },
           onQuit: () {},
         );
@@ -146,7 +136,7 @@ class BasketballGame extends FlameGame with TapDetector {
         _gameOver = false;
         score = 0;
         gameTimer.reset();
-        createNewBall();
+        addNewBall();
 
       }
     } else {
@@ -164,8 +154,7 @@ class BasketballGame extends FlameGame with TapDetector {
     remove(ball);
     balls.remove(ball);
   }
-
-  Future<void> createNewBall() async {
+  void addNewBall() async {
     final ballSprite = await Sprite.load('BBall.png');
     final newBall = Ball(
       size: Vector2(50, 50),
@@ -176,6 +165,7 @@ class BasketballGame extends FlameGame with TapDetector {
     add(newBall);
     balls.add(newBall);
   }
+  
   @override
   void update(double dt) {
     if (!_gameOver) {
@@ -195,7 +185,7 @@ class BasketballGame extends FlameGame with TapDetector {
             _gameOver = false;
             score = 0;
             gameTimer.reset(); // Reset the game timer
-            createNewBall();
+            addNewBall();
           },
           onQuit: () {
             // Implement the quit functionality here.
