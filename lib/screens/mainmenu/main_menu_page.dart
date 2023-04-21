@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:run_bruin_run/screens/friends/friends_page.dart';
 import 'package:run_bruin_run/screens/homepage/home_page.dart';
@@ -9,6 +10,8 @@ import 'package:run_bruin_run/services/friends_service.dart';
 import '../../styles/button_styles.dart';
 import '../../styles/colours.dart';
 import '../../styles/snackbar_styles.dart';
+import '../basketball/basketBallGameScreen.dart';
+import '../basketball/game.dart';
 import '../loading_screens/loading_screen.dart';
 import '../loading_screens/my_game_loading_screen.dart';
 
@@ -155,7 +158,12 @@ ScaffoldMessenger mainMenuScaffold(BuildContext context, String? userName,
                       child: const Text('Hurdles')),
                   ElevatedButton(
                       style: getSmallButtonStyle(),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GameScreen()));
+                      },
                       child: const Text('Basketball')),
                   const FittedBox(
                     fit: BoxFit.fitWidth,

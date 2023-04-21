@@ -37,7 +37,10 @@ dependencies:
   firebase_core: ^2.8.0
   firebase_auth: ^4.3.0
   cloud_firestore: ^4.4.5
-  audioplayers: ^1.0.1
+  audioplayers: ^4.0.1
+  flame: ^1.7.2
+  box2d_flame: ^0.4.4
+  flame_forge2d: ^0.13.0+1
 
 dev_dependencies:
   flutter_test:
